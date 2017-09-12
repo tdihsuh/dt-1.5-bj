@@ -8,6 +8,13 @@ const source = './src'
 const dest = './public'
 module.exports = merge(webpackBaseConfig, {
   devtool: '#source-map',
+    entry: {
+        'scripts/app': [
+            'babel-polyfill',
+            'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+            path.resolve(__dirname,source, 'app.js')
+        ]
+    },
   plugins: [
     new ExtractTextPlugin({
       filename: '[name].css',
@@ -21,6 +28,7 @@ module.exports = merge(webpackBaseConfig, {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, source,'html','index.html'),
       filename:'index.html'
-    })
+    }),
+      new webpack.HotModuleReplacementPlugin()
   ]
 });

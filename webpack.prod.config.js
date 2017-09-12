@@ -9,6 +9,9 @@ const path = require('path')
 const source = './src'
 const dest = './public'
 module.exports = merge(webpackBaseConfig, {
+    entry: {
+        'scripts/app': [ 'babel-polyfill',path.resolve(__dirname,source, 'app.js')]
+    },
   output: {
     publicPath: '/',
     filename: '[name].[chunkhash].js'

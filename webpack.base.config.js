@@ -6,9 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const source = './src'
 const dest = './public'
 module.exports = {
-  entry: {
-    'scripts/app': [path.resolve(__dirname,source, 'app.js')]
-  },
+
       // 输出配置
   output: {
     path: path.resolve(__dirname, dest),

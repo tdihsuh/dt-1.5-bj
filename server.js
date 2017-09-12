@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 const favicon = require('serve-favicon')
 const app = express()
 let staticPath = 'public'
+const api = require('./app/routes/api');
 
 process.env.TZ = 'Asia/Shanghai'
 app.set('trust proxy', 1) // trust first proxy
@@ -37,6 +38,8 @@ if (process.env.NODE_ENV === 'development') {
 } else {
     app.use(express.static(path.resolve(__dirname, '.', staticPath)))
 }
+app.use('/local',api);
+
 // 所有其他的地址交给前端路由进行处理
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '.', staticPath, 'index.html'))

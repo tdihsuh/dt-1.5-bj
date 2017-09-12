@@ -17,7 +17,7 @@
 
 </script>
 <style lang="less" scoped>
-  @import "./common";
+  @import "../common";
 .not-found-title{
   font-size:32px;
   color: @error-color;
