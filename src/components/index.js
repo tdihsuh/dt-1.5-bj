@@ -1,4 +1,5 @@
-import Index from './dashboard/index.vue'
+import Todo from './todo/Todo.vue'
 import NotFound from './common/NotFound.vue'
+import ShopCart from './shopcart/ShopCart.vue'
 
-export default  {Index,NotFound}
+export default  {Todo,NotFound,ShopCart}

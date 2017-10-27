@@ -9,9 +9,12 @@ const path = require('path')
 const source = './src'
 const dest = './public'
 module.exports = merge(webpackBaseConfig, {
+    entry: {
+        'scripts/app': [ 'babel-polyfill',path.resolve(__dirname,source, 'app.js')]
+    },
   output: {
     publicPath: '/',
-    filename: '[name].[chunkhash].js'
+    filename: '[name].[chunkhash:8].js'
   },
   module: {
     rules: [
@@ -24,7 +27,7 @@ module.exports = merge(webpackBaseConfig, {
               hash: 'sha512',
               digest: 'hex',
               limit: 8192,
-              name: 'images/[name].[chunkhash].[ext]'
+              name: 'images/[name].[hash:8].[ext]'
             }
           },
           {
@@ -45,7 +48,7 @@ module.exports = merge(webpackBaseConfig, {
       ]},
   plugins: [
     new ExtractTextPlugin({
-      filename: '[name].[chunkhash].css',
+      filename: 'styles/[name].[chunkhash:8].css',
       allChunks: true
     }),
     new CleanWebpackPlugin([ path.resolve(__dirname,dest)]),

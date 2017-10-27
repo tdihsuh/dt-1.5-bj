@@ -6,8 +6,15 @@ const routers = [
     meta: {
       title: '首页'
     },
-    component: Components.Index
+    component: Components.Todo
   },
+    {
+        path: '/cart',
+        meta: {
+            title: '购物车'
+        },
+        component: Components.ShopCart
+    },
   // /page/error
   {
     path: '/404',

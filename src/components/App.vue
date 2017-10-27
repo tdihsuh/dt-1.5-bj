@@ -1,12 +1,15 @@
 <template>
   <div>
     <MHeader></MHeader>
-    <router-view></router-view>
+    <div class="content">
+      <router-view></router-view>
+    </div>
+
   </div>
 </template>
 
 <script>
-  import '../../../node_modules/normalize.css/normalize.css'
+  import '../../node_modules/normalize.css/normalize.css'
   export default {
 
   }
@@ -29,6 +32,14 @@
       color: @link-active-color;
       background-color: @link-background-color;
     }
+  }
+  ul{
+    list-style-type: none;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0;
+    -webkit-margin-end: 0;
+    -webkit-padding-start: 0;
   }
 
 </style>

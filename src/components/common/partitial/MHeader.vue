@@ -2,10 +2,10 @@
     <div class="header">
       <ul class="header-navigator">
         <li class="header-navigator-item">
-          <router-link to="/">首页</router-link>
+          <router-link to="/">待办事项</router-link>
         </li>
         <li class="header-navigator-item">
-          <router-link to="/">菜单2</router-link>
+          <router-link to="/cart">购物车</router-link>
         </li>
       </ul>
     </div>
@@ -22,7 +22,7 @@
     }
 </script>
 <style scoped lang="less">
-  @import "../common";
+  @import "../../common";
   .header{
     font-size: 16px;
     position: relative;
@@ -33,7 +33,6 @@
     >.header-navigator{
       height: 40px;
       line-height: 40px;
-
       list-style: none;
       -webkit-margin-before: 0;
       -webkit-margin-after: 0;
