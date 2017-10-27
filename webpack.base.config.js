@@ -34,7 +34,7 @@ module.exports = {
         use: [{
           loader: 'babel-loader',
           options: {
-            presets: ['env', 'es2015', 'stage-2'],
+            presets: ['env', 'stage-2'],
             plugins: ['transform-decorators-legacy', 'transform-runtime'],
             cacheDirectory: true
           }
@@ -99,33 +99,6 @@ module.exports = {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: [
           {loader: 'url-loader'}
-        ]
-      },
-      {
-        test: /\.(gif|png|jpe?g|svg)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              hash: 'sha512',
-              digest: 'hex',
-              limit: 8192,
-              name: 'images/[name].[ext]'
-            }
-          },
-          {
-            loader: 'image-webpack-loader',
-            options: {
-              query: {
-                optimizationLevel: 7,
-                interlaced: false,
-                pngquant: {quality: '65-90', speed: 4},
-                mozjpeg: {quality: 65, progressive: true},
-                gifsicle: {interlaced: true},
-                optipng: {optimizationLevel: 7}
-              }
-            }
-          }
         ]
       },
       {

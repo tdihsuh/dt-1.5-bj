@@ -7,7 +7,7 @@ const favicon = require('serve-favicon')
 const app = express()
 let staticPath = 'public'
 const api = require('./app/routes/api');
-
+let port = process.env.PORT || 3000;
 process.env.TZ = 'Asia/Shanghai'
 app.set('trust proxy', 1) // trust first proxy
 app.use(favicon(path.join(__dirname, 'src', 'images', 'logo.png')))
@@ -45,10 +45,10 @@ if (process.env.NODE_ENV === 'development') {
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '.', staticPath, 'index.html'))
 })
-app.listen(3000, function (err) {
+app.listen(port, function (err) {
     if (err) {
         console.log(err)
         return
     }
-    console.log('Listening at http://localhost:3000')
+    console.log(`Listening at ${port}`)
 })
