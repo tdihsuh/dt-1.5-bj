@@ -41,7 +41,5 @@
     -webkit-margin-end: 0;
     -webkit-padding-start: 0;
   }
-  .content{
-    padding: 10px;
-  }
+
 </style>

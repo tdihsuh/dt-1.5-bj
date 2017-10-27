@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'))
 app.use(cookieParser())
 app.use(express.query())
+app.use('/local',api)
 
 if (process.env.NODE_ENV === 'development') {
     const webpack = require('webpack')
@@ -38,7 +39,7 @@ if (process.env.NODE_ENV === 'development') {
 } else {
     app.use(express.static(path.resolve(__dirname, '.', staticPath)))
 }
-app.use('/local',api);
+
 
 // 所有其他的地址交给前端路由进行处理
 app.get('*', (req, res) => {

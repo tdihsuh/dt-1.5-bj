@@ -2,10 +2,10 @@
     <div class="header">
       <ul class="header-navigator">
         <li class="header-navigator-item">
-          <router-link to="/">Todo List</router-link>
+          <router-link to="/">待办事项</router-link>
         </li>
         <li class="header-navigator-item">
-          <router-link to="/">Todo List</router-link>
+          <router-link to="/cart">购物车</router-link>
         </li>
       </ul>
     </div>

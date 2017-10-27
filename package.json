@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "predev": "webpack  --config webpack.dev.config.js --progress --profile  --color",
+    "predev": "webpack  --config webpack.dev.config.js   --color",
     "dev": "cross-env NODE_ENV=development node server.js",
     "prestart": "webpack  --config webpack.prod.config.js",
     "start": "cross-env NODE_ENV=production node server.js"
@@ -17,6 +17,7 @@
     "cookie-parser": "^1.4.3",
     "cross-env": "^5.0.5",
     "express": "^4.15.4",
+    "moment": "^2.18.1",
     "morgan": "^1.8.2",
     "normalize.css": "^7.0.0",
     "serve-favicon": "^2.4.3",

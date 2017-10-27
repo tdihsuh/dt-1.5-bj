@@ -48,7 +48,7 @@ module.exports = merge(webpackBaseConfig, {
       ]},
   plugins: [
     new ExtractTextPlugin({
-      filename: '[name].[chunkhash].css',
+      filename: 'styles/[name].[chunkhash].css',
       allChunks: true
     }),
     new CleanWebpackPlugin([ path.resolve(__dirname,dest)]),

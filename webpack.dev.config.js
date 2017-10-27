@@ -17,7 +17,7 @@ module.exports = merge(webpackBaseConfig, {
     },
   plugins: [
     new ExtractTextPlugin({
-      filename: '[name].css',
+      filename: 'styles/[name].css',
       allChunks: true
     }),
     new webpack.DefinePlugin({
