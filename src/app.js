@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import iView from 'iview';
+import './iview.css'
 import App from './components/App.vue'
 import Routers from './router'
 import {sync} from 'vuex-router-sync';
@@ -7,7 +9,7 @@ import Partials from './components/common/partitial/index'
 import commonFilters from './filters/index'
 import Util from './lib/util'
 import store from './store'
-
+Vue.use(iView)
 // Load partial of single page
 for (var key in Partials) {
     Vue.component(key, Partials[key])

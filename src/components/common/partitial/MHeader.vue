@@ -1,13 +1,8 @@
 <template>
     <div class="header">
-      <ul class="header-navigator">
-        <li class="header-navigator-item">
-          <router-link to="/">待办事项</router-link>
-        </li>
-        <li class="header-navigator-item">
-          <router-link to="/cart">购物车</router-link>
-        </li>
-      </ul>
+       <img :src="logo" class="logo">
+        <img :src="titleImage" class="title">
+        <div class="nav"></div>
     </div>
 </template>
 
@@ -16,42 +11,34 @@
         name: 'MHeader',
       data(){
           return{
-
+              logo:require('../../../images/logo.png'),
+              titleImage:require('../../../images/title.png'),
+              bg:require('./bg_h.png')
           }
       }
     }
 </script>
-<style scoped lang="less">
-  @import "../../common";
-  .header{
-    font-size: 16px;
-    position: relative;
-    z-index: 3;
-    border-top: 3px solid @primary-color;
-    box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.1), 0 1px rgba(0,0,0,0.1);
-    background: #fafafa;
-    >.header-navigator{
-      height: 40px;
-      line-height: 40px;
-      list-style: none;
-      -webkit-margin-before: 0;
-      -webkit-margin-after: 0;
-      -webkit-margin-start: 0px;
-      -webkit-margin-end: 0px;
-      -webkit-padding-start: 0;
-      width: 1000px;
-      margin: 0 auto;
-      >li{
-        display: inline-block;
-        >a{
-          text-decoration: none;
-          display: block;
-          width: 100px;
-          text-align: center;
-        }
-      }
-    }
+<style  lang="less">
 
+  .header{
+      height: 120px;
+      border-bottom: 3px solid  #1889E3;
+      background-image: url("./bg_h.png");
+      background-repeat:no-repeat;
+      background-position: 85%;
+      box-shadow: 0 1px 8px rgba(0,0,0,.3);
+      >.logo{
+          position: relative;
+          left: 220px;
+          top:20px;
+          height: 90px;
+          width: 90px;
+      }
+      >.title{
+          position: relative;
+          left: 340 - 90px;
+          height: 50px;
+      }
   }
 
 

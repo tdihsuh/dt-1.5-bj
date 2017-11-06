@@ -1,5 +1,4 @@
-import Todo from './todo/Todo.vue'
-import NotFound from './common/NotFound.vue'
-import ShopCart from './shopcart/ShopCart.vue'
+import NotFound from './common/NotFound'
+import Login from './login/Login'
 
-export default  {Todo,NotFound,ShopCart}
+export default  {NotFound,Login}

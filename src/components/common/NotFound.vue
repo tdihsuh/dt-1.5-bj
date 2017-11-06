@@ -17,10 +17,9 @@
 
 </script>
 <style lang="less" scoped>
-  @import "../common";
 .not-found-title{
   font-size:32px;
-  color: @error-color;
+  color: #ff3300;
 }
   .content {
     padding: 20px;
@@ -37,7 +36,7 @@
     >p{
       font-size: 1.2rem;
       >b{
-        color: @info-color;
+        color: #2db7f5;
       }
     }
   }

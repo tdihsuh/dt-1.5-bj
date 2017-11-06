@@ -2,19 +2,13 @@ import Components from './components/index'
 
 const routers = [
   {
-    path: '/',
+    path: '/login',
     meta: {
-      title: '首页'
+      title: '登录'
     },
-    component: Components.Todo
+      component: Components.Login
   },
-    {
-        path: '/cart',
-        meta: {
-            title: '购物车'
-        },
-        component: Components.ShopCart
-    },
+
   // /page/error
   {
     path: '/404',

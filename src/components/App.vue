@@ -4,6 +4,7 @@
     <div class="content">
       <router-view></router-view>
     </div>
+    <MFooter></MFooter>
 
   </div>
 </template>
@@ -15,31 +16,17 @@
   }
 </script>
 <style lang="less">
-  @import "./common";
   body{
-    font-family: @font-family;
-    font-size:@font-size-base;
-    line-height: @line-height-base;
-    background-color: @body-background;
+    min-width: 900px;
+    background-color: #f0f2f5;
   }
-  a{
-    color: @link-color;
-    &:hover{
-      color: @link-hover-color;
-      background-color: @link-background-color;
-    }
-    &:active{
-      color: @link-active-color;
-      background-color: @link-background-color;
-    }
-  }
-  ul{
-    list-style-type: none;
-    -webkit-margin-before: 0;
-    -webkit-margin-after: 0;
-    -webkit-margin-start: 0;
-    -webkit-margin-end: 0;
-    -webkit-padding-start: 0;
+  .content{
+    max-width: 1600px;
+    min-height: 700px;
+    margin: 0 auto;
+    background-image: url("../images/bg.png");
+    background-size: cover;
+
   }
 
 </style>
