@@ -1,6 +1,7 @@
 import Components from './components/index'
 
 const routers = [
+
   {
     path: '/login',
     meta: {
@@ -8,6 +9,13 @@ const routers = [
     },
       component: Components.Login
   },
+    {
+        path: '/',
+        meta: {
+            title: '奖惩检测'
+        },
+        component: Components.Dashbord
+    },
 
   // /page/error
   {

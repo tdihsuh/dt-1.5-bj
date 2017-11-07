@@ -12,7 +12,12 @@
     </div>
 </template>
 <script>
-    export default {}
+    export default {
+        props:['nav'],
+        beforeCreate(){
+            this.$emit("hideNav", false);
+        }
+    }
 
 </script>
 <style rel="stylesheet/less" lang="less">

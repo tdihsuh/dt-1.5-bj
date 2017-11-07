@@ -1,8 +1,8 @@
 <template>
   <div>
-    <MHeader></MHeader>
+    <MHeader :nav="hasNav"></MHeader>
     <div class="content">
-      <router-view></router-view>
+      <router-view :nav="hasNav" @hideNav="hideNav" ></router-view>
     </div>
     <MFooter></MFooter>
 
@@ -12,7 +12,14 @@
 <script>
   import '../../node_modules/normalize.css/normalize.css'
   export default {
-
+      data() {
+          return {hasNav:true}
+      },
+      methods:{
+          hideNav:function(hasNav){
+              this.hasNav = hasNav
+          }
+      }
   }
 </script>
 <style lang="less">
@@ -20,6 +27,8 @@
     min-width: 900px;
     background-color: #f0f2f5;
   }
+  .clear:after{content:'';display:block;clear:both;height:0;overflow:hidden;visibility:hidden;}
+  .clear{zoom:1;}
   .content{
     max-width: 1600px;
     min-height: 700px;
