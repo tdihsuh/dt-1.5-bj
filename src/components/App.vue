@@ -24,7 +24,7 @@
 </script>
 <style lang="less">
   body{
-    min-width: 900px;
+    min-width: 1000px;
     background-color: #f0f2f5;
   }
   .clear:after{content:'';display:block;clear:both;height:0;overflow:hidden;visibility:hidden;}
