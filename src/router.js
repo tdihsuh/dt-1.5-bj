@@ -16,6 +16,36 @@ const routers = [
         },
         component: Components.Dashbord
     },
+    {
+        path: '/search',
+        meta: {
+            title: '奖惩查询'
+        },
+        component: Components.Search,
+     /*   children: [
+            {
+                path: '',
+                meta: {
+                    title: '奖惩查询'
+                },
+                component: Components.SearchBoard
+            }
+    ]*/
+    },
+    {
+        path: '/approval',
+        meta: {
+            title: '审批记录'
+        },
+        component: Components.Approval
+    },
+    {
+        path: '/memo',
+        meta: {
+            title: '奖惩备忘录'
+        },
+        component: Components.Memo
+    },
 
   // /page/error
   {

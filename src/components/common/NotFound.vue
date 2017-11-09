@@ -7,6 +7,10 @@
 <script>
   import imgNotFound from '../../images/not-found.png'
   export default {
+      props:['nav'],
+      beforeCreate(){
+          this.$emit("hideNav", false);
+      },
     data(){
       return {
         fullPath:this.$route.fullPath,
@@ -22,8 +26,9 @@
   color: #ff3300;
 }
   .content {
-    padding: 20px;
+    padding: 0 20px 20px 20px;
     display: flex;
+    min-height: 800px;
     justify-content:center;
     flex-direction: column;
     margin-top: 20px;

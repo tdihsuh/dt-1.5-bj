@@ -26,6 +26,7 @@
   body{
     min-width: 1000px;
     background-color: #f0f2f5;
+    font-size: 14px;
   }
   .clear:after{content:'';display:block;clear:both;height:0;overflow:hidden;visibility:hidden;}
   .clear{zoom:1;}

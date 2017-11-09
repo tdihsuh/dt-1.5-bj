@@ -6,17 +6,21 @@
             </div>
 
             <div class="stat-content clear">
-                    <Row :gutter="16">
-                        <Col span="12"><highmaps class="maps" :options="options"></highmaps></Col>
-                        <Col span="12"> <OrderTable :data="data" :columns="columns" class="order-by-city"></OrderTable></Col>
-                    </Row>
+                <Row>
+                    <Col span="12">
+                    <highmaps class="maps" :options="options"/>
+                    </Col>
+                    <Col span="12">
+                    <OrderTable :data="data" :columns="columns" class="order-by-city"></OrderTable>
+                    </Col>
+                </Row>
             </div>
         </Card>
         <Card :bordered="false" class="stat-board">
             <div slot="title" class="stat-title">
                 <span class="text"><img :src="iconImg"/>河南省部委联合奖惩情况监测图</span>
             </div>
-            <div class="stat-content clear">
+            <div class="stat-content clear stat-bottom ">
                 <OrderDepartmentTable :data="data1" :columns="columns1"></OrderDepartmentTable>
             </div>
         </Card>
@@ -48,20 +52,24 @@
     let options = {
         chart: {},
         title: {
-            text: '河南省'
+            text:null
         },
         mapNavigation: {
             enabled: true,
+            enableMouseWheelZoom: false,
             buttonOptions: {
                 verticalAlign: 'bottom'
             }
+        },
+        credits: {
+            enabled: false
         },
         tooltip: {
             useHTML: true,
             headerFormat: '<table><tr><td>{point.name}</td></tr>',
             pointFormat: '<tr><td>全称</td><td>{point.properties.fullname}</td></tr>' +
             '<tr><td>行政编号</td><td>{point.properties.areacode}</td></tr>' +
-            '<tr><td>值</td><td>{point.value}</td></tr>' +
+            '<tr><td>活跃度</td><td>{point.value}</td></tr>' +
             '<tr><td>经纬度</td><td>{point.properties.longitude},{point.properties.latitude}</td></tr>',
             footerFormat: '</table>'
         },
@@ -90,12 +98,16 @@
             },
             states: {
                 hover: {
-                    color: '#ccc'
+                    color: 'yellow'
                 }
             }
         }]
     }
     export default {
+        props:['nav'],
+        beforeCreate(){
+            this.$emit("hideNav", true);
+        },
         data() {
             return {
                 iconImg: require('../../images/title_icon.png'),
@@ -195,10 +207,42 @@
                         key: 'order'
                     }
                 ],
-                data1:[{department:'省发改委',joint_department:12,joint_incentive:121,joint_punishment:12,query_times:12,activity_metrics:12,order:1},
-                    {department:'省交通厅',joint_department:12,joint_incentive:121,joint_punishment:12,query_times:12,activity_metrics:12,order:2},
-                    {department:'省人社厅',joint_department:12,joint_incentive:121,joint_punishment:12,query_times:12,activity_metrics:12,order:3},
-                    {department:'税务局',joint_department:12,joint_incentive:121,joint_punishment:12,query_times:12,activity_metrics:12,order:4 }]
+                data1: [{
+                    department: '省发改委',
+                    joint_department: 12,
+                    joint_incentive: 121,
+                    joint_punishment: 12,
+                    query_times: 12,
+                    activity_metrics: 12,
+                    order: 1
+                },
+                    {
+                        department: '省交通厅',
+                        joint_department: 12,
+                        joint_incentive: 121,
+                        joint_punishment: 12,
+                        query_times: 12,
+                        activity_metrics: 12,
+                        order: 2
+                    },
+                    {
+                        department: '省人社厅',
+                        joint_department: 12,
+                        joint_incentive: 121,
+                        joint_punishment: 12,
+                        query_times: 12,
+                        activity_metrics: 12,
+                        order: 3
+                    },
+                    {
+                        department: '税务局',
+                        joint_department: 12,
+                        joint_incentive: 121,
+                        joint_punishment: 12,
+                        query_times: 12,
+                        activity_metrics: 12,
+                        order: 4
+                    }]
 
             }
         },
@@ -217,6 +261,14 @@
                     activity_metrics: 1200,
                     order: 0
                 },
+                    {
+                        city: "济源",
+                        joint_incentive: 479,
+                        joint_punishment: 100,
+                        query_times: 10000,
+                        activity_metrics: 1200,
+                        order: 0
+                    },
                     {
                         city: "开封",
                         joint_incentive: 200,
@@ -282,6 +334,14 @@
                         order: 0
                     },
                     {
+                        city: "驻马店",
+                        joint_incentive: 146,
+                        joint_punishment: 100,
+                        query_times: 10000,
+                        activity_metrics: 1200,
+                        order: 0
+                    },
+                    {
                         city: "许昌",
                         joint_incentive: 205,
                         joint_punishment: 100,
@@ -322,32 +382,16 @@
                         order: 0
                     },
                     {
-                        city: "信阳",
-                        joint_incentive: 198,
-                        joint_punishment: 100,
-                        query_times: 10000,
-                        activity_metrics: 1200,
-                        order: 0
-                    }],
-                [{
-                    city: "周口",
-                    joint_incentive: 423,
-                    joint_punishment: 100,
-                    query_times: 10000,
-                    activity_metrics: 1200,
-                    order: 0
-                },
-                    {
-                        city: "驻马店",
-                        joint_incentive: 146,
+                        city: "周口",
+                        joint_incentive: 423,
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 0
                     },
                     {
-                        city: "济源",
-                        joint_incentive: 479,
+                        city: "信阳",
+                        joint_incentive: 198,
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
@@ -371,6 +415,7 @@
     }
 
     .stat-board {
+        margin-top: 14px;
         .ivu-card-head {
             padding: 0 20px;
         }
@@ -390,11 +435,15 @@
                 }
             }
         }
+        .stat-bottom{
+            border: 1px solid #eee;
+        }
         .stat-content {
-            padding: 30px;
+            margin: 30px;
             .maps {
                 display: inline-block;
                 height: 350px;
+                width: 90%;
             }
             .billboard {
                 margin-left: 40px;

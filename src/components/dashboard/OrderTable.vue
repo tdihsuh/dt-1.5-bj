@@ -7,13 +7,13 @@
             </th>
         </tr>
         </thead>
-        <transition-group name="list-complete" tag="tbody">
+        <tbody>
         <tr v-for="(o, index) in data" :key="o.city" class="list-complete-item">
             <td v-for="v in o">
                 {{ v }}
             </td>
         </tr>
-        </transition-group>
+        </tbody>
     </table>
 </template>
 <script>
@@ -23,7 +23,7 @@
 
 </script>
 <style rel="stylesheet/less" lang="less" scoped>
-    .list-complete-item {
+   /* .list-complete-item {
         transition: opacity 1s linear;
         opacity: 1;
     }
@@ -35,14 +35,14 @@
         color: transparent;
         width: 0;
         height: 0;
-    }
+    }*/
     .order-table{
         width: 100%;
         border-collapse:collapse;
         td,th{
             width: 16.5%;
             text-align: center;
-            height:58px ;
+            height:50px ;
         }
         thead{
             tr{

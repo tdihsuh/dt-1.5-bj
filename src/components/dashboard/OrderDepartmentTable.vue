@@ -29,19 +29,21 @@
         width: 100%;
         border-collapse:collapse;
         font-size: 14px;
-        border: 1px solid #EEE;
         td,th{
             width: 14.2%;
             text-align: center;
-            height:58px ;
+            height:50px ;
             color: #777;
         }
         thead{
+            border: 1px solid #EEEEEE;
             tr{
+                background: #EEE;
                 th{
-                    background: #EEE;
+
                     text-align: center;
-                    border:2px solid white;
+                    border:1px solid white;
+
                 }
             }
         }
@@ -50,6 +52,7 @@
                 border-top:0;
                 border-left:0;
                 border-right:0;
+
                 border-bottom: 2px solid  #F4F4F4;
             }
         }
