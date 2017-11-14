@@ -21,14 +21,14 @@ const routers = [
         meta: {
             title: '奖惩查询'
         },
-        component: Components.Search,
+        component: Components.Search
     },
     {
-        path: '/detail/person/:pid/:type?',
+        path: '/detail/:pid/:type?/:from?',
         meta: {
             title: '个人详情'
         },
-        component: Components.PersonDetail,
+        component: Components.SearchDetail
     },
     {
         path: '/approval',

@@ -2,8 +2,8 @@
     <div class="search-board">
         <div class="searcher">
             <div class="searcher-tab">
-                <div class="tab-items" :class="{active:!isPersonal}"@click="isPersonal = false"><span class="tab-title" >企业</span></div>
-                <div class="tab-items" :class="{active:isPersonal}" @click="isPersonal = true"><span class="tab-title" >个人</span></div>
+                <div class="tab-items" :class="{active:!isPersonal}"@click="changeType(false)"><span class="tab-title" >企业</span></div>
+                <div class="tab-items" :class="{active:isPersonal}" @click="changeType(true)"><span class="tab-title" >个人</span></div>
             </div>
             <div class="search-content">
                 <div class="demo" :class="{'active':isPersonal,'unactive':!isPersonal,'focus':isFocus,'unfocus':!isFocus}"></div>
@@ -23,7 +23,9 @@
 </template>
 <script>
     import SearchBoard from './SearchBoard.vue'
+    import DetailsLink from './DetailsLink.vue'
     import Vue from 'vue'
+    Vue.component('DetailsLink',DetailsLink)
     Vue.component('SearchBoard',SearchBoard)
     let style = {
         display: 'inline-block',
@@ -74,9 +76,11 @@
             key: 'operations',
             align:'center',
             render: (h, params) => {
-                return h('a',{style:{
-                   color: '#1889E3'
-                }}, '详细信息');
+                return h(DetailsLink,{
+                    props:{
+                        to:`/detail/${params.row.code}/enterprise`
+                    }
+                }, '详细信息');
             }
         }
     ]
@@ -113,9 +117,11 @@
             key: 'operations',
             align:'center',
             render: (h, params) => {
-                return h('a',{style:{
-                    color: '#1889E3'
-                }}, '详细信息');
+                return h(DetailsLink,{
+                    props:{
+                        to:`/detail/${params.row.code}/person`
+                    }
+                    }, '详细信息');
             }
         }
     ]
@@ -126,7 +132,14 @@
                 isFocus:false,
                 iconImg: require('../../images/title_icon.png'),
                 content:[],
-                columns:[]
+                columns:[],
+                personalColumns,
+                enterpriseColumns
+            }
+        },
+        created(){
+            if(this.$route.query.type === 'person'){
+                this.isPersonal = true;
             }
         },
         computed:{
@@ -139,10 +152,19 @@
                 this.isPersonal = isPersonal
 
             },
+            changeType(isPersonal){
+                this.isPersonal = isPersonal;
+                if(this.isPersonal){
+                    this.$router.push('/search?type=person')
+                }
+                else{
+                    this.$router.push('/search')
+                }
+            },
             search(){
             this.content = []
                 if(this.isPersonal){
-                    this.columns = personalColumns
+                    this.columns = this.personalColumns
                     this.content = [{
                         name:'张晓多',
                         certification:'110100198907180902',
@@ -152,14 +174,14 @@
                     }]
                 }
                 else{
-                    this.columns = enterpriseColumns
-                    /*this.content = [{
+                    this.columns = this.enterpriseColumns
+                    this.content = [{
                         enterprise_name:'北京开发有限责任公司',
                         credit_code:'913710007628687892',
                         tags:['失信被执行人','企业协同监管'],
                         code:123,
                         operations:'详细信息'
-                    }]*/
+                    }]
                 }
             }
         }
