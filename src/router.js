@@ -22,15 +22,13 @@ const routers = [
             title: '奖惩查询'
         },
         component: Components.Search,
-     /*   children: [
-            {
-                path: '',
-                meta: {
-                    title: '奖惩查询'
-                },
-                component: Components.SearchBoard
-            }
-    ]*/
+    },
+    {
+        path: '/detail/person/:pid/:type?',
+        meta: {
+            title: '个人详情'
+        },
+        component: Components.PersonDetail,
     },
     {
         path: '/approval',

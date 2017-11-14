@@ -9,6 +9,8 @@ import Partials from './components/common/partitial/index'
 import commonFilters from './filters/index'
 import Util from './lib/util'
 import store from './store'
+import PanelTitle from './components/common/PanelTitle.vue'
+Vue.component('PanelTitle',PanelTitle)
 Vue.use(iView)
 // Load partial of single page
 for (var key in Partials) {
