@@ -4,10 +4,10 @@
         <img :src="titleImage" class="title">
         <div class="user-center" ><span class="user-name" :class="{ noNav: !nav }">用户名</span><span :class="{ noNav: !nav }">|</span><a :class="{ noNav: !nav }">退出登录</a></div>
         <ul class="nav" :class="{ noNav: !nav }" >
-            <li><router-link to="/" class="nav-item"><img :src="stat"/>奖惩检测</router-link></li><!--
-           --><li><router-link  to="/search" class="nav-item"><img :src="search"/>奖惩查询</router-link></li><!--
-             --><li><router-link  to="/approval" class="nav-item"><img :src="record"/>审批记录</router-link></li><!--
-             --><li><router-link  to="/memo" class="nav-item"><img :src="memo"/>奖惩备忘录</router-link></li>
+            <li><router-link active-class="nav-active" to="/dashboard" class="nav-item"><img :src="stat"/>奖惩检测</router-link></li><!--
+           --><li><router-link active-class="nav-active" to="/search" class="nav-item"><img :src="search"/>奖惩查询</router-link></li><!--
+             --><li><router-link  active-class="nav-active" to="/approval" class="nav-item"><img :src="record"/>审批记录</router-link></li><!--
+             --><li><router-link active-class="nav-active" to="/memo" class="nav-item"><img :src="memo"/>奖惩备忘录</router-link></li>
         </ul>
     </div>
 </template>
@@ -100,6 +100,9 @@
               }
           }
 
+      }
+      .nav-active{
+          background-color:#1889E3;
       }
   }
 

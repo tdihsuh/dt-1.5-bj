@@ -9,8 +9,9 @@ const routers = [
     },
       component: Components.Login
   },
+    { path: '/', redirect: '/dashboard'},
     {
-        path: '/',
+        path: '/dashboard',
         meta: {
             title: '奖惩检测'
         },
@@ -24,9 +25,9 @@ const routers = [
         component: Components.Search
     },
     {
-        path: '/detail/:pid/:type?/:from?',
+        path: '/:from?/detail/:pid/:type?',
         meta: {
-            title: '个人详情'
+            title: '主体详情'
         },
         component: Components.SearchDetail
     },

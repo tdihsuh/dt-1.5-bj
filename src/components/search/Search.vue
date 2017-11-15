@@ -78,7 +78,7 @@
             render: (h, params) => {
                 return h(DetailsLink,{
                     props:{
-                        to:`/detail/${params.row.code}/enterprise`
+                        to:`/search/detail/${params.row.code}/enterprise`
                     }
                 }, '详细信息');
             }
@@ -119,7 +119,7 @@
             render: (h, params) => {
                 return h(DetailsLink,{
                     props:{
-                        to:`/detail/${params.row.code}/person`
+                        to:`/search/detail/${params.row.code}/person`
                     }
                     }, '详细信息');
             }
@@ -312,8 +312,7 @@
             display: block;
             background: #FFFFFF;
             box-shadow: 0 3px 5px 0 rgba(225,225,225,0.50);
-            margin: 30px 210px 0 210px;
-
+            margin: 30px auto 0 auto;
             padding: 0 30px 14px 30px;
             width: 1200px;
             > .search-result-title {
