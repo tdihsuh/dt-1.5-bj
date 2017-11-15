@@ -26,7 +26,7 @@
 </script>
 <style lang="less">
   body{
-    min-width: 1000px;
+    min-width: 1200px;
     background-color: #f0f2f5;
     font-size: 14px;
   }

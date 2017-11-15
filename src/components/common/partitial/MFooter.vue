@@ -66,6 +66,8 @@
 <style rel="stylesheet/less" lang="less" scoped>
     .footer {
         background-color: white;
+        min-width: 1200px;
+        width: 100%;
         box-shadow: 0 1px 8px rgba(0,0,0,.3);
         > .link {
             text-align: center;

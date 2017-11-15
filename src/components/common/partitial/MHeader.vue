@@ -1,9 +1,10 @@
 <template>
     <div class="header">
+        <img :src="logoAll" class="logo"><!--
        <img :src="logo" class="logo">
         <img :src="titleImage" class="title">
-        <div class="user-center" ><span class="user-name" :class="{ noNav: !nav }">用户名</span><span :class="{ noNav: !nav }">|</span><a :class="{ noNav: !nav }">退出登录</a></div>
-        <ul class="nav" :class="{ noNav: !nav }" >
+        --><div class="user-center" ><span class="user-name" :class="{ noNav: !nav }">用户名</span><span :class="{ noNav: !nav }">|</span><a :class="{ noNav: !nav }">退出登录</a></div><!--
+        --><ul class="nav" :class="{ noNav: !nav }" >
             <li><router-link active-class="nav-active" to="/dashboard" class="nav-item"><img :src="stat"/>奖惩检测</router-link></li><!--
            --><li><router-link active-class="nav-active" to="/search" class="nav-item"><img :src="search"/>奖惩查询</router-link></li><!--
              --><li><router-link  active-class="nav-active" to="/approval" class="nav-item"><img :src="record"/>审批记录</router-link></li><!--
@@ -18,8 +19,9 @@
         props:['nav'],
       data(){
           return{
-              logo:require('../../../images/logo.png'),
-              titleImage:require('../../../images/title.png'),
+              //logo:require('../../../images/logo.png'),
+              logoAll:require('../../../images/logo-all.png'),
+              //titleImage:require('../../../images/title.png'),
               bg:require('./bg_h.png'),
               memo:require('./memo.png'),
               record:require('./record.png'),
@@ -38,27 +40,21 @@
       border-bottom: 3px solid  #1889E3;
       background-image: url("./bg_h.png");
       background-repeat:no-repeat;
-      background-position: 85%;
+      background-position: 100%;
+      background-size: 675px 100%;
       box-shadow: 0 1px 8px rgba(0,0,0,.3);
+      min-width: 1200px;
       >.logo{
           position: relative;
+          height: 90px;
           left: 220px;
-          top:20px;
-          height: 80px;
-          width: 90px;
-          margin: 0 0 30px 0;
-      }
-      >.title{
-          position: relative;
-          left: 340 - 90px;
-          top: -30px;
-          height: 50px;
+          margin: 15px 0;
       }
       >.user-center{
           display: inline-block;
           float: right;
           position: relative;
-          right: 250px;
+          right: 220px;
           top:50px;
           >.user-name{
               color: #353742;
