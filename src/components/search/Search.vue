@@ -27,22 +27,62 @@
     import Vue from 'vue'
     Vue.component('DetailsLink',DetailsLink)
     Vue.component('SearchBoard',SearchBoard)
-    let style = {
+    let styleBase = {
         display: 'inline-block',
-        border: '1px solid #1889E3',
-        color:'#1889E3',
         borderRadius: '3px',
         height: '24px',
-        magrin:'2px',
-        width:'96px',
+        margin:'0 5px',
+        width:'130px',
         overflow: 'hidden',
         textOverflow:'ellipsis',
         whiteSpace: 'nowrap',
-        margin:'3px 2px',
         lineHeight: '24px',
         fontSize:'10px',
         textAlign:'center',
         padding:'0 9px'
+    }
+    let style = {
+        border: '1px solid #1889E3',
+        color:'#1889E3'
+    }
+
+
+    let styleActive = {
+        border: '1px solid #EB4449',
+        color:'#EB4449',
+    }
+    let style1 = {
+        color:'#1889E3',
+    }
+    Object.assign(style,styleBase)
+    Object.assign(styleActive,styleBase)
+    Object.assign(style1,styleBase)
+    let renderTagsUnit = (h, params) => {
+        let row = params.row
+        let htmlArray = [];
+        let tags = row.tags
+        if(tags.length >3){
+            tags.slice(0,3).map(tag => {
+                let hTag = h('span', {
+                    style: tag.isPositive?styleActive:style
+                }, tag.name)
+                htmlArray.push(hTag)
+            })
+            let hTag = h('span', {
+                style: style1
+
+            }, '...')
+            htmlArray.push(hTag)
+        }
+        else{
+            tags.map(tag => {
+                let hTag = h('span', {
+                    style: tag.isPositive?styleActive:style
+                }, tag.name)
+                htmlArray.push(hTag)
+            })
+        }
+        return h('span', {props:{tags:row.tags},style:{'display':'block','margin':'5px 0'}},htmlArray);
     }
     let enterpriseColumns = [
         {
@@ -59,17 +99,7 @@
             title: '联合奖惩标签',
             key: 'tags',
             align:'center',
-            render: (h, params) => {
-                let row = params.row
-                let htmlArray = [];
-                row.tags.map(tag => {
-                    let hTag = h('span', {
-                        style: style
-                    }, tag)
-                    htmlArray.push(hTag)
-                })
-                return h('span', htmlArray);
-            }
+            render: renderTagsUnit
         },
         {
             title: '操作',
@@ -100,17 +130,7 @@
             title: '联合奖惩标签',
             key: 'tags',
             align:'center',
-            render: (h, params) => {
-                let row = params.row
-                let htmlArray = [];
-                row.tags.map(tag => {
-                    let hTag = h('span', {
-                            style:style
-                    }, tag)
-                    htmlArray.push(hTag)
-                })
-                return h('span', htmlArray);
-            }
+            render: renderTagsUnit
         },
         {
             title: '操作',
@@ -168,7 +188,7 @@
                     this.content = [{
                         name:'张晓多',
                         certification:'110100198907180902',
-                        tags:['失信被执行人','违法嫌疑人' ,'违法嫌疑人','违法嫌疑人'],
+                        tags:[{name:'失信被执行人'},{name:'奖励措施',isPositive:true} ,{name:'违法嫌疑人'},{name:'违法嫌疑人'}],
                         code:111,
                         operations:'详细信息'
                     }]
@@ -178,7 +198,7 @@
                     this.content = [{
                         enterprise_name:'北京开发有限责任公司',
                         credit_code:'913710007628687892',
-                        tags:['失信被执行人','企业协同监管'],
+                        tags:[{name:'失信被执行人'},{name:'奖励措施',isPositive:true} ],
                         code:123,
                         operations:'详细信息'
                     }]
@@ -219,14 +239,14 @@
             }
             >.search-content{
                 margin:0 auto;
-                width: 650px;
+                width: 700px;
                 .active{
-                    left: 402-25px;
+                    left: 402px;
                     z-index: 499;
                 }
 
                 .unactive{
-                    left: 277-25px;
+                    left: 277px;
                     z-index: 500;
                 }
                 .focus{
@@ -276,7 +296,7 @@
                     border-bottom-left-radius: 3px!important;
                     font-size: 14px!important;
                     z-index: 498;
-                    width: 550px;
+                    width: 600px;
                     padding: 0 10px;
 
                 }
@@ -314,7 +334,9 @@
             box-shadow: 0 3px 5px 0 rgba(225,225,225,0.50);
             margin: 30px auto 0 auto;
             padding: 0 30px 14px 30px;
-            width: 1100px;
+           th{
+               text-align: center;
+           }
             > .search-result-title {
                 border-bottom: 2px solid #E6E6E6;
                 >.text{

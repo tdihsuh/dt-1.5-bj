@@ -4,7 +4,7 @@
     <div class="main">
     <div class="content" >
       <router-view :nav="hasNav" @hideNav="hideNav" ></router-view>
-      </div>
+    </div>
     </div>
     <MFooter></MFooter>
 
@@ -44,6 +44,5 @@
       margin: 0 auto;
     }
   }
-
 
 </style>
