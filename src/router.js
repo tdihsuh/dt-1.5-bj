@@ -29,7 +29,7 @@ const routers = [
         meta: {
             title: '主体详情'
         },
-        component: Components.SearchDetail
+        component: Components.SubjectDetail
     },
     {
         path: '/approval',

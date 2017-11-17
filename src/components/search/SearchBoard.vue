@@ -56,7 +56,6 @@
             color: #9B9B9B;
             letter-spacing: 0;
         }
-
     }
     .ivu-table-header{
         color: #777777;
@@ -74,6 +73,8 @@
             font-size: 14px;
         }
     }
+
+
     td{
         font-size: 14px;
     }
@@ -82,6 +83,9 @@
         font-size: 14px;
         color: #353742;
         letter-spacing: 0;
+        .ivu-table-row{
+            height: 73px;
+        }
         .result-tag{
             display: inline-block;
             border: 1px solid #1889E3;

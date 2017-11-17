@@ -63,7 +63,7 @@
         borderRadius: '3px',
         height: '24px',
         margin:'0 5px',
-        width:'130px',
+        width:'120px',
         overflow: 'hidden',
         textOverflow:'ellipsis',
         whiteSpace: 'nowrap',
@@ -129,8 +129,24 @@
         {
             title: '联合奖惩标签',
             key: 'tags',
-            align:'center',
+            width:300,
             render: renderTagsUnit
+        },
+        {
+            title: '审批结果',
+            key: 'approval_status',
+            align:'center'
+
+        },
+        {
+            title: '处理人',
+            key: 'operator',
+            align:'center'
+        },
+        {
+            title: '处理日期',
+            key: 'approval_date',
+            align:'center'
         },
         {
             title: '操作',
@@ -160,8 +176,23 @@
         {
             title: '联合奖惩标签',
             key: 'tags',
-            align:'center',
+            width:300,
             render: renderTagsUnit
+        },
+        {
+            title: '审批处理结果',
+            key: 'approval_status',
+            align:'center'
+        },
+        {
+            title: '处理人',
+            key: 'operator',
+            align:'center'
+        },
+        {
+            title: '处理日期',
+            key: 'approval_date',
+            align:'center'
         },
         {
             title: '操作',
@@ -172,7 +203,7 @@
                     props:{
                         to:`/approval/detail/${params.row.code}/person`
                     }
-                }, '详细信息');
+                }, '查看详细');
             }
         }
     ]
@@ -193,6 +224,80 @@
             if(this.$route.query.type === 'person'){
                 this.isPersonal = true;
             }
+            this.content = [{
+                enterprise_name:'北京开发有限责任公司',
+                credit_code:'913710007628687892',
+                tags:[{name:'失信被执行人'},{name:'奖励措施',isPositive:true} ],
+                approval_status:'行政许可严格办理',
+                operator:'黄飞鸿',
+                approval_date:'2017/08/12 13:56',
+                code:123
+            },
+                {
+                    enterprise_name:'北京开发有限责任公司',
+                    credit_code:'913710007628687892',
+                    tags:[{name:'失信被执行人'}],
+                    approval_status:'行政许可严格办理',
+                    operator:'黄飞鸿',
+                    approval_date:'2017/08/12 13:56',
+                    code:123
+                },
+                {
+                    enterprise_name:'北京开发有限责任公司',
+                    credit_code:'913710007628687892',
+                    tags:[{name:'失信被执行人'}],
+                    approval_status:'行政许可严格办理',
+                    operator:'黄飞鸿',
+                    approval_date:'2017/08/12 13:56',
+                    code:123
+                },
+                {
+                    enterprise_name:'北京开发有限责任公司',
+                    credit_code:'913710007628687892',
+                    tags:[{name:'失信被执行人'}],
+                    approval_status:'行政许可严格办理',
+                    operator:'黄飞鸿',
+                    approval_date:'2017/08/12 13:56',
+                    code:123
+                },
+                {
+                    enterprise_name:'北京开发有限责任公司',
+                    credit_code:'913710007628687892',
+                    tags:[{name:'失信被执行人'}],
+                    approval_status:'行政许可严格办理',
+                    operator:'黄飞鸿',
+                    approval_date:'2017/08/12 13:56',
+                    code:123
+                },
+                {
+                    enterprise_name:'北京开发有限责任公司',
+                    credit_code:'913710007628687892',
+                    tags:[{name:'失信被执行人'}],
+                    approval_status:'行政许可严格办理',
+                    operator:'黄飞鸿',
+                    approval_date:'2017/08/12 13:56',
+                    code:123
+                },
+                {
+                    enterprise_name:'北京开发有限责任公司',
+                    credit_code:'913710007628687892',
+                    tags:[{name:'失信被执行人'}],
+                    approval_status:'行政许可严格办理',
+                    operator:'黄飞鸿',
+                    approval_date:'2017/08/12 13:56',
+                    code:123
+                },
+                {
+                    enterprise_name:'北京开发有限责任公司',
+                    credit_code:'913710007628687892',
+                    tags:[{name:'失信被执行人'}],
+                    approval_status:'行政许可严格办理',
+                    operator:'黄飞鸿',
+                    approval_date:'2017/08/12 13:56',
+                    code:123
+                },
+            ]
+            this.columns = enterpriseColumns
         },
         computed:{
             labelName:function(){
@@ -223,19 +328,45 @@
                         name:'张晓多',
                         certification:'110100198907180902',
                         tags:[{name:'失信被执行人'},{name:'奖励措施',isPositive:true} ,{name:'违法嫌疑人'},{name:'违法嫌疑人'}],
+                        approval_status:'行政许可严格办理',
+                        operator:'黄飞鸿',
+                        approval_date:'2017/08/12 13:56',
                         code:111,
                         operations:'详细信息'
-                    }]
+                    },
+                        {
+                            name:'张晓多',
+                            certification:'110100198907180902',
+                            tags:[{name:'奖励措施',isPositive:true}],
+                            approval_status:'行政许可加速办理',
+                            operator:'黄飞鸿',
+                            approval_date:'2017/08/12 13:56',
+                            code:111
+                        },
+                    ]
                 }
                 else{
                     this.columns = this.enterpriseColumns
-                    this.content = [/*{
+                    this.content = [{
                         enterprise_name:'北京开发有限责任公司',
                         credit_code:'913710007628687892',
                         tags:[{name:'失信被执行人'},{name:'奖励措施',isPositive:true} ],
-                        code:123,
-                        operations:'详细信息'
-                    }*/]
+                        approval_status:'行政许可严格办理',
+                        operator:'黄飞鸿',
+                        approval_date:'2017/08/12 13:56',
+                        code:123
+                    },
+                        {
+                            enterprise_name:'北京开发有限责任公司',
+                            credit_code:'913710007628687892',
+                            tags:[{name:'失信被执行人'}],
+                            approval_status:'行政许可严格办理',
+                            operator:'黄飞鸿',
+                            approval_date:'2017/08/12 13:56',
+                            code:123
+                        },
+
+                    ]
                 }
             }
         }
@@ -244,7 +375,7 @@
 </script>
 <style rel="stylesheet/less" lang="less">
     .approval-board {
-        padding: 24px 24px;
+        padding: 0 24px 24px 24px;
         > .searcher {
             text-align: center;
             .searcher-tab{
@@ -339,6 +470,9 @@
         .approval-body{
             background-color: white;
             padding: 20px 0 0 0;
+            border: 1px solid  #D3D9E1 ;
+            border-radius: 5px 5px;
+            box-shadow: 2px 3px 8px rgba(200,200,200,1);
             .ivu-input{
                 font-size: 14px!important;
                 height: 46px;
@@ -352,7 +486,7 @@
                 line-height: 46px;
                 width: 46px;
             }
-            box-shadow: 0 3px 5px 0 rgba(225,225,225,0.50);
+
         }
         .approval-result{
             font-size: 18px;

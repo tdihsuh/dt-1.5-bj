@@ -31,7 +31,6 @@
     min-height: 800px;
     justify-content:center;
     flex-direction: column;
-    margin-top: 20px;
     text-align: center;
     >img{
       width: 300px;

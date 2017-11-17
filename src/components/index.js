@@ -4,7 +4,7 @@ import Dashbord from './dashboard/Dashboard'
 import Approval from './approval/Approval'
 import Search from './search/Search'
 import Memo from './memo/Memo'
-import SearchDetail from './search/SearchDetail.vue'
+import SubjectDetail from './search/SubjectDetail.vue'
 
 
-export default {NotFound, Login, Dashbord, Approval, Search, SearchDetail, Memo}
+export default {NotFound, Login, Dashbord, Approval, Search, SubjectDetail, Memo}

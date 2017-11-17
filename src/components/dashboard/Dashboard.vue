@@ -144,7 +144,7 @@
                     joint_punishment: 100,
                     query_times: 10000,
                     activity_metrics: 1200,
-                    order: 0
+                    order: 1
                 },
                     {
                         city: "开封",
@@ -152,7 +152,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 2
                     },
                     {
                         city: "洛阳",
@@ -160,7 +160,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 3
                     },
                     {
                         city: "平顶山",
@@ -168,7 +168,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 4
                     },
                     {
                         city: "安阳",
@@ -176,7 +176,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 6
                     }],
                 columns1: [{
                     title: '部委',
@@ -259,7 +259,7 @@
                     joint_punishment: 100,
                     query_times: 10000,
                     activity_metrics: 1200,
-                    order: 0
+                    order: 1
                 },
                     {
                         city: "济源",
@@ -267,7 +267,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 2
                     },
                     {
                         city: "开封",
@@ -275,7 +275,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 3
                     },
                     {
                         city: "洛阳",
@@ -283,7 +283,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 4
                     },
                     {
                         city: "平顶山",
@@ -291,7 +291,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 6
                     },
                     {
                         city: "安阳",
@@ -299,7 +299,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 7
                     }],
                 [{
                     city: "鹤壁",
@@ -307,7 +307,7 @@
                     joint_punishment: 100,
                     query_times: 10000,
                     activity_metrics: 1200,
-                    order: 0
+                    order: 8
                 },
                     {
                         city: "新乡",
@@ -315,7 +315,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 9
                     },
                     {
                         city: "焦作",
@@ -323,7 +323,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 10
                     },
                     {
                         city: "濮阳",
@@ -331,7 +331,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 11
                     },
                     {
                         city: "驻马店",
@@ -339,7 +339,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 12
                     },
                     {
                         city: "许昌",
@@ -347,7 +347,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 13
                     }],
                 [{
                     city: "漯河",
@@ -355,7 +355,7 @@
                     joint_punishment: 100,
                     query_times: 10000,
                     activity_metrics: 1200,
-                    order: 0
+                    order: 14
                 },
                     {
                         city: "三门峡",
@@ -363,7 +363,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 15
                     },
                     {
                         city: "南阳",
@@ -371,7 +371,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 16
                     },
                     {
                         city: "商丘",
@@ -379,7 +379,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 17
                     },
                     {
                         city: "周口",
@@ -387,7 +387,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 18
                     },
                     {
                         city: "信阳",
@@ -395,7 +395,7 @@
                         joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
-                        order: 0
+                        order: 19
                     }]
             ]
             var i = 0
@@ -439,7 +439,7 @@
             border: 1px solid #eee;
         }
         .stat-content {
-            margin: 30px;
+            margin: 10px 30px;
             .maps {
                 display: inline-block;
                 height: 350px;

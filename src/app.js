@@ -20,10 +20,6 @@ for (var key in commonFilters) {
     Vue.filter(key, commonFilters[key])
 }
 Vue.use(VueRouter)
-VueRouter.prototype.go = function () {
-    this.isBack = true
-    window.history.go(-1)
-}
 // router config
 const RouterConfig = {
     mode: 'history',

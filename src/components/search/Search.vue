@@ -98,7 +98,6 @@
         {
             title: '联合奖惩标签',
             key: 'tags',
-            align:'center',
             render: renderTagsUnit
         },
         {
@@ -129,7 +128,6 @@
         {
             title: '联合奖惩标签',
             key: 'tags',
-            align:'center',
             render: renderTagsUnit
         },
         {
@@ -210,7 +208,7 @@
 </script>
 <style rel="stylesheet/less" lang="less">
     .search-board {
-        padding: 24px 24px;
+        padding: 0 24px 24px 24px;
         > .searcher {
             text-align: center;
             .searcher-tab{

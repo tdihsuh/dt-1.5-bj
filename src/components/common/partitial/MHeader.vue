@@ -1,5 +1,5 @@
 <template>
-    <div class="header">
+    <div class="header" :class="{ 'has-border': !nav }">
         <img :src="logoAll" class="logo"><!--
        <img :src="logo" class="logo">
         <img :src="titleImage" class="title">
@@ -35,14 +35,16 @@
     .noNav{
         display: none;
     }
+    .has-border{
+        border-bottom: 3px solid  #1889E3;
+    }
   .header{
       //height: 120px;
-      border-bottom: 3px solid  #1889E3;
       background-image: url("./bg_h.png");
       background-repeat:no-repeat;
       background-position: 100%;
       background-size: 675px 100%;
-      box-shadow: 0 1px 8px rgba(0,0,0,.3);
+      box-shadow: 2px 3px 5px rgba(0,0,0,.5);
       min-width: 1200px;
       >.logo{
           position: relative;
