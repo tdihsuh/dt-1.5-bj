@@ -1,8 +1,10 @@
 <template>
   <div>
     <MHeader :nav="hasNav"></MHeader>
-    <div class="content">
+    <div class="main">
+    <div class="content" >
       <router-view :nav="hasNav" @hideNav="hideNav" ></router-view>
+    </div>
     </div>
     <MFooter></MFooter>
 
@@ -23,19 +25,6 @@
   }
 </script>
 <style lang="less">
-  body{
-    min-width: 900px;
-    background-color: #f0f2f5;
-  }
-  .clear:after{content:'';display:block;clear:both;height:0;overflow:hidden;visibility:hidden;}
-  .clear{zoom:1;}
-  .content{
-    max-width: 1600px;
-    min-height: 700px;
-    margin: 0 auto;
-    background-image: url("../images/bg.png");
-    background-size: cover;
-
-  }
+  @import './main';
 
 </style>

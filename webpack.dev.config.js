@@ -11,7 +11,7 @@ module.exports = merge(webpackBaseConfig, {
     entry: {
         'scripts/app': [
             'babel-polyfill',
-            'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+            'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=10000',
             path.resolve(__dirname,source, 'app.js')
         ]
     },

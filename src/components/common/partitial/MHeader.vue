@@ -1,12 +1,14 @@
 <template>
-    <div class="header">
+    <div class="header" :class="{ 'has-border': !nav }">
+        <img :src="logoAll" class="logo"><!--
        <img :src="logo" class="logo">
         <img :src="titleImage" class="title">
-        <ul class="nav" :class="{ noNav: !nav }" >
-            <li><a class="nav-item"><img :src="stat"/>奖惩检测</a></li><!--
-           --><li><a class="nav-item"><img :src="search"/>奖惩查询</a></li><!--
-             --><li><a class="nav-item"><img :src="record"/>审批记录</a></li><!--
-             --><li><a class="nva-item"><img :src="memo"/>奖惩备忘录</a></li>
+        --><div class="user-center" ><span class="user-name" :class="{ noNav: !nav }">用户名</span><span :class="{ noNav: !nav }">|</span><a :class="{ noNav: !nav }">退出登录</a></div><!--
+        --><ul class="nav" :class="{ noNav: !nav }" >
+            <li><router-link active-class="nav-active" to="/dashboard" class="nav-item"><img :src="stat"/>奖惩检测</router-link></li><!--
+           --><li><router-link active-class="nav-active" to="/search" class="nav-item"><img :src="search"/>奖惩查询</router-link></li><!--
+             --><li><router-link  active-class="nav-active" to="/approval" class="nav-item"><img :src="record"/>审批记录</router-link></li><!--
+             --><li><router-link active-class="nav-active" to="/memo" class="nav-item"><img :src="memo"/>奖惩备忘录</router-link></li>
         </ul>
     </div>
 </template>
@@ -17,8 +19,9 @@
         props:['nav'],
       data(){
           return{
-              logo:require('../../../images/logo.png'),
-              titleImage:require('../../../images/title.png'),
+              //logo:require('../../../images/logo.png'),
+              logoAll:require('../../../images/logo-all.png'),
+              //titleImage:require('../../../images/title.png'),
               bg:require('./bg_h.png'),
               memo:require('./memo.png'),
               record:require('./record.png'),
@@ -32,26 +35,42 @@
     .noNav{
         display: none;
     }
+    .has-border{
+        border-bottom: 3px solid  #1889E3;
+    }
   .header{
       //height: 120px;
-      border-bottom: 3px solid  #1889E3;
       background-image: url("./bg_h.png");
       background-repeat:no-repeat;
-      background-position: 85%;
-      box-shadow: 0 1px 8px rgba(0,0,0,.3);
+      background-position: 100%;
+      background-size: 675px 100%;
+      box-shadow: 2px 3px 5px rgba(0,0,0,.5);
+      min-width: 1200px;
       >.logo{
           position: relative;
-          left: 220px;
-          top:20px;
           height: 90px;
-          width: 90px;
-          margin: 0 0 30px 0;
+          left: 220px;
+          margin: 15px 0;
       }
-      >.title{
+      >.user-center{
+          display: inline-block;
+          float: right;
           position: relative;
-          left: 340 - 90px;
-          top: -30px;
-          height: 50px;
+          right: 220px;
+          top:50px;
+          >.user-name{
+              color: #353742;
+              letter-spacing: 0;
+              line-height: 24px;
+              margin-right: 4px;
+          }
+          >a{
+              color: #1889E3;
+              letter-spacing: 0;
+              line-height: 24px;
+              margin-left: 4px;
+          }
+
       }
       >.nav{
           width: 100%;
@@ -79,6 +98,9 @@
               }
           }
 
+      }
+      .nav-active{
+          background-color:#1889E3;
       }
   }
 
