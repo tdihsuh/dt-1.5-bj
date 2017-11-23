@@ -4,10 +4,12 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const favicon = require('serve-favicon')
+const expressStaticGzip = require("express-static-gzip");
 const app = express()
 let staticPath = 'public'
-const api = require('./app/routes/api');
-let port = process.env.PORT || 3000;
+const api = require('./app/routes/api')
+
+let port = process.env.PORT || 3000
 process.env.TZ = 'Asia/Shanghai'
 app.set('trust proxy', 1) // trust first proxy
 app.use(favicon(path.join(__dirname, 'src', 'images', 'logo.png')))
@@ -37,6 +39,7 @@ if (process.env.NODE_ENV === 'development') {
         log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000
     }))
 } else {
+    app.use(expressStaticGzip(staticPath));
     app.use(express.static(path.resolve(__dirname, '.', staticPath)))
 }
 

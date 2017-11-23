@@ -17,6 +17,7 @@
     "cookie-parser": "^1.4.3",
     "cross-env": "^5.0.5",
     "express": "^4.15.4",
+    "express-static-gzip": "^0.3.0",
     "highcharts": "^6.0.2",
     "iview": "^2.6.0",
     "moment": "^2.18.1",
