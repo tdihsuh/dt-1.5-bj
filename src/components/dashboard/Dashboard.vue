@@ -411,7 +411,7 @@
 </script>
 <style rel="stylesheet/less" lang="less">
     .stat {
-        padding: 14px 20px;
+        padding: 14px 0;
     }
 
     .stat-board {

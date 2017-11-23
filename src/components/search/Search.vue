@@ -208,7 +208,7 @@
 </script>
 <style rel="stylesheet/less" lang="less">
     .search-board {
-        padding: 0 24px 24px 24px;
+        padding: 0 0 24px 0;
         > .searcher {
             text-align: center;
             .searcher-tab{
@@ -267,7 +267,7 @@
                 .demo::before {
                     position: absolute;
                     content: '';
-                    top: 2px;
+                    top: 1px;
                     width: 0;
                     height: 0;
                     left: -9.3px;
