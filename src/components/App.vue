@@ -17,11 +17,12 @@
       data() {
           return {hasNav:true}
       },
-      methods:{
-          hideNav:function(hasNav){
+      methods: {
+          hideNav: function (hasNav) {
               this.hasNav = hasNav
           }
       }
+
   }
 </script>
 <style lang="less">
