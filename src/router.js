@@ -13,13 +13,15 @@ const routers = [
     {
         path: '/dashboard',
         meta: {
-            title: '奖惩检测'
+            title: '奖惩检测',
+            requireAuth: true
         },
         component: Components.Dashbord
     },
     {
         path: '/search',
         meta: {
+            requireAuth: true,
             title: '奖惩查询'
         },
         component: Components.Search
@@ -27,6 +29,7 @@ const routers = [
     {
         path: '/:from?/detail/:pid/:type?',
         meta: {
+            requireAuth: true,
             title: '主体详情'
         },
         component: Components.SubjectDetail
@@ -34,6 +37,7 @@ const routers = [
     {
         path: '/approval',
         meta: {
+            requireAuth: true,
             title: '审批记录'
         },
         component: Components.Approval
@@ -41,6 +45,7 @@ const routers = [
     {
         path: '/memo',
         meta: {
+            requireAuth: true,
             title: '奖惩备忘录'
         },
         component: Components.Memo

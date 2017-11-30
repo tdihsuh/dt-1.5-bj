@@ -27,8 +27,13 @@ const RouterConfig = {
 };
 const router = new VueRouter(RouterConfig)
 
+console.log(this)
 router.beforeEach((to, from, next) => {
     Util.title(to.meta.title)
+    let requireAuth = to.meta.requireAuth
+    if(requireAuth){
+
+    }
     next();
 });
 

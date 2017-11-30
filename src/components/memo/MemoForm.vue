@@ -76,8 +76,13 @@
     .memo-form-div{
         margin:  0 auto;
         width: 900px;
-        .ivu-input,ivu-radio-group{
-
+        *{
+            font-size: 14px;
+        }
+        .ivu-input,ivu-radio-group,.ivu-radio-wrapper,.ivu-checkbox-wrapper,.ivu-select-single .ivu-select-selection .ivu-select-placeholder,
+        .ivu-select-single .ivu-select-selection .ivu-select-selected-value,
+        .ivu-form .ivu-form-item-label{
+            font-size: 14px;
         }
         .ivu-form-item{
             margin: 10px 0;
