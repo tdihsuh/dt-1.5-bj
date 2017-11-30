@@ -1,13 +1,13 @@
 <template>
     <div class="subject-details-content">
         <div class="feed-back-unit clear" v-if="from === 'search'">
-            <span class="crumbs" >
+            <span class="crumbs">
                 <img :src="pathIcon" alt=""><!--
                 --><span class="crumbs-text">您所在的位置：<router-link to="/search">奖惩查询</router-link> > 详情</span></span>
             <Button type="primary" icon="compose" @click="feedbackOpen=true" class="feedback-btn">处理反馈</Button>
         </div>
         <div class="feed-back-unit clear" v-if="from === 'approval'">
-            <span class="crumbs" >
+            <span class="crumbs">
                 <img :src="pathIcon" alt=""><!--
                 --><span class="crumbs-text">您所在的位置：<router-link to="/approval">审批记录</router-link> > 详情</span></span>
             <Button type="primary" icon="compose" @click="prevPage" class="feedback-btn">返回</Button>
@@ -37,16 +37,21 @@
                 <span class="entity-name">{{ name }}</span>
                 <ul class="result" v-if="from === 'approval'">
                     <li><span class="title">处理结果：</span><span class="desc">行政许可严格办理</span></li>
-                    <li><span class="title">处理说明：</span><span class="desc">为失信被执行人，所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办</span></li>
+                    <li><span class="title">处理说明：</span><span class="desc">为失信被执行人，所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办</span>
+                    </li>
                 </ul>
                 <img :src="sealImg" class="seal" v-if="from === 'approval'">
             </div>
             <div class="excutor-content info-panel">
                 <PanelTitle title="奖惩基本信息"></PanelTitle>
-                <span v-for="o in items">
-                <SecondaryTitle :title="o.title"></SecondaryTitle>
-                <ItemList :list="o.content"></ItemList>
-                    </span>
+                <div v-for="o in items">
+                    <SecondaryTitle :title="o.title"></SecondaryTitle>
+                    <div class="info-item clear"><span class="item-name">{{ o.accountDepartment.name }}</span><span
+                            class="item-content">{{ o.accountDepartment.content }}</span></div>
+                    <ItemList :list="o.content" listStyle="margin: 7px 40px;border:1px solid #e0e0e0;border-radius:4px;padding:10px 30px"></ItemList>
+                    <div class="info-item clear"><span class="item-name">{{ o.accountTime.name }}</span><span
+                            class="item-content">{{ o.accountTime.content }}</span></div>
+                </div>
             </div>
 
         </div>
@@ -91,29 +96,34 @@
                 items: [
                     {
                         title: '失信被执行人',
+                        accountTime:{name: '惩戒认定时间：', content: '2017/01/12'},
+                        accountDepartment:{name: '认定部门：', content: '省发改委、省教育厅、省科技厅'},
                         content: [
-                            [{}, {name: '联合惩戒认定部门：', content: '省发改委、省教育厅、省科技厅'},
-                                {name: '联合惩戒实施部门：', content: '省发改委、省教育厅、省科技厅、省工商局、省地税局、省公安厅、省人社厅'},
+                            [
+                                {name: '实施部门：', content: '省发改委、省教育厅、省科技厅、省工商局、省地税局、省公安厅、省人社厅'},
                                 {
-                                    name: '联合惩戒措施：',
+                                    name: '措施：',
                                     content: '限制政府采购、招标投标、行政审批、政府扶持、融资信贷、市场准入、资质认定政府采购、招标投标、行政审批、政府扶持、融资信贷、市场准入、资质认定'
                                 },
-                                {name: '惩戒认定时间：', content: '2017/01/12'},
+                                {
+                                    name: '法律及政策依据：',
+                                    content: '依据详情'
+                                }
+
+                            ],
+                            [
+                                {name: '实施部门：', content: '省发改委、省教育厅、省科技厅、省工商局、省地税局、省公安厅、省人社厅'},
+                                {
+                                    name: '措施：',
+                                    content: '限制政府采购、招标投标、行政审批、政府扶持、融资信贷、市场准入、资质认定政府采购、招标投标、行政审批、政府扶持、融资信贷、市场准入、资质认定'
+                                },
+                                {
+                                    name: '法律及政策依据：',
+                                    content: '依据详情'
+                                }
                             ],
                         ]
-                    },
-                    {
-                        title: '失信被执行人',
-                        content: [[{}, {name: '联合惩戒认定部门：', content: '省发改委、省教育厅、省科技厅'},
-                            {name: '联合惩戒实施部门：', content: '省发改委、省教育厅、省科技厅、省工商局、省地税局、省公安厅、省人社厅'},
-                            {
-                                name: '联合惩戒措施：',
-                                content: '限制政府采购、招标投标、行政审批、政府扶持、融资信贷、市场准入、资质认定政府采购、招标投标、行政审批、政府扶持、融资信贷、市场准入、资质认定'
-                            },
-                            {name: '惩戒认定时间：', content: '2017/01/12'},
-                        ]
-                        ]
-                    },
+                    }
 
                 ],
                 list1: [[
@@ -247,6 +257,26 @@
                     transform: rotate(180deg);
 
                 }
+            }
+            .info-item{
+                    padding: 15px 40px 0 40px;
+                    font-size:14px;
+                    display: block;
+                    .item-name,.item-content{
+                        display: inline-block;
+                        line-height:30px;
+                        text-align:left;
+                        float: left;
+                    }
+                    >.item-name{
+                        width: 20%;
+                        color:#9b9b9b;
+
+                    }
+                    >.item-content{
+                        color:#353842;
+                        width: 80%;
+                    }
             }
 
         }

@@ -118,13 +118,13 @@
                         key: 'city'
                     },
                     {
-                        title: '联合激励数量',
-                        key: 'joint_incentive'
+                        title: '联合奖惩数量',
+                        key: 'joint_jp'
                     },
-                    {
+                   /* {
                         title: '联合惩戒数量',
                         key: 'joint_punishment'
-                    },
+                    },*/
                     {
                         title: '查询次数',
                         key: 'query_times'
@@ -141,39 +141,39 @@
                 data: [{
                     city: "郑州",
                     joint_incentive: 761,
-                    joint_punishment: 100,
+                    //joint_punishment: 100,
                     query_times: 10000,
                     activity_metrics: 1200,
                     order: 1
                 },
                     {
                         city: "开封",
-                        joint_incentive: 200,
-                        joint_punishment: 100,
+                        joint_jp: 200,
+                       // joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 2
                     },
                     {
                         city: "洛阳",
-                        joint_incentive: 837,
-                        joint_punishment: 100,
+                        joint_jp: 837,
+                        //joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 3
                     },
                     {
                         city: "平顶山",
-                        joint_incentive: 297,
-                        joint_punishment: 100,
+                        joint_jp: 297,
+                        //joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 4
                     },
                     {
                         city: "安阳",
-                        joint_incentive: 480,
-                        joint_punishment: 100,
+                        joint_jp: 480,
+                        //joint_punishment: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 6
@@ -255,144 +255,144 @@
             let data = [
                 [{
                     city: "郑州",
-                    joint_incentive: 761,
-                    joint_punishment: 100,
+                    //joint_incentive: 761,
+                    joint_jp: 100,
                     query_times: 10000,
                     activity_metrics: 1200,
                     order: 1
                 },
                     {
                         city: "济源",
-                        joint_incentive: 479,
-                        joint_punishment: 100,
+                       // joint_incentive: 479,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 2
                     },
                     {
                         city: "开封",
-                        joint_incentive: 200,
-                        joint_punishment: 100,
+                        //joint_incentive: 200,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 3
                     },
                     {
                         city: "洛阳",
-                        joint_incentive: 837,
-                        joint_punishment: 100,
+                        //joint_incentive: 837,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 4
                     },
                     {
                         city: "平顶山",
-                        joint_incentive: 297,
-                        joint_punishment: 100,
+                       // joint_incentive: 297,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 6
                     },
                     {
                         city: "安阳",
-                        joint_incentive: 480,
-                        joint_punishment: 100,
+                        //joint_incentive: 480,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 7
                     }],
                 [{
                     city: "鹤壁",
-                    joint_incentive: 515,
-                    joint_punishment: 100,
+                   // joint_incentive: 515,
+                    joint_jp: 100,
                     query_times: 10000,
                     activity_metrics: 1200,
                     order: 8
                 },
                     {
                         city: "新乡",
-                        joint_incentive: 335,
-                        joint_punishment: 100,
+                        //joint_incentive: 335,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 9
                     },
                     {
                         city: "焦作",
-                        joint_incentive: 196,
-                        joint_punishment: 100,
+                       // joint_incentive: 196,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 10
                     },
                     {
                         city: "濮阳",
-                        joint_incentive: 573,
-                        joint_punishment: 100,
+                        //joint_incentive: 573,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 11
                     },
                     {
                         city: "驻马店",
-                        joint_incentive: 146,
-                        joint_punishment: 100,
+                        //joint_incentive: 146,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 12
                     },
                     {
                         city: "许昌",
-                        joint_incentive: 205,
-                        joint_punishment: 100,
+                       // joint_incentive: 205,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 13
                     }],
                 [{
                     city: "漯河",
-                    joint_incentive: 728,
-                    joint_punishment: 100,
+                   // joint_incentive: 728,
+                    joint_jp: 100,
                     query_times: 10000,
                     activity_metrics: 1200,
                     order: 14
                 },
                     {
                         city: "三门峡",
-                        joint_incentive: 805,
-                        joint_punishment: 100,
+                        //joint_incentive: 805,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 15
                     },
                     {
                         city: "南阳",
-                        joint_incentive: 337,
-                        joint_punishment: 100,
+                        //joint_incentive: 337,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 16
                     },
                     {
                         city: "商丘",
-                        joint_incentive: 620,
-                        joint_punishment: 100,
+                        //joint_incentive: 620,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 17
                     },
                     {
                         city: "周口",
-                        joint_incentive: 423,
-                        joint_punishment: 100,
+                        //joint_incentive: 423,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 18
                     },
                     {
                         city: "信阳",
-                        joint_incentive: 198,
-                        joint_punishment: 100,
+                        //joint_incentive: 198,
+                        joint_jp: 100,
                         query_times: 10000,
                         activity_metrics: 1200,
                         order: 19

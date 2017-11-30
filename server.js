@@ -4,12 +4,15 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const favicon = require('serve-favicon')
-const expressStaticGzip = require("express-static-gzip");
+const expressStaticGzip = require("express-static-gzip")
 const app = express()
-let staticPath = 'public'
+const staticPath = 'public'
 const api = require('./app/routes/api')
+const config = require('./config/config.json')
+const port = process.env.PORT || 3000
+const proxy = require('express-http-proxy')
+const env =process.env.NODE_ENV
 
-let port = process.env.PORT || 3000
 process.env.TZ = 'Asia/Shanghai'
 app.set('trust proxy', 1) // trust first proxy
 app.use(favicon(path.join(__dirname, 'src', 'images', 'logo.png')))
@@ -20,8 +23,8 @@ app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:htt
 app.use(cookieParser())
 app.use(express.query())
 app.use('/local',api)
-
-if (process.env.NODE_ENV === 'development') {
+app.use('/service', proxy(config[env].api,{}));
+if (env === 'development') {
     const webpack = require('webpack')
     var webpackConfig = require('./webpack.dev.config')
     const webpackBase = require('./webpack.base.config')
