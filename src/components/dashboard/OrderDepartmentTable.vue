@@ -3,13 +3,13 @@
         <table class="order-department-table">
             <thead>
             <tr>
-                <th v-for="(col, index) in columns">
+                <th v-for="(col, index) in departmentRankColumns()">
                     {{ col.title }}
                 </th>
             </tr>
             </thead>
             <tbody>
-                <tr v-for="(o, index) in data" :key="o.department" class="list-complete-item">
+                <tr v-for="(o, index) in departmentData()" :key="o.department" class="list-complete-item">
                     <td v-for="v in o">
                         {{ v }}
                     </td>
@@ -19,8 +19,12 @@
     </div>
 </template>
 <script>
+    import {mapActions, mapGetters} from 'vuex'
     export default {
-        props:['data','columns']
+        methods:{
+            ...mapGetters(['departmentData','departmentRankColumns']),
+        }
+
     }
 
 </script>

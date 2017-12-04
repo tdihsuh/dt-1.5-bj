@@ -1,6 +1,8 @@
+
 let util = {
 
 };
+
 util.title = function (title) {
   title = title ? '河南联合奖惩-' + title  : '河南信用';
   window.document.title = title;
@@ -13,7 +15,7 @@ util.responseProcessor = function(res){
                if(res.code === '1001'){
                    let url = location.href;
                    if (url.startsWith('/login')) {
-                       return {code:'1',msg: '登录失败'}
+                       return {code:'1',msg: '登录失败,用户名或密码错误'}
                    }
                    else {
                        url = encodeURIComponent(url)
