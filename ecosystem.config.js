@@ -8,6 +8,7 @@ module.exports = {
             name: 'hncredit',
             script: "server.js",
             instances: "max",
+            node_args: "--harmony",
             watch: true,
             exec_mode: "cluster",
             env: {
