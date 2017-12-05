@@ -8,7 +8,7 @@
             <div class="stat-content clear">
                 <Row>
                     <Col span="12">
-                    <highmaps class="maps" :options="mapOptions()"/>
+                    <highmaps class="maps" :options="options"  ref="areaMaps"/>
                     </Col>
                     <Col span="12">
                     <OrderTable  class="order-by-city"></OrderTable>
@@ -32,28 +32,96 @@
     import HighCharts from 'highcharts'
     import HighMaps from 'highcharts/modules/map'
     import axios from 'axios'
+    import { mapActions,mapGetters } from 'vuex'
+    import util from '../../lib/util'
     import OrderTable from './OrderTable'
     import OrderDepartmentTable from './OrderDepartmentTable'
-    //import mapData from './henan'
+    let  map = require('./henan.json')
     HighMaps(HighCharts)
     Vue.use(VueHighcharts, {HighCharts})
     Vue.component('OrderTable', OrderTable)
     Vue.component('OrderDepartmentTable', OrderDepartmentTable)
-   /* let data = []*/
-   /* HighCharts.each(mapData.features, function (md) {
-        var tmp = {
+
+    let data =[];
+    HighCharts.each(map.features, function (md) {
+        let tmp = {
             name: md.properties.name,
-            value: Math.floor((Math.random() * 1000) + 1) // 生成 1 ~ 100 随机值
+            selectCount:0,
+            rank:1,
+            activeCount:0,
+            uniCount:0,
+            value:0
         }
         data.push(tmp)
-    })*/
-  //  let options =
-    import { mapActions,mapGetters } from 'vuex'
+    })
+
+    let options = {
+        chart: {
+
+        },
+        title: {
+            text: null
+        },
+        mapNavigation: {
+            enabled: false,
+                enableMouseWheelZoom: false,
+                buttonOptions: {
+                verticalAlign: 'bottom'
+            }
+        },
+        credits: {
+           enabled: false
+        },
+        tooltip: {
+            useHTML: true,
+            headerFormat: '<table class="rank-tips"><tr><td>{point.name}</td></tr>',
+            pointFormat: '<tr class="rank-tips-fullname"><th colspan="2">{point.properties.fullname}</th></tr>' +
+            '<tr><td class="rank-tips-title">奖惩数量：</td><td>{point.uniCount}</td></tr>' +
+            '<tr><td class="rank-tips-title">查询次数：</td><td>{point.selectCount}</td></tr>' +
+            '<tr><td class="rank-tips-title">活跃度：</td><td>{point.activeCount}</td></tr>' +
+            '<tr><td class="rank-tips-title">排名：</td><td>{point.rank}</td></tr>' ,
+            footerFormat: '</table>'
+        },
+        colorAxis: {
+                min: 0,
+                max:1500,
+                //minColor: '#D3C9E7',
+                minColor: '#E1FFFF',
+                //maxColor: '#8685D0',
+                maxColor: '#2f6fd0',
+                labels: {
+                style: {
+                    "color": "grey", "fontWeight": "bold"
+                }
+            }
+        },
+        legend: {
+            align: 'right',
+                layout: 'vertical'
+        },
+        series: [{
+            data: data,
+            mapData: map,
+            joinBy: 'name',
+            name: '河南',
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            },
+            states: {
+                hover: {
+                    color: '#EFFFEF',
+                }
+            }
+        }],
+
+    }
     export default {
         props:['nav'],
         data() {
             return {
-                iconImg: require('../../images/title_icon.png')
+                iconImg: require('../../images/title_icon.png'),
+                options:options
             }
         },
         methods: {
@@ -66,12 +134,63 @@
         },
         created() {
             this.getAllData()
+            axios.get(`/service/api/count/areaRank`).then(res=>{
+                let areaData = util.responseProcessor(res)
+                if (areaData.code === '0' && areaData.obj.length > 0) {
+                    let d = [];
+                    areaData.obj.map(o=>{
+                        let tmp ={
+                            areaName:o.areaName,
+                            name:o.area,
+                            uniCount:o.uniCount,
+                            selectCount:o.selectCount,
+                            activeCount:o.activeCount,
+                            rank:o.rank,
+                            value:o.activeCount
+                        }
+                        d.push(tmp)
+                    });
+
+                    let maps = this.$refs.areaMaps.chart
+                    let options = Object.assign({},maps.options)
+                     options.series[0].data = d;
+                    console.log(options);
+                    this.options = options;
+                    maps.redraw();
+                }
+            })
         }
 
     }
 
 </script>
 <style rel="stylesheet/less" lang="less">
+    .rank-tips{
+        width: 200px;
+        padding: 0 20px;
+        tr.rank-tips-fullname{
+            th{
+                padding-bottom: 10px;
+                text-align: center;
+                color: #2f6fd0;
+            }
+
+        }
+        tr{
+            th{
+                font-size: 14px;
+            }
+            td{
+                width: 80px;
+                text-align: left;
+                font-size: 12px;
+            }
+            td.rank-tips-title{
+                font-weight: 700;
+            }
+        }
+
+    }
     .stat {
         padding: 14px 0;
     }

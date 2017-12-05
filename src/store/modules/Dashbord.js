@@ -1,26 +1,12 @@
 import axios from 'axios'
 import util from '../../lib/util'
-let  map = require('./henan.json')
-let data =[];
-map.features.map(m=>{
-    let tmp = {
-        name: m.properties.name,
-        selectCount:0,
-        rank:1,
-        uniCount:0,
-        value:1
-    }
-    data.push(tmp)
-})
+
 const state = {
     areaData:[],
     pageNum:0,
     currentPage:0,
     pageSize:6,
     departmentData:[],
-    mapOptions:{
-
-    },
     areaRankColumns: [
         {
             title: '城市',
@@ -71,64 +57,7 @@ const state = {
             title: '排名',
             key: 'rank'
         }
-    ],
-    mapOptions:{
-        chart: {},
-        title: {
-            text: null
-        },
-        mapNavigation: {
-            enabled: true,
-            enableMouseWheelZoom: false,
-            buttonOptions: {
-                verticalAlign: 'bottom'
-            }
-        },
-        credits: {
-            enabled: false
-        },
-        tooltip: {
-            useHTML: true,
-            headerFormat: '<table>',
-            pointFormat:
-            '<tr><td>联合奖惩数量</td><td>{point.uniCount}</td></tr>' +
-            '<tr><td>查询次数</td><td>{point.selectCount}</td>'+
-            '<tr><td>活跃度</td><td>{point.value}</td></tr>' +
-            '<tr><td>排名</td><td>{point.rank}</td>'+
-           +'</tr>',
-            footerFormat: '</table>'
-        },
-        colorAxis: {
-            min: 0,
-            minColor: '#D3C9E7',
-            maxColor: '#8685D0',
-            labels: {
-                style: {
-                    "color": "grey", "fontWeight": "bold"
-                }
-            }
-        },
-        legend: {
-            align: 'right',
-            layout: 'vertical'
-        },
-        series: [{
-            data: data,
-            mapData: map,
-            joinBy: 'name',
-            name: '河南',
-            dataLabels: {
-                enabled: true,
-                format: '{point.name}'
-            },
-            states: {
-                hover: {
-                    color: 'yellow'
-                }
-            }
-        }],
-
-    }
+    ]
 
 }
 
@@ -157,9 +86,6 @@ const getters = {
     },
     pageNum:(state, getters)=>{
         return state.pageNum
-    },
-    mapOptions:(state, getters)=>{
-        return state.mapOptions
     }
 }
 
@@ -194,15 +120,15 @@ const actions = {
 const mutations = {
     areaData(state,data){
         let d = [];
-        let m = [];
         data.map(o=>{
-            d.push({
+            let tmp ={
                 areaName:o.areaName,
                 uniCount:o.uniCount,
                 selectCount:o.selectCount,
                 activeCount:o.activeCount,
                 rank:o.rank
-            })
+            }
+            d.push(tmp)
         });
         state.pageNum = Math.ceil(d.length/state.pageSize)
         state.areaData = d
