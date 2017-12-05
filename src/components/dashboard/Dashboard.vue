@@ -141,7 +141,7 @@
                     areaData.obj.map(o=>{
                         let tmp ={
                             areaName:o.areaName,
-                            name:o.area,
+                            name:o.areaName.replace('市',''),
                             uniCount:o.uniCount,
                             selectCount:o.selectCount,
                             activeCount:o.activeCount,
@@ -152,11 +152,13 @@
                     });
 
                     let maps = this.$refs.areaMaps.chart
-                    let options = Object.assign({},maps.options)
-                     options.series[0].data = d;
-                    console.log(options);
-                    this.options = options;
-                    maps.redraw();
+
+                    maps.update({
+                        series:[{data:d}]
+                    })
+                    /*  console.log(options);
+                    this.options = options;*/
+                   // maps.redraw();
                 }
             })
         }

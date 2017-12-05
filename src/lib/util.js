@@ -12,7 +12,8 @@ util.responseProcessor = function(res){
         let httpCode = res.status
         console.log(`Server response Code:${httpCode}`)
             if (httpCode >= 200 && httpCode <= 299) {
-               if(res.code === '1001'){
+            //console.log(res)
+               if(res.data.code === '1001'){
                    let url = location.href;
                    if (url.startsWith('/login')) {
                        return {code:'1',msg: '登录失败,用户名或密码错误'}

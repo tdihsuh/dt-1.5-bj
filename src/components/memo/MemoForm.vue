@@ -2,7 +2,7 @@
     <div class="memo-form-div">
         <Form :model="memo" :label-width="160" label-position="left">
             <FormItem label="联合惩戒备忘录：">
-                <Input v-model="memo.name" placeholder="请输入备忘录名称" style="width:540px"></Input>
+                <Input v-model="memo.name" placeholder="请输入备忘录名称"  class="input-item"></Input>
             </FormItem>
             <FormItem label="联合奖惩性质：">
                 <RadioGroup v-model="memo.type">
@@ -11,17 +11,14 @@
                 </RadioGroup>
             </FormItem>
             <FormItem label="认定部门：">
-                <CheckboxGroup v-model="memo.departments">
-                    <Checkbox label="Eat"></Checkbox>
-                    <Checkbox label="Sleep"></Checkbox>
-                    <Checkbox label="Run"></Checkbox>
-                    <Checkbox label="Movie"></Checkbox>
-                </CheckboxGroup>
+                <Select v-model="memo.departments" filterable multiple placeholder="请选择或输入部门关键字进行搜索" class="input-item">
+                    <Option v-for="item in departmentList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
             </FormItem>
             <FormItem label="标签：">
-                <Input v-model="memo.tag" placeholder="请输入标签" style="width:540px"></Input>
+                <Input v-model="memo.tag" placeholder="请输入标签"  class="input-item"></Input>
             </FormItem>
-            <div class="measures" v-for="(measure,index) in memo.measures"  :key="index">
+            <!--<div class="measures" v-for="(measure,index) in memo.measures"  :key="index">
                 <div v-if="index>0" class="close-icon" @click="removeMeasure(index)"><Icon type="close"></Icon></div>
                 <FormItem label="措施：">
                     <Input v-model="measure.measureName" placeholder="请输入奖励／惩戒措施" style="width:461px"></Input>
@@ -30,11 +27,11 @@
                     <Input v-model="measure.measureBy" placeholder="请输入法律及政策依据" style="width:461px"></Input>
                 </FormItem>
                 <FormItem label="实施部门：">
-                    <Select v-model="measure.department" style="width:200px">
-                        <!--  <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>-->
+                    <Select v-model="measure.departments"  style="width:461px" >
+                          <Option v-for="item in departmentList" :value="item.value" :key="item.value">  {{ item.label }}</Option>
                     </Select>
                 </FormItem>
-            </div>
+            </div>-->
                 <Button type="ghost" class="add-measure-btn" icon="plus-round" @click="addMeasure">添加</Button>
             <div class="add-form-footer" v-if="isAdd">
                 <Button type="error">暂存备忘录</Button>
@@ -53,8 +50,10 @@
         props:['isAdd','closeHandler'],
         data() {
             return {
+                departmentList:require('../common/departments'),
                 memo: {
                     type:0,
+                    departments:[],
                     measures:[
                         {}
                     ]
@@ -76,6 +75,9 @@
     .memo-form-div{
         margin:  0 auto;
         width: 900px;
+        .input-item{
+            width: 540px;
+        }
         *{
             font-size: 14px;
         }
