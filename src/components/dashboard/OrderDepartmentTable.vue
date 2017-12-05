@@ -3,13 +3,13 @@
         <table class="order-department-table">
             <thead>
             <tr>
-                <th v-for="(col, index) in columns">
+                <th v-for="(col, index) in departmentRankColumns()">
                     {{ col.title }}
                 </th>
             </tr>
             </thead>
             <tbody>
-                <tr v-for="(o, index) in data" :key="o.department" class="list-complete-item">
+                <tr v-for="(o, index) in departmentData()" :key="o.department" class="list-complete-item">
                     <td v-for="v in o">
                         {{ v }}
                     </td>
@@ -19,8 +19,12 @@
     </div>
 </template>
 <script>
+    import {mapActions, mapGetters} from 'vuex'
     export default {
-        props:['data','columns']
+        methods:{
+            ...mapGetters(['departmentData','departmentRankColumns']),
+        }
+
     }
 
 </script>
@@ -29,6 +33,33 @@
         width: 100%;
         border-collapse:collapse;
         font-size: 14px;
+        tr:nth-child(1){
+            >td:nth-child(7){
+                color: red;
+                font-weight: 800;
+            }
+
+        }
+        //#FF4500
+        tr:nth-child(2){
+            >td:nth-child(7){
+                color: #FFA500;
+                font-weight: 800;
+            }
+
+        }
+        tr:nth-child(3){
+            >td:nth-child(7){
+                color: #32CD32;
+                font-weight: 800;
+
+            }
+
+        }
+        td:nth-child(1){
+            text-align: left;
+            text-indent: 2em;
+        }
         td,th{
             width: 14.2%;
             text-align: center;
@@ -52,7 +83,6 @@
                 border-top:0;
                 border-left:0;
                 border-right:0;
-
                 border-bottom: 2px solid  #F4F4F4;
             }
         }

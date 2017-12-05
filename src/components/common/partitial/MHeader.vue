@@ -3,7 +3,7 @@
         <img :src="logoAll" class="logo"><!--
        <img :src="logo" class="logo">
         <img :src="titleImage" class="title">
-        --><div class="user-center" ><span class="user-name" :class="{ noNav: !nav }">用户名</span><span :class="{ noNav: !nav }">|</span><a :class="{ noNav: !nav }">退出登录</a></div><!--
+        --><div class="user-center" ><span class="user-name" :class="{ noNav: !nav }">{{ user().name  }}</span><span :class="{ noNav: !nav }">|</span><a :class="{ noNav: !nav }" @click="logout()">退出登录</a></div><!--
         --><ul class="nav" :class="{ noNav: !nav }" >
             <li><router-link active-class="nav-active" to="/dashboard" class="nav-item"><img :src="stat"/>奖惩检测</router-link></li><!--
            --><li><router-link active-class="nav-active" to="/search" class="nav-item"><img :src="search"/>奖惩查询</router-link></li><!--
@@ -19,16 +19,32 @@
         props:['nav'],
       data(){
           return{
-              //logo:require('../../../images/logo.png'),
               logoAll:require('../../../images/logo-all.png'),
-              //titleImage:require('../../../images/title.png'),
               bg:require('./bg_h.png'),
               memo:require('./memo.png'),
               record:require('./record.png'),
               search:require('./search.png'),
-              stat:require('./stat.png')
+              stat:require('./stat.png'),
           }
-      }
+      },
+        methods:{
+          logout(){
+              localStorage.removeItem('user')
+              this.$cookie.delete('token')
+              this.$router.push({path:'/login'})
+          },
+          user(){
+              let user = localStorage.getItem('user')
+              if(user){
+                  return JSON.parse(user)
+              }
+              else{
+                  return {
+                      name:''
+                  }
+              }
+          }
+        }
     }
 </script>
 <style  lang="less">

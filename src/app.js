@@ -1,15 +1,16 @@
 import Vue from 'vue'
-import iView from 'iview';
+import iView from 'iview'
 import './iview.css'
 import App from './components/App.vue'
 import Routers from './router'
-import {sync} from 'vuex-router-sync';
+import {sync} from 'vuex-router-sync'
 import VueRouter from 'vue-router'
+import VueCookie from 'vue-cookie'
 import Partials from './components/common/index'
 import commonFilters from './filters/index'
 import Util from './lib/util'
 import store from './store'
-
+Vue.use(VueCookie)
 Vue.use(iView)
 // Load partial of single page
 for (var key in Partials) {
@@ -19,6 +20,7 @@ for (var key in Partials) {
 for (var key in commonFilters) {
     Vue.filter(key, commonFilters[key])
 }
+
 Vue.use(VueRouter)
 // router config
 const RouterConfig = {
@@ -27,12 +29,18 @@ const RouterConfig = {
 };
 const router = new VueRouter(RouterConfig)
 
-console.log(this)
 router.beforeEach((to, from, next) => {
     Util.title(to.meta.title)
     let requireAuth = to.meta.requireAuth
     if(requireAuth){
+        let token = VueCookie.get('token')
+        let user = localStorage.getItem('user')
+         if(token && user){
 
+         }
+         else{
+             router.push({path:'/login',query:{to:JSON.stringify(to)}})
+         }
     }
     next();
 });
