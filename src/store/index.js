@@ -9,6 +9,7 @@ import createLogger from 'vuex/dist/logger'
 import Dashbord from './modules/Dashbord'
 import Login from './modules/Login'
 import Memo from './modules/Memo'
+import Search from './modules/Search'
 
 Vue.use(Vuex)
 export default new Vuex.Store({
@@ -17,7 +18,8 @@ export default new Vuex.Store({
     modules: {
         Dashbord,
         Login,
-        Memo
+        Memo,
+        Search
     },
     plugins:process.env.NODE_ENV !== 'production' ? [createLogger()] : [],
     strict: process.env.NODE_ENV !== 'production'

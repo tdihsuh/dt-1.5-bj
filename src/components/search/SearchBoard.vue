@@ -1,23 +1,27 @@
 <template>
+    <div>
     <div v-if="isInit" class="init-board" >
         <img :src="searchIcon">
         <div>奖惩信息查询</div>
     </div>
-    <div v-else-if="hasContent" class="has-result-board" >
-       <Table :data="content" :columns="columns"  ></Table>
+    <div v-if="!isInit && (personInfo().length>0 || enterpriseInfo().length>0)" class="has-result-board" >
+       <Table :data="isPersonal?personInfo():enterpriseInfo()" :columns="columns"  ></Table>
     </div>
-    <div v-else class="init-board" >
+    <div v-if="!isInit && personInfo().length === 0 && enterpriseInfo().length===0" class="init-board" >
         <img :src="emptyIcon">
         <div>没有查询到任何信息！</div>
     </div>
+    </div>
 </template>
 <script>
+    import { mapActions,mapGetters } from 'vuex'
     export default {
-        props:['content','columns','isPersonal'],
+        props:['columns','isPersonal'],
         data(){
             return {
                 searchIcon:require('./search_icon.png'),
-                emptyIcon:require('./emptystate_icon.png')
+                emptyIcon:require('./emptystate_icon.png'),
+                content:[]
             }
         },
         computed:{
@@ -28,17 +32,12 @@
                 else{
                     return false
                 }
-            },
-            hasContent(){
-                if(this.content.length !== 0 && this.columns.length !== 0){
-                    return true
-                }
-                else{
-                    return false
-                }
             }
         },
         methods:{
+            ...mapGetters([
+                'enterpriseInfo','personInfo'
+            ]),
 
         }
     }

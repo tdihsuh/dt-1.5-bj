@@ -1,14 +1,17 @@
 <template>
     <div class="login">
         <h3>账户登录</h3>
-        <Form ref="loginForm" :model="user" :rules="rules">
+        <Form ref="loginForm" :model="user" :rules="rules"
+        >
             <FormItem prop="username">
-        <Input class="login-input" size="large" v-model="user.username"  :on-blur="saveUserName()">
+        <Input class="login-input" size="large" v-model="user.username"
+               :on-blur="saveUserName()">
             <span class="icon-pre" slot="prepend"><Icon type="person"></Icon>用户名</span>
         </Input>
             </FormItem>
             <FormItem prop="password">
-        <Input type="password" class="login-input" size="large" v-model="user.password">
+        <Input type="password" class="login-input" size="large" v-model="user.password"
+        >
         <span class="icon-pre"slot="prepend"><Icon type="ios-locked"></Icon>密&nbsp;&nbsp;码</span>
         </Input>
             </FormItem>
@@ -16,7 +19,7 @@
         <Checkbox v-model="user.isRemember" :on-change="rememberUsername()">记住用户名</Checkbox>
             </FormItem>
             <FormItem>
-        <Button type="primary" class="login-btn" @click="loginMe()">登录</Button>
+        <Button type="primary" class="login-btn"  @click="loginMe()">登录</Button>
             </FormItem>
         </Form>
     </div>
@@ -57,7 +60,7 @@
         },
         methods:{
             loginMe(){
-                let that = this;
+
                 this.$refs.loginForm.validate((valid) => {
                     if (valid) {
                         this.login(this.user).then( response =>{
