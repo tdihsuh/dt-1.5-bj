@@ -8,31 +8,34 @@
                 </th>
             </tr>
             </thead>
-            <tbody>
-                <tr v-for="(o, index) in departmentData()" :key="o.department" class="list-complete-item">
-                    <td v-for="v in o">
-                        {{ v }}
-                    </td>
-                </tr>
-            </tbody>
         </table>
+        <Carousel   autoplay dots="none"loop :autoplay-speed="5000" :height="510"  >
+            <CarouselItem v-for="(rank,index) in getDeparmentRank()" :key="index">
+                <table class="order-department-table " :class="{first:index===0}">
+                    <tbody>
+                    <tr v-for="(o, i) in rank" :key="o.department" class="list-complete-item">
+                        <td v-for="v in o">
+                            {{ v }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </CarouselItem>
+        </Carousel>
     </div>
 </template>
 <script>
     import {mapActions, mapGetters} from 'vuex'
     export default {
         methods:{
-            ...mapGetters(['departmentData','departmentRankColumns']),
+            ...mapGetters(['departmentData','departmentRankColumns','getDeparmentRank']),
         }
 
     }
 
 </script>
 <style rel="stylesheet/less" lang="less" scoped>
-    .order-department-table{
-        width: 100%;
-        border-collapse:collapse;
-        font-size: 14px;
+    .first{
         tr:nth-child(1){
             >td:nth-child(7){
                 color: red;
@@ -54,8 +57,13 @@
                 font-weight: 800;
 
             }
-
         }
+    }
+    .order-department-table{
+       width: 100%;
+        border-collapse:collapse;
+        font-size: 14px;
+
         td:nth-child(1){
             text-align: left;
             text-indent: 2em;

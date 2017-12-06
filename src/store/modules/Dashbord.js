@@ -2,11 +2,8 @@ import axios from 'axios'
 import util from '../../lib/util'
 
 const state = {
-    areaData:[],
-    pageNum:0,
-    currentPage:0,
-    pageSize:6,
-    departmentData:[],
+    areaData: [],
+    departmentData: [],
     areaRankColumns: [
         {
             title: '城市',
@@ -63,29 +60,35 @@ const state = {
 
 // getters
 const getters = {
-    areaData:(state, getters)=>{
-        return  state.areaData.slice(state.currentPage*state.pageSize, state.currentPage*state.pageSize + state.pageSize)
+    getAreaRank: (state, getters) => {
+        let data = state.areaData.slice()
+        let loop = data.length
+        let rankData = []
+        for (let i = 0; i < loop; i += 6) {
+            rankData.push(data.slice(i, i + 6))
+        }
+        return rankData
     },
-    allAreaData:(state, getters)=>{
-        return  state.areaData
+    allAreaData: (state, getters) => {
+        return state.areaData
     },
-    departmentData:(state, getters)=>{
-        return  state.departmentData
+    departmentData: (state, getters) => {
+        return state.departmentData
     },
-    areaRankColumns:(state, getters)=>{
-        return  state.areaRankColumns
+    areaRankColumns: (state, getters) => {
+        return state.areaRankColumns
     },
-    departmentRankColumns:(state, getters)=>{
-        return  state.departmentRankColumns
+    departmentRankColumns: (state, getters) => {
+        return state.departmentRankColumns
     },
-    pageSize:(state, getters)=>{
-        return state.pageSize
-    },
-    currentPage:(state, getters)=>{
-        return state.currentPage
-    },
-    pageNum:(state, getters)=>{
-        return state.pageNum
+    getDeparmentRank: (state, getters) => {
+        let data = state.departmentData.slice()
+        let loop = data.length
+        let rankData = []
+        for (let i = 0; i < loop; i += 10) {
+            rankData.push(data.slice(i, i + 10))
+        }
+        return rankData
     }
 }
 
@@ -108,48 +111,40 @@ const actions = {
                 store.commit('departmentData', departmentData.obj.slice())
             }
         }));
-    },
-    setCurrentPage(store, current) {
-        store.commit('currentPage', current)
-    },
-
+    }
 
 }
 
 // mutations
 const mutations = {
-    areaData(state,data){
+    areaData(state, data) {
         let d = [];
-        data.map(o=>{
-            let tmp ={
-                areaName:o.areaName,
-                uniCount:o.uniCount,
-                selectCount:o.selectCount,
-                activeCount:o.activeCount,
-                rank:o.rank
+        data.map(o => {
+            let tmp = {
+                areaName: o.areaName,
+                uniCount: o.uniCount,
+                selectCount: o.selectCount,
+                activeCount: o.activeCount,
+                rank: o.rank
             }
             d.push(tmp)
         });
-        state.pageNum = Math.ceil(d.length/state.pageSize)
         state.areaData = d
     },
-    departmentData(state,data){
+    departmentData(state, data) {
         let d = [];
-        data.map(o=>{
+        data.map(o => {
             d.push({
-                departmentName:o.departmentName,
-                joinCount:o.joinCount,
-                uniBonusCount:o.uniBonusCount,
-                uniPubnishCount:o.uniPubnishCount,
-                selectCount:o.selectCount,
-                activeCount:o.activeCount,
-                rank:o.rank
+                departmentName: o.departmentName,
+                joinCount: o.joinCount,
+                uniBonusCount: o.uniBonusCount,
+                uniPubnishCount: o.uniPubnishCount,
+                selectCount: o.selectCount,
+                activeCount: o.activeCount,
+                rank: o.rank
             })
         });
         state.departmentData = d
-    },
-    currentPage(state,current){
-        state.currentPage = current
     }
 }
 

@@ -1,40 +1,36 @@
 <template>
-    <table class="order-table">
-        <thead>
-        <tr>
-            <th v-for="(col, index) in areaRankColumns()">
-                {{ col.title }}
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(o, index) in areaData()" :key="o.city" class="list-complete-item">
-            <td v-for="v in o">
-                {{ v }}
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
+    <div>
+        <table class="order-table">
+            <thead>
+            <tr>
+                <th v-for="(col, index) in areaRankColumns()">
+                    {{ col.title }}
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <Carousel autoplay dots="none" loop :autoplay-speed="3500" :height="300" arrow="never">
+            <CarouselItem v-for="(rank,index) in getAreaRank()" :key="index">
+                <table class="order-table">
+                    <tbody>
+                    <tr v-for="(o, i) in rank" :key="o.city" class="list-complete-item">
+                        <td v-for="v in o">
+                            {{ v }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </CarouselItem>
+        </Carousel>
+    </div>
 </template>
 <script>
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
-        created() {
-            let i = 0
-            setInterval(() => {
-                if (this.pageNum() > 0) {
-                    let current = i % this.pageNum();
-                    this.setCurrentPage(current)
-                    i++;
-                }
-
-            }, 2200);
-        },
         methods: {
-            ...mapGetters(['areaData', 'areaRankColumns', 'pageNum']),
-            ...mapActions(['setCurrentPage'])
+            ...mapGetters(['getAreaRank', 'areaRankColumns']),
+            ...mapActions([])
         }
     }
 
