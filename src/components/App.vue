@@ -30,6 +30,18 @@
 </script>
 <style lang="less">
   @import './main';
+  #httpModal{
+    display: inline-block;
+    pointer-events: all;
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.2);
+    background: #fff;
+    position: absolute;
+    left: 47%;
+    top:20px;
+  }
   .backtop{
     text-align: center;
     background-color: rgba(0,0,0,0.3);
