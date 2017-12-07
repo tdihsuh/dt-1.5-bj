@@ -5,36 +5,42 @@
                 <img :src="pathIcon" alt=""><!--
                 --><span class="crumbs-text">您所在的位置：<router-link to="/search">奖惩查询</router-link> > 详情</span></span>
             <Button type="primary" icon="compose" @click="feedbackOpen=true" class="feedback-btn">处理反馈</Button>
+
         </div>
+        <!--如果是审批记录则为返回按钮-->
         <div class="feed-back-unit clear" v-if="from === 'approval'">
             <span class="crumbs">
                 <img :src="pathIcon" alt=""><!--
                 --><span class="crumbs-text">您所在的位置：<router-link to="/approval">审批记录</router-link> > 详情</span></span>
             <Button type="primary" icon="compose" @click="prevPage" class="feedback-btn">返回</Button>
         </div>
-        <Modal class="feedback-modal" v-if="from === 'search'"
+
+        <!--//如果是办事人员则为反馈按钮-->
+        <Modal class="feedback-modal"
+               v-if="from === 'search'"
                title="处理反馈"
                v-model="feedbackOpen"
                :mask-closable="false"
+               @on-ok="submitFeedback"
                ok-text="处理并下载报告">
-            <Form :model="formItem" :label-width="100">
+            <Form :model="formItem"  ref="feedbackForm" :label-width="100" :rules="rules">
                 <FormItem label="处理结果：">
                     <RadioGroup v-model="formItem.feedbackResult">
-                        <Radio label="reject">行政许可严格办理</Radio>
+                        <Radio label="0">行政许可严格办理</Radio>
                         <p>
-                            <Radio label="priority">行政许可加速审核</Radio>
+                            <Radio label="1">行政许可加速审核</Radio>
                         </p>
                     </RadioGroup>
                 </FormItem>
-                <FormItem label="处理说明：">
+                <FormItem label="处理说明：" prop="feedbackContent">
                     <Input v-model="formItem.description" type="textarea" :autosize="false" :rows="5"
-                           placeholder="请输入内容"></Input>
+                           placeholder="请输入内容" />
                 </FormItem>
             </Form>
         </Modal>
         <div class="executor-info ">
             <div class="subject-name">
-                <span class="entity-name">{{ name }}</span>
+                <span class="entity-name">{{ isPersonal()?personDetails().info ? personDetails().info.name:'': enterpriseDetails().info ? enterpriseDetails().info.name:'' }}</span>
                 <ul class="result" v-if="from === 'approval'">
                     <li><span class="title">处理结果：</span><span class="desc">行政许可严格办理</span></li>
                     <li><span class="title">处理说明：</span><span class="desc">为失信被执行人，所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办</span>
@@ -44,7 +50,7 @@
             </div>
             <div class="excutor-content info-panel">
                 <PanelTitle title="奖惩基本信息"></PanelTitle>
-                <div v-for="o in items">
+                <div v-for="o in subjectMemo()">
                     <SecondaryTitle :title="o.title"></SecondaryTitle>
                     <div class="info-item clear"><span class="item-name">{{ o.accountDepartment.name }}</span><span
                             class="item-content">{{ o.accountDepartment.content }}</span></div>
@@ -53,16 +59,16 @@
                             class="item-content">{{ o.accountTime.content }}</span></div>
                 </div>
             </div>
-
         </div>
         <div class="subject-base-info info-panel">
-            <PanelTitle :title="titleArray[0]"></PanelTitle>
-            <ItemList :list="list1"></ItemList>
+            <PanelTitle :title="isPersonal()?'个人基本信息':'企业基本信息'"></PanelTitle>
+            <ItemList :list="personBase()" v-if="isPersonal()"></ItemList>
+            <ItemList :list="enterpriseBase()" v-else></ItemList>
         </div>
         <div class="subject-info-more info-panel" id="more-info">
             <PanelTitle title="奖惩详细信息"></PanelTitle>
             <transition name="slide-fade">
-                <ItemList :list="items[0].content" v-if="isDisplay" class="can-close"></ItemList>
+                <ItemList :list="subjectDesc()" v-if="isDisplay" class="can-close"></ItemList>
             </transition>
             <div class="display-more" @click="expand()" id="expand-op">
                 <span class="display-more-text"><span v-if="!isDisplay">显示更多</span><!--
@@ -73,14 +79,22 @@
 </template>
 <script>
     import Vue from 'vue'
-
+    import { mapActions,mapGetters } from 'vuex'
+    import axios from 'axios'
+    import util from '../../lib/util'
     export default {
         created() {
             if (this.$route.params.type === 'person') {
-                this.titleArray = ['个人基本信息']
                 this.name = "赵海"
+                this.setPersonal(true)
+                this.fetchPersonDetials(this.$route.params.pid)
+            }
+            else{
+                this.setPersonal(false)
+                this.fetchEnterpriseDetials(this.$route.params.pid)
             }
             this.from = this.$route.params.from
+
         },
         data() {
             return {
@@ -89,52 +103,58 @@
                 isDisplay: false,
                 feedbackOpen: false,
                 from: '',
-                titleArray: ['企业基本信息'],
-                name: "辉山乳业有限责任公司",
-                formItem: {feedbackResult: 'priority', description: ''},
+                rules: {
+                    feedbackContent: [
+                        { type: 'string', max: 400, message: '反馈说明在0-400字之间', trigger: 'blur' }
+                    ]
+                },
+                formItem: {feedbackResult: '0', description: ''},
                 moreImg: require('./more.png'),
-                items: [
-                    {
-                        title: '失信被执行人',
-                        accountTime:{name: '惩戒认定时间：', content: '2017/01/12'},
-                        accountDepartment:{name: '认定部门：', content: '省发改委、省教育厅、省科技厅'},
-                        content: [
-                            [
-                                {name: '实施部门：', content: '省发改委、省教育厅、省科技厅、省工商局、省地税局、省公安厅、省人社厅'},
-                                {
-                                    name: '措施：',
-                                    content: '限制政府采购、招标投标、行政审批、政府扶持、融资信贷、市场准入、资质认定政府采购、招标投标、行政审批、政府扶持、融资信贷、市场准入、资质认定'
-                                },
-                                {
-                                    name: '法律及政策依据：',
-                                    content: '依据详情'
-                                }
-
-                            ],
-                            [
-                                {name: '实施部门：', content: '省发改委、省教育厅、省科技厅、省工商局、省地税局、省公安厅、省人社厅'},
-                                {
-                                    name: '措施：',
-                                    content: '限制政府采购、招标投标、行政审批、政府扶持、融资信贷、市场准入、资质认定政府采购、招标投标、行政审批、政府扶持、融资信贷、市场准入、资质认定'
-                                },
-                                {
-                                    name: '法律及政策依据：',
-                                    content: '依据详情'
-                                }
-                            ],
-                        ]
-                    }
-
-                ],
-                list1: [[
-                    {name: '姓名：', content: '赵海'},
-                    {name: '身份证号码：', content: '11010019890124890X'},
-                    {name: '性别：', content: '男'},
-                    {name: '户籍地址：', content: '北京市海淀区西土城路十号'}
-                ]]
             }
         },
         methods: {
+            ...mapActions([
+                'fetchEnterpriseDetials','fetchPersonDetials','setPersonal'
+            ]),
+            ...mapGetters([
+                'enterpriseDetails','personDetails','enterpriseBase','subjectMemo','subjectDesc','isPersonal','personBase'
+            ]),
+            submitFeedback(){
+                this.$refs.feedbackForm.validate((valid) => {
+                    if (valid) {
+                        let url = "/service/api/credit/operation/enterprise"
+                        let data = {
+                            dealType:this.formItem.feedbackResult,
+                            description:this.formItem.description
+                        }
+                        let config = { headers : {
+                                "Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
+                            }}
+                        if(this.isPersonal()){
+                            url="/service/api/credit/operation/person"
+                            data = Object.assign(data,{pid:this.$route.params.pid})
+                        }
+                        else{
+                            data = Object.assign(data,{eid:this.$route.params.pid})
+                        }
+                        axios.post(url,data,config).then(res=>{
+                            let result = util.responseProcessor(res)
+                            console.log(result.obj)
+                            if(result.code === '0'){
+                                this.$Message.info('反馈成功')
+                                this.prevPage()
+                            }
+                            else{
+                                this.$Message.info('反馈失败')
+                            }
+                        }).catch(error => {
+                            if (error.response) {
+                                util.responseProcessor(error.response)
+                            }
+                        })
+                    }
+                })
+            },
             expand() {
                 this.isDisplay = !this.isDisplay
             },

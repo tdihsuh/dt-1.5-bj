@@ -134,8 +134,11 @@
         },
         created() {
             this.getAllData()
+            this.$Loading.start()
             axios.get(`/service/api/count/areaRank`).then(res=>{
+                let maps = this.$refs.areaMaps.chart
                 let areaData = util.responseProcessor(res)
+                this.$Loading.finish()
                 if (areaData.code === '0' && areaData.obj.length > 0) {
                     let d = [];
                     areaData.obj.map(o=>{
@@ -151,7 +154,6 @@
                         d.push(tmp)
                     });
 
-                    let maps = this.$refs.areaMaps.chart
 
                     maps.update({
                         series:[{data:d}]
