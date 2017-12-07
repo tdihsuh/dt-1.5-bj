@@ -29,33 +29,7 @@
     import { mapActions,mapGetters } from 'vuex'
     Vue.component('DetailsLink',DetailsLink)
     Vue.component('SearchBoard',SearchBoard)
-    let renderTagsUnit = (h, params) => {
-        let row = params.row
-        let htmlArray = [];
-        let tags = row.tags.split(',')
 
-        if(tags.length >3){
-            tags.slice(0,3).map(tag => {
-                let hTag = h('span', {
-                }, tag)
-                htmlArray.push(hTag)
-            })
-            let hTag = h('span', {
-                style: style1
-
-            }, '...')
-            htmlArray.push(hTag)
-        }
-        else{
-            tags.map(tag => {
-                let hTag = h('span', {
-                    style: tag.isPositive?styleActive:style
-                }, tag)
-                htmlArray.push(hTag)
-            })
-        }
-        return h('span', {props:{tags:row.tags},style:{'display':'block','margin':'5px 0'}},htmlArray);
-    }
     let styleBase = {
         display: 'inline-block',
         borderRadius: '3px',
@@ -82,6 +56,35 @@
     }
     let style1 = {
         color:'#1889E3',
+    }
+    let renderTagsUnit = (h, params) => {
+        let row = params.row
+        let htmlArray = [];
+        console.log(row);
+        let tags = row.tagList
+
+        if(tags.length >3){
+            tags.slice(0,3).map(tag => {
+                let hTag = h('span', {
+                    style: tag.type==='BONUS'?styleActive:style
+                }, tag.label)
+                htmlArray.push(hTag)
+            })
+            let hTag = h('span', {
+                style: style1
+
+            }, '...')
+            htmlArray.push(hTag)
+        }
+        else{
+            tags.map(tag => {
+                let hTag = h('span', {
+                    style: tag.type==='BONUS'?styleActive:style
+                }, tag.label)
+                htmlArray.push(hTag)
+            })
+        }
+        return h('span', {props:{tags:row.tags},style:{'display':'block','margin':'5px 0'}},htmlArray);
     }
     Object.assign(style,styleBase)
     Object.assign(styleActive,styleBase)
