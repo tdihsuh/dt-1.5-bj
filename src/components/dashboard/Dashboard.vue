@@ -7,12 +7,12 @@
 
             <div class="stat-content clear">
                 <Row>
-                    <Col span="12">
+                    <i-col span="12">
                     <highmaps class="maps" :options="options"  ref="areaMaps"/>
-                    </Col>
-                    <Col span="12">
+                    </i-col>
+                    <i-col span="12">
                     <OrderTable  class="order-by-city"></OrderTable>
-                    </Col>
+                    </i-col>
                 </Row>
             </div>
         </Card>

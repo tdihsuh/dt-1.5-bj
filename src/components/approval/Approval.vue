@@ -8,36 +8,31 @@
             <div class="approval-content">
                 <div class="demo" :class="{'active':isPersonal,'unactive':!isPersonal,'focus':isFocus,'unfocus':!isFocus}"></div>
                 <div class="approval-body" >
-                    <Form ref="searchData" :model="searchData" :label-width="110">
+                    <i-form ref="searchData" :model="searchData" :rules="rules" :label-width="110">
                         <Row :gutter="10">
-                            <Col span="6">
+                            <i-col span="6">
                               <FormItem :label="labelName.name" prop="name">
-                               <Input v-model="searchData.name" :placeholder="labelName.tip" />
+                               <i-input v-model="searchData.name" :placeholder="labelName.tip" />
                              </FormItem>
-                           </Col>
-                            <Col span="6">
+                           </i-col>
+                            <i-col span="6">
                             <FormItem :label="labelName.code" prop="code">
-                                <Input v-model="searchData.code" :placeholder="labelName.codeTip" />
+                                <i-input v-model="searchData.code" :placeholder="labelName.codeTip" />
                             </FormItem>
-                            </Col>
-                            <Col span="8">
-                            <FormItem label="受理日期">
-                                <Row>
-                                    <Col span="11">
-                                    <DatePicker type="date" placeholder="选择开始时间" format="yyyy年MM月dd日" v-model="searchData.startDate"></DatePicker>
-                                    </Col>
-                                    <Col span="2" style="text-align: center;display: inline-block;height: 46px;line-height: 46px;font-size: 14px">--</Col>
-                                    <Col span="11">
-                                    <DatePicker type="date" placeholder="选择结束时间" format="yyyy年MM月dd日"  v-model="searchData.endDate"></DatePicker>
-                                    </Col>
-                                </Row>
+                            </i-col>
+                            <i-col span="8">
+                            <FormItem label="受理日期" prop="date">
+
+                                    <DatePicker type="date" placeholder="选择开始时间" format="yyyy年MM月dd日" v-model="searchData.startDate" style="width: 45%;display: inline-block"></DatePicker>
+                                    <span style="width: 5%;display: inline-block">--</span>
+                                    <DatePicker type="date" placeholder="选择结束时间" format="yyyy年MM月dd日"  v-model="searchData.endDate" style="width: 45%;display: inline-block"></DatePicker>
                             </FormItem>
-                            </Col>
-                            <Col span="4">
+                            </i-col>
+                            <i-col span="4">
                             <span class="approval-btn" @click="search"><Icon type="ios-search-strong"></Icon>查询</span>
-                            </Col>
+                            </i-col>
                         </Row>
-                    </Form>
+                    </i-form>
                     <!--<input  class="approval-input" autofocus="true" :placeholder="tip"  @focus="isFocus=true"  @blur="isFocus=false">--><!--
                     <!--&ndash;&gt;<span class="approval-btn" @click="search"><Icon type="ios-approval-strong"></Icon>查询</span>-->
                 </div>
@@ -207,15 +202,57 @@
             }
         }
     ]
+
+
     export default {
         data(){
+            const checkNameCode = (rule, value, callback) => {
+                if((this.searchData.name === '' || this.searchData.name === undefined ) && (this.searchData.code ==='' || this.searchData.code === undefined)){
+                    if(this.isPersonal){
+                        callback(new Error('姓名和证件号不能同时为空'))
+                    }
+                    else{
+                        callback(new Error('企业名称和统一信用代码不能同时为空'))
+                    }
+
+                }
+                else{
+                    callback()
+                }
+            }
+            const checkDate = (rule, value, callback) => {
+                let startDate =this.searchData.startDate
+                let endDate = this.searchData.endDate
+                if(startDate>endDate){
+                    callback(new Error('开始时间不能大于结束时间'))
+                }
+                else{
+                    if((endDate.getTime() - startDate.getTime())/(60*60*24*1000) >5){
+                        callback(new Error('查询范围不能超过5天'))
+                    }
+                    else{
+                        callback()
+                    }
+                }
+
+            }
             return {
                 isPersonal:false,
                 isFocus:false,
-                searchData:{startDate:new Date().Format('yyyy年MM月dd日'),endDate:new Date().Format('yyyy年MM月dd日')},
+                searchData:{startDate:(new Date( new Date().getTime() - 60*60*24*1000*5 )).Format('yyyy年MM月dd日'),endDate:new Date().Format('yyyy年MM月dd日')},
                 iconImg: require('../../images/title_icon.png'),
                 content:[],
                 columns:[],
+                rules:{
+                    name: [
+                        { validator: checkNameCode, trigger: 'blur' },
+                        { validator: checkNameCode, trigger: 'change' }
+                    ],
+                    code:[
+                        { validator: checkNameCode, trigger: 'blur' }
+                    ],
+                    date:[ { validator: checkDate, trigger: 'change' }]
+                },
                 personalColumns,
                 enterpriseColumns
             }
@@ -312,7 +349,8 @@
 
             },
             changeType(isPersonal){
-                this.isPersonal = isPersonal;
+                this.isPersonal = isPersonal
+                this.$refs.searchData.resetFields()
                 if(this.isPersonal){
                     this.$router.push('/approval?type=person')
                 }
@@ -320,8 +358,7 @@
                     this.$router.push('/approval')
                 }
             },
-            search(){
-                this.content = []
+            searchContent(){
                 if(this.isPersonal){
                     this.columns = this.personalColumns
                     this.content = [{
@@ -368,6 +405,18 @@
 
                     ]
                 }
+            },
+            search(){
+                this.content = []
+                this.$refs.searchData.validate((valid) => {
+                    if (valid) {
+                        this.searchContent()
+                    }
+                    else{
+                        this.$Message.error('请填写必要信息')
+                    }
+                });
+
             }
         }
     }
@@ -449,8 +498,8 @@
 
                 .approval-btn{
                     width: 120px;
-                    height: 46px;
-                    line-height: 46px;
+                    height: 36px;
+                    line-height: 36px;
                     display: inline-block;
                     font-size: 14px!important;
                     background-color: #EB4449;
@@ -469,22 +518,30 @@
         }
         .approval-body{
             background-color: white;
-            padding: 20px 0 0 0;
+            padding: 20px 0;
             border: 1px solid  #D3D9E1 ;
             border-radius: 5px 5px;
             box-shadow: 2px 3px 8px rgba(200,200,200,1);
             .ivu-input{
                 font-size: 14px!important;
-                height: 46px;
+                height: 36px;
             }
             .ivu-form-item-label{
                 font-size: 14px!important;
-                padding: (46-14)/2px 10px;
+                padding: (36-14)/2px 10px;
+            }
+            .ivu-form-item-content{
+                height: 36px;
             }
             .ivu-input-icon{
-                height: 46px;
-                line-height: 46px;
-                width: 46px;
+                height: 36px;
+                line-height: 36px;
+                width: 36px;
+            }
+            .ivu-form-item {
+                margin-bottom: 0;
+                vertical-align: middle;
+                zoom: 1;
             }
 
         }

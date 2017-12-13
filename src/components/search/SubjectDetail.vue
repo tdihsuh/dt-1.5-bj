@@ -4,7 +4,7 @@
             <span class="crumbs">
                 <img :src="pathIcon" alt=""><!--
                 --><span class="crumbs-text">您所在的位置：<router-link to="/search">奖惩查询</router-link> > 详情</span></span>
-            <Button type="primary" icon="compose" @click="feedbackOpen=true" class="feedback-btn">处理反馈</Button>
+            <i-button type="primary" icon="compose" @click="feedbackOpen=true" class="feedback-btn">处理反馈</i-button>
 
         </div>
         <!--如果是审批记录则为返回按钮-->
@@ -23,7 +23,7 @@
                :mask-closable="false"
                @on-ok="submitFeedback"
                ok-text="处理并下载报告">
-            <Form :model="formItem"  ref="feedbackForm" :label-width="100" :rules="rules">
+            <i-form :model="formItem"  ref="feedbackForm" :label-width="100" :rules="rules">
                 <FormItem label="处理结果：">
                     <RadioGroup v-model="formItem.feedbackResult">
                         <Radio label="0">行政许可严格办理</Radio>
@@ -33,10 +33,10 @@
                     </RadioGroup>
                 </FormItem>
                 <FormItem label="处理说明：" prop="feedbackContent">
-                    <Input v-model="formItem.description" type="textarea" :autosize="false" :rows="5"
+                    <i-input v-model="formItem.description" type="textarea" :autosize="false" :rows="5"
                            placeholder="请输入内容" />
                 </FormItem>
-            </Form>
+            </i-form>
         </Modal>
         <div class="executor-info ">
             <div class="subject-name">

@@ -1,8 +1,8 @@
 <template>
     <div class="memo-form-div">
-        <Form :model="memo" :label-width="160" label-position="left">
+        <i-form :model="memo" :label-width="160" label-position="left">
             <FormItem label="联合惩戒备忘录：">
-                <Input v-model="memo.name" placeholder="请输入备忘录名称"  class="input-item"></Input>
+                <i-input v-model="memo.name" placeholder="请输入备忘录名称"  class="input-item"></i-input>
             </FormItem>
             <FormItem label="联合奖惩性质：">
                 <RadioGroup v-model="memo.type">
@@ -11,14 +11,14 @@
                 </RadioGroup>
             </FormItem>
             <FormItem label="认定部门：">
-                <Select v-model="memo.departments" filterable multiple placeholder="请选择或输入部门关键字进行搜索" class="input-item">
+                <i-select v-model="memo.departments" filterable multiple placeholder="请选择或输入部门关键字进行搜索" class="input-item">
                     <Option v-for="(item,key) in departmentList" :value="item" :key="key">{{ item }}</Option>
-                </Select>
+                </i-select>
             </FormItem>
             <FormItem label="标签：">
-                <Input v-model="memo.tag" placeholder="请输入标签"  class="input-item"></Input>
+                <i-input v-model="memo.tag" placeholder="请输入标签"  class="input-item"></i-input>
             </FormItem>
-        </Form>
+        </i-form>
             <div class="saved-measures-list">
                 <label>奖励/惩戒措施：</label>
                 <Row :gutter="16">
@@ -29,18 +29,18 @@
                     </Col>
                 </Row>
             </div>
-        <Form :model="measure" :label-width="160" label-position="left">
+        <i-form :model="measure" :label-width="160" label-position="left">
             <div class="measure">
                 <FormItem label="措施：">
-                    <Input v-model="measure.measureName" placeholder="请输入奖励／惩戒措施"></Input>
+                    <i-input v-model="measure.measureName" placeholder="请输入奖励／惩戒措施"></i-input>
                 </FormItem>
                 <FormItem label="法律及政策依据：">
-                    <Input v-model="measure.measureBy" placeholder="请输入法律及政策依据" ></Input>
+                    <i-input v-model="measure.measureBy" placeholder="请输入法律及政策依据" ></i-input>
                 </FormItem>
                 <FormItem label="实施部门：">
-                    <Select v-model="measure.department" filterable  placeholder="请选择或输入部门关键字进行搜索" >
+                    <i-select v-model="measure.department" filterable  placeholder="请选择或输入部门关键字进行搜索" >
                           <Option v-for="(item,key) in departmentList" :value="item" :key="key">  {{ item }}</Option>
-                    </Select>
+                    </i-select>
                 </FormItem>
                 <div class="add-measure">
                     <Button type="ghost" class="add-measure-btn" size="small" icon="plus-round">添加</Button>
@@ -56,7 +56,7 @@
                 <Button type="primary">提交审核</Button>
                 <Button type="ghost" @click="closeHandler">返回</Button>
             </div>
-        </Form>
+        </i-form>
     </div>
 </template>
 <script>

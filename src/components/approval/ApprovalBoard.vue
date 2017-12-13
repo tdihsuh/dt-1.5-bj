@@ -4,7 +4,7 @@
         <div>输入关键字搜索审批记录</div>
     </div>
     <div v-else-if="hasContent" class="has-result-board" >
-        <Table :data="currentRows" :columns="columns"  ></Table>
+        <i-table :data="currentRows" :columns="columns"  ></i-table>
         <div class="pagination">
             <Page :total="total" :current="current" :pageSize="pageSize" @on-change="changePage" show-elevator></Page>
         </div>

@@ -1,19 +1,19 @@
 <template>
     <div class="login">
         <h3>账户登录</h3>
-        <Form ref="loginForm" :model="user" :rules="rules"
+        <i-form ref="loginForm" :model="user" :rules="rules"
         >
             <FormItem prop="username">
-        <Input class="login-input" size="large" v-model="user.username"
+        <i-input class="login-input" size="large" v-model="user.username"
                :on-blur="saveUserName()">
             <span class="icon-pre" slot="prepend"><Icon type="person"></Icon>用户名</span>
-        </Input>
+        </i-input>
             </FormItem>
             <FormItem prop="password">
-        <Input type="password" class="login-input" size="large" v-model="user.password"
+        <i-input type="password" class="login-input" size="large" v-model="user.password"
         >
         <span class="icon-pre"slot="prepend"><Icon type="ios-locked"></Icon>密&nbsp;&nbsp;码</span>
-        </Input>
+        </i-input>
             </FormItem>
             <FormItem>
         <Checkbox v-model="user.isRemember" :on-change="rememberUsername()">记住用户名</Checkbox>
@@ -21,7 +21,7 @@
             <FormItem>
         <Button type="primary" class="login-btn"  @click="loginMe()">登录</Button>
             </FormItem>
-        </Form>
+        </i-form>
     </div>
 </template>
 <script>

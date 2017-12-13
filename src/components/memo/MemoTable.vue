@@ -1,6 +1,6 @@
 <template>
     <div class="memo-list">
-        <Table :columns="columns" :data="data"></Table>
+        <i-table :columns="columns" :data="data"></i-table>
     </div>
 </template>
 <script>

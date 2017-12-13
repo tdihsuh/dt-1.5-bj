@@ -67,6 +67,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
     return fmt;
 }
 
+
 new Vue({
     router,
     store,

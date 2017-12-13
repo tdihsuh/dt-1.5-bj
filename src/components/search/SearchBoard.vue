@@ -5,7 +5,7 @@
         <div>奖惩信息查询</div>
     </div>
     <div v-if="!isInit && (personInfo().length>0 || enterpriseInfo().length>0)" class="has-result-board" >
-       <Table :data="isPersonal?personInfo():enterpriseInfo()" :columns="columns"  ></Table>
+       <i-table :data="isPersonal?personInfo():enterpriseInfo()" :columns="columns"  ></i-table>
     </div>
     <div v-if="!isInit && personInfo().length === 0 && enterpriseInfo().length===0" class="init-board" >
         <img :src="emptyIcon">
