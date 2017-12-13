@@ -158,9 +158,6 @@
                     maps.update({
                         series:[{data:d}]
                     })
-                    /*  console.log(options);
-                    this.options = options;*/
-                   // maps.redraw();
                 }
             })
         }

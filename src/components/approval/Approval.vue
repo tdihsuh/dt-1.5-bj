@@ -29,197 +29,36 @@
                             </FormItem>
                             </i-col>
                             <i-col span="4">
-                            <span class="approval-btn" @click="search"><Icon type="ios-search-strong"></Icon>查询</span>
+                            <span class="approval-btn" v-bind:class="{'approval-btn-loading':isLoading}" @click="search"><Icon type="ios-search-strong" v-if="!isLoading"></Icon><Icon type="load-c" class="load" v-if="isLoading" ></Icon>
+                                <span v-if="!isLoading">查询</span>
+                            </span>
                             </i-col>
                         </Row>
                     </i-form>
-                    <!--<input  class="approval-input" autofocus="true" :placeholder="tip"  @focus="isFocus=true"  @blur="isFocus=false">--><!--
-                    <!--&ndash;&gt;<span class="approval-btn" @click="search"><Icon type="ios-approval-strong"></Icon>查询</span>-->
                 </div>
             </div>
         </div>
         <div class="approval-result">
             <div class="approval-result-title"><div class="text"> <img :src="iconImg">审批记录</div></div>
             <div class="approval-result-content">
-                <ApprovalBoard :content="content" :columns="columns" :is-personal="isPersonal"></ApprovalBoard>
-                <!--<SearchBoard :content="content" :columns="columns" :is-personal="isPersonal"></SearchBoard>-->
+                <ApprovalBoard :content="content" :columns="columns" :total="total" :current="current" :page-size="pageSize" :is-personal="isPersonal" :callback="getData"></ApprovalBoard>
+
             </div>
         </div>
     </div>
 </template>
 <script>
     import ApprovalBoard  from './ApprovalBoard.vue'
-    /*import DetailsLink from './DetailsLink.vue'*/
+    import Meta from './Meta'
+    import axios from 'axios'
+    import util from '../../lib/util'
     import Vue from 'vue'
     Vue.component('ApprovalBoard',ApprovalBoard)
-    /* Vue.component('SearchBoard',SearchBoard)*/
-    let styleBase = {
-        display: 'inline-block',
-        borderRadius: '3px',
-        height: '24px',
-        margin:'0 5px',
-        width:'120px',
-        overflow: 'hidden',
-        textOverflow:'ellipsis',
-        whiteSpace: 'nowrap',
-        lineHeight: '24px',
-        fontSize:'10px',
-        textAlign:'center',
-        padding:'0 9px'
-    }
-    let style = {
-        border: '1px solid #1889E3',
-        color:'#1889E3'
-    }
-
-
-    let styleActive = {
-        border: '1px solid #EB4449',
-        color:'#EB4449',
-    }
-    let style1 = {
-        color:'#1889E3',
-    }
-    Object.assign(style,styleBase)
-    Object.assign(styleActive,styleBase)
-    Object.assign(style1,styleBase)
-    let renderTagsUnit = (h, params) => {
-        let row = params.row
-        let htmlArray = [];
-        let tags = row.tags
-        if(tags.length >3){
-            tags.slice(0,3).map(tag => {
-                let hTag = h('span', {
-                    style: tag.isPositive?styleActive:style
-                }, tag.name)
-                htmlArray.push(hTag)
-            })
-            let hTag = h('span', {
-                style: style1
-
-            }, '...')
-            htmlArray.push(hTag)
-        }
-        else{
-            tags.map(tag => {
-                let hTag = h('span', {
-                    style: tag.isPositive?styleActive:style
-                }, tag.name)
-                htmlArray.push(hTag)
-            })
-        }
-        return h('span', {props:{tags:row.tags},style:{'display':'block','margin':'5px 0'}},htmlArray);
-    }
-    let enterpriseColumns = [
-        {
-            title: '企业名称',
-            key: 'enterprise_name',
-            align:'center'
-        },
-        {
-            title: '统一社会信用代码',
-            key: 'credit_code',
-            align:'center'
-        },
-        {
-            title: '联合奖惩标签',
-            key: 'tags',
-            width:300,
-            render: renderTagsUnit
-        },
-        {
-            title: '审批结果',
-            key: 'approval_status',
-            align:'center'
-
-        },
-        {
-            title: '处理人',
-            key: 'operator',
-            align:'center'
-        },
-        {
-            title: '处理日期',
-            key: 'approval_date',
-            align:'center'
-        },
-        {
-            title: '操作',
-            key: 'operations',
-            align:'center',
-            render: (h, params) => {
-                return h('router-link',{
-                    props:{
-                        to:`/approval/detail/${params.row.code}/enterprise`
-                    }
-                }, '详细信息');
-            }
-        }
-    ]
-
-    let personalColumns = [
-        {
-            title: '姓名',
-            key: 'name',
-            align:'center'
-        },
-        {
-            title: '身份证号',
-            key: 'certification',
-            align:'center'
-        },
-        {
-            title: '联合奖惩标签',
-            key: 'tags',
-            width:300,
-            render: renderTagsUnit
-        },
-        {
-            title: '审批处理结果',
-            key: 'approval_status',
-            align:'center'
-        },
-        {
-            title: '处理人',
-            key: 'operator',
-            align:'center'
-        },
-        {
-            title: '处理日期',
-            key: 'approval_date',
-            align:'center'
-        },
-        {
-            title: '操作',
-            key: 'operations',
-            align:'center',
-            render: (h, params) => {
-                return h('router-link',{
-                    props:{
-                        to:`/approval/detail/${params.row.code}/person`
-                    }
-                }, '查看详细');
-            }
-        }
-    ]
-
+    let personalColumns = Meta.personalColumns
+    let enterpriseColumns = Meta.enterpriseColumns
 
     export default {
         data(){
-            const checkNameCode = (rule, value, callback) => {
-                if((this.searchData.name === '' || this.searchData.name === undefined ) && (this.searchData.code ==='' || this.searchData.code === undefined)){
-                    if(this.isPersonal){
-                        callback(new Error('姓名和证件号不能同时为空'))
-                    }
-                    else{
-                        callback(new Error('企业名称和统一信用代码不能同时为空'))
-                    }
-
-                }
-                else{
-                    callback()
-                }
-            }
             const checkDate = (rule, value, callback) => {
                 let startDate =this.searchData.startDate
                 let endDate = this.searchData.endDate
@@ -239,102 +78,22 @@
             return {
                 isPersonal:false,
                 isFocus:false,
+                isLoading:false,
                 searchData:{startDate:(new Date( new Date().getTime() - 60*60*24*1000*5 )).Format('yyyy年MM月dd日'),endDate:new Date().Format('yyyy年MM月dd日')},
                 iconImg: require('../../images/title_icon.png'),
-                content:[],
+                content:{},
                 columns:[],
+                current:0,
+                pageSize:2,
+                total:0,
                 rules:{
-                    name: [
-                        { validator: checkNameCode, trigger: 'blur' },
-                        { validator: checkNameCode, trigger: 'change' }
-                    ],
-                    code:[
-                        { validator: checkNameCode, trigger: 'blur' }
-                    ],
                     date:[ { validator: checkDate, trigger: 'change' }]
-                },
-                personalColumns,
-                enterpriseColumns
+                }
             }
         },
         created(){
-            if(this.$route.query.type === 'person'){
-                this.isPersonal = true;
-            }
-            this.content = [{
-                enterprise_name:'北京开发有限责任公司',
-                credit_code:'913710007628687892',
-                tags:[{name:'失信被执行人'},{name:'奖励措施',isPositive:true} ],
-                approval_status:'行政许可严格办理',
-                operator:'黄飞鸿',
-                approval_date:'2017/08/12 13:56',
-                code:123
-            },
-                {
-                    enterprise_name:'北京开发有限责任公司',
-                    credit_code:'913710007628687892',
-                    tags:[{name:'失信被执行人'}],
-                    approval_status:'行政许可严格办理',
-                    operator:'黄飞鸿',
-                    approval_date:'2017/08/12 13:56',
-                    code:123
-                },
-                {
-                    enterprise_name:'北京开发有限责任公司',
-                    credit_code:'913710007628687892',
-                    tags:[{name:'失信被执行人'}],
-                    approval_status:'行政许可严格办理',
-                    operator:'黄飞鸿',
-                    approval_date:'2017/08/12 13:56',
-                    code:123
-                },
-                {
-                    enterprise_name:'北京开发有限责任公司',
-                    credit_code:'913710007628687892',
-                    tags:[{name:'失信被执行人'}],
-                    approval_status:'行政许可严格办理',
-                    operator:'黄飞鸿',
-                    approval_date:'2017/08/12 13:56',
-                    code:123
-                },
-                {
-                    enterprise_name:'北京开发有限责任公司',
-                    credit_code:'913710007628687892',
-                    tags:[{name:'失信被执行人'}],
-                    approval_status:'行政许可严格办理',
-                    operator:'黄飞鸿',
-                    approval_date:'2017/08/12 13:56',
-                    code:123
-                },
-                {
-                    enterprise_name:'北京开发有限责任公司',
-                    credit_code:'913710007628687892',
-                    tags:[{name:'失信被执行人'}],
-                    approval_status:'行政许可严格办理',
-                    operator:'黄飞鸿',
-                    approval_date:'2017/08/12 13:56',
-                    code:123
-                },
-                {
-                    enterprise_name:'北京开发有限责任公司',
-                    credit_code:'913710007628687892',
-                    tags:[{name:'失信被执行人'}],
-                    approval_status:'行政许可严格办理',
-                    operator:'黄飞鸿',
-                    approval_date:'2017/08/12 13:56',
-                    code:123
-                },
-                {
-                    enterprise_name:'北京开发有限责任公司',
-                    credit_code:'913710007628687892',
-                    tags:[{name:'失信被执行人'}],
-                    approval_status:'行政许可严格办理',
-                    operator:'黄飞鸿',
-                    approval_date:'2017/08/12 13:56',
-                    code:123
-                },
-            ]
-            this.columns = enterpriseColumns
+
+            this.getData()
         },
         computed:{
             labelName:function(){
@@ -348,6 +107,36 @@
                 this.isPersonal = isPersonal
 
             },
+            getData(){
+                this.$Loading.start()
+                let current = Number(this.$route.query.page)
+                if(this.$route.query.page && !isNaN(current)){
+                    this.current =  Number(this.$route.query.page)
+                }
+                let url = `/service/api/credit/operation/enterprise/list?startTime=${new Date().getTime() - 60*60*24*1000*5}&endTime=${new Date().getTime()}&pageNum=${this.current}&limitSize=${this.pageSize}`
+                if(this.$route.query.type === 'person'){
+                    this.isPersonal = true
+                    this.columns = personalColumns
+                    url = `/service/api/credit/operation/person/list?startTime=${new Date().getTime() - 60*60*24*1000*5}&endTime=${new Date().getTime()}&pageNum=${this.current}&limitSize=${this.pageSize}`
+                }
+                else{
+                    this.columns = enterpriseColumns
+                }
+                //
+                axios(url).then(res=>{
+                    let result = util.responseProcessor(res)
+                    if(result.code === '0'){
+                        this.content = result
+                        this.total = result.totalCount
+                    }
+                }).catch(error => {
+                    if (error.response) {
+                        util.responseProcessor(error.response);
+                    }
+                }).finally(()=>{
+                    this.$Loading.finish()
+                })
+            },
             changeType(isPersonal){
                 this.isPersonal = isPersonal
                 this.$refs.searchData.resetFields()
@@ -356,64 +145,23 @@
                 }
                 else{
                     this.$router.push('/approval')
-                }
-            },
-            searchContent(){
-                if(this.isPersonal){
-                    this.columns = this.personalColumns
-                    this.content = [{
-                        name:'张晓多',
-                        certification:'110100198907180902',
-                        tags:[{name:'失信被执行人'},{name:'奖励措施',isPositive:true} ,{name:'违法嫌疑人'},{name:'违法嫌疑人'}],
-                        approval_status:'行政许可严格办理',
-                        operator:'黄飞鸿',
-                        approval_date:'2017/08/12 13:56',
-                        code:111,
-                        operations:'详细信息'
-                    },
-                        {
-                            name:'张晓多',
-                            certification:'110100198907180902',
-                            tags:[{name:'奖励措施',isPositive:true}],
-                            approval_status:'行政许可加速办理',
-                            operator:'黄飞鸿',
-                            approval_date:'2017/08/12 13:56',
-                            code:111
-                        },
-                    ]
-                }
-                else{
-                    this.columns = this.enterpriseColumns
-                    this.content = [{
-                        enterprise_name:'北京开发有限责任公司',
-                        credit_code:'913710007628687892',
-                        tags:[{name:'失信被执行人'},{name:'奖励措施',isPositive:true} ],
-                        approval_status:'行政许可严格办理',
-                        operator:'黄飞鸿',
-                        approval_date:'2017/08/12 13:56',
-                        code:123
-                    },
-                        {
-                            enterprise_name:'北京开发有限责任公司',
-                            credit_code:'913710007628687892',
-                            tags:[{name:'失信被执行人'}],
-                            approval_status:'行政许可严格办理',
-                            operator:'黄飞鸿',
-                            approval_date:'2017/08/12 13:56',
-                            code:123
-                        },
 
-                    ]
                 }
+                this.getData()
             },
+
             search(){
-                this.content = []
                 this.$refs.searchData.validate((valid) => {
                     if (valid) {
-                        this.searchContent()
+                         if(!this.isLoading){
+                             this.searchContent()
+                         }
+                         else{
+                             this.$Message.warn('正在查询请稍后')
+                         }
                     }
                     else{
-                        this.$Message.error('请填写必要信息')
+                        this.$Message.error('查询信息不正确')
                     }
                 });
 
@@ -423,6 +171,7 @@
 
 </script>
 <style rel="stylesheet/less" lang="less">
+@import "./animate";
     .approval-board {
         padding: 0  0 24px 0;
         > .searcher {
@@ -453,7 +202,6 @@
             }
             >.approval-content{
                 margin:0 auto;
-               // width: 800px;
                 .active{
                     left: 61px;
                    margin: 0 auto;
@@ -499,20 +247,24 @@
                 .approval-btn{
                     width: 120px;
                     height: 36px;
-                    line-height: 36px;
+                    line-height: 40px;
                     display: inline-block;
                     font-size: 14px!important;
                     background-color: #EB4449;
                     color: white;
                     cursor: pointer;
-                    border-top-right-radius: 3px!important;
-                    border-bottom-right-radius: 3px!important;
+                    border: 0;
+                    border-radius: 5px 5px;
                     i{
                         margin-right: 2px;
-                        font-size: 20px!important;
+                        font-size: 16px!important;
                         position: relative;
                         top:2px;
                     }
+                }
+                .approval-btn-loading{
+                    background: rgba(
+                            235, 68, 73,0.5);
                 }
             }
         }
@@ -574,6 +326,7 @@
 
             }
             >.approval-result-content{
+                position: relative;
                 min-height: 481px;
             }
         }

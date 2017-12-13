@@ -4,32 +4,29 @@
         <div>输入关键字搜索审批记录</div>
     </div>
     <div v-else-if="hasContent" class="has-result-board" >
-        <i-table :data="currentRows" :columns="columns"  ></i-table>
+        <i-table :data="this.content.obj" :columns="columns"  ></i-table>
         <div class="pagination">
-            <Page :total="total" :current="current" :pageSize="pageSize" @on-change="changePage" show-elevator></Page>
+            <Page :total="total" :current="Number(current)+1" :pageSize="pageSize" @on-change="changePage" show-elevator ></Page>
         </div>
     </div>
     <div v-else class="init-board" >
         <img :src="emptyIcon">
         <div>没有查询到满足条件的记录！请重新输入关键字查看记录信息！</div>
     </div>
+
 </template>
 <script>
     export default {
-        props:['content','columns','isPersonal'],
+        props:['content','columns','isPersonal','pageSize','current','total','callback'],
         data(){
             return {
                 searchIcon:require('../search/search_icon.png'),
                 emptyIcon:require('../search/emptystate_icon.png'),
-                current:1,
-                pageSize:5
+
             }
         },
         created(){
-            let current = Number(this.$route.query.page)
-            if(this.$route.query.page && !isNaN(current)){
-                this.current = current
-            }
+
         },
         computed:{
             isInit(){
@@ -41,28 +38,23 @@
                 }
             },
             hasContent(){
-                if(this.content.length !== 0 && this.columns.length !== 0){
+                if(this.content.obj && this.content.obj.length !== 0 && this.columns.length !== 0){
                     return true
                 }
                 else{
                     return false
                 }
-            },
-            total(){
-                return this.content.length
-            },
-            currentRows(){
-                return this.content.slice(this.current-1,this.pageSize)
             }
         },
         methods:{
             changePage(i){
-                this.current = i
                 if(this.isPersonal){
-                    this.$router.push(`/approval?type=person&page=${i}`)
+                    this.$router.push(`/approval?type=person&page=${i-1}`)
+                    this.callback()
                 }
                 else{
-                    this.$router.push(`/approval?page=${i}`)
+                    this.$router.push(`/approval?page=${i-1}`)
+                    this.callback()
                 }
             }
         }
@@ -75,6 +67,7 @@
 
     }
     .has-result-board{
+        position: relative;
         .pagination{
             margin: 20px auto 0 auto;
             text-align: center;
