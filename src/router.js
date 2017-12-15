@@ -27,7 +27,7 @@ const routers = [
     component: Components.Search
   },
   {
-    path: '/:from?/detail/:pid/:type?',
+    path: '/:from?/detail/:pid/:type?/:dealId?',
     meta: {
       requireAuth: true,
       title: '主体详情'

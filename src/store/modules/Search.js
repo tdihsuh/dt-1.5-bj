@@ -107,7 +107,6 @@ const getters = {
       let data = []
 
       for (let memo of subject) {
-        console.log(memo.time)
         let tmp = {
           title: memo.name,
           accountTime: {name: '惩戒认定时间：', content: util.parseDate(memo.time)},

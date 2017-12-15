@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "predev": "webpack  --color --config  webpack.dev.config.js",
+    "predev": "webpack  --color --profile --hot --config  webpack.dev.config.js",
     "dev": "cross-env NODE_ENV=development node server.js",
     "prestart": "webpack  --config webpack.prod.config.js",
     "start": "cross-env NODE_ENV=production node server.js"

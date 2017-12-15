@@ -75,12 +75,10 @@
         let endDate = this.searchData.endDate
         if (startDate > endDate) {
           callback(new Error('开始时间不能大于结束时间'))
-        }
-        else {
+        } else {
           if ((endDate.getTime() - startDate.getTime()) / (60 * 60 * 24 * 1000) > 5) {
             callback(new Error('查询范围不能超过5天'))
-          }
-          else {
+          } else {
             callback()
           }
         }
@@ -91,14 +89,14 @@
         isFocus: false,
         isLoading: false,
         searchData: {
-          startDate: (new Date(new Date().getTime() - 60 * 60 * 24 * 1000 * 5)).Format('yyyy年MM月dd日'),
-          endDate: new Date().Format('yyyy年MM月dd日')
+          startDate: (new Date(new Date().getTime() - 60 * 60 * 24 * 1000 * 5)),
+          endDate: new Date()
         },
         iconImg: require('../../images/title_icon.png'),
         content: {},
         columns: [],
         current: 0,
-        pageSize: 2,
+        pageSize: 6,
         total: 0,
         rules: {
           date: [{validator: checkDate, trigger: 'change'}]
@@ -106,32 +104,39 @@
       }
     },
     created () {
-
       this.getData()
     },
     computed: {
       labelName: function () {
-        return this.isPersonal ?
-          {name: '姓名', code: '证件号', tip: '请输入姓名', codeTip: '请输入证件号'} :
-          {name: '企业名称', code: '统一信用代码', tip: '请输入企业名称', codeTip: '请输入社会统一信用代码'}
+        return this.isPersonal ? {name: '姓名', code: '证件号', tip: '请输入姓名', codeTip: '请输入证件号'} : {name: '企业名称', code: '统一信用代码', tip: '请输入企业名称', codeTip: '请输入社会统一信用代码'}
       }
     },
     methods: {
       setType (isPersonal) {
         this.isPersonal = isPersonal
-
       },
       getData () {
         this.$Loading.start()
         let current = Number(this.$route.query.page)
         if (this.$route.query.page && !isNaN(current)) {
           this.current = Number(this.$route.query.page)
+        } else {
+          this.current = 0
         }
-        let url = `/service/api/credit/operation/enterprise/list?startTime=${new Date().getTime() - 60 * 60 * 24 * 1000 * 5}&endTime=${new Date().getTime()}&pageNum=${this.current}&limitSize=${this.pageSize}`
+        let data = Object.assign({}, this.searchData)
+        data.startDate = new Date(data.startDate).getTime()
+        data.endDate = new Date(data.endDate).getTime()
+        let queryString = ''
+        for (let key in data) {
+          if (data[key]) {
+            queryString += `${key}=${data[key]}&`
+          }
+        }
+        let url = `/service/api/credit/operation/enterprise/list?` + queryString + `pageNum=${this.current}&limitSize=${this.pageSize}`
         if (this.$route.query.type === 'person') {
           this.isPersonal = true
           this.columns = personalColumns
-          url = `/service/api/credit/operation/person/list?startTime=${new Date().getTime() - 60 * 60 * 24 * 1000 * 5}&endTime=${new Date().getTime()}&pageNum=${this.current}&limitSize=${this.pageSize}`
+          url = `/service/api/credit/operation/person/list?` + queryString + `pageNum=${this.current}&limitSize=${this.pageSize}`
         }
         else {
           this.columns = enterpriseColumns
@@ -156,8 +161,7 @@
         this.$refs.searchData.resetFields()
         if (this.isPersonal) {
           this.$router.push('/approval?type=person')
-        }
-        else {
+        } else {
           this.$router.push('/approval')
 
         }
@@ -168,21 +172,23 @@
         this.$refs.searchData.validate((valid) => {
           if (valid) {
             if (!this.isLoading) {
-              this.searchContent()
-            }
-            else {
+              this.current = 0
+              if (this.$route.query.page) {
+                let route = this.$route
+                route.query.page = 0
+                this.$router.push(route)
+              }
+              this.getData()
+            } else {
               this.$Message.warn('正在查询请稍后')
             }
-          }
-          else {
+          } else {
             this.$Message.error('查询信息不正确')
           }
         })
-
       }
     }
   }
-
 </script>
 <style rel="stylesheet/less" lang="less">
   @import "./animate";

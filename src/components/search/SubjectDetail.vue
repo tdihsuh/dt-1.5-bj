@@ -4,15 +4,15 @@
             <span class="crumbs">
                 <img :src="pathIcon" alt=""><!--
                 --><span class="crumbs-text">您所在的位置：<router-link to="/search">奖惩查询</router-link> > 详情</span></span>
-      <i-button type="primary" icon="compose" @click="feedbackOpen=true" class="feedback-btn">处理反馈</i-button>
-
+      <i-button type="primary" icon="compose" @click="prevPage" class="feedback-btn" v-if="hasFeedback">返回</i-button>
+      <i-button type="primary" icon="compose" @click="feedbackOpen=true" class="feedback-btn" v-else>处理反馈</i-button>
     </div>
     <!--如果是审批记录则为返回按钮-->
     <div class="feed-back-unit clear" v-if="from === 'approval'">
             <span class="crumbs">
                 <img :src="pathIcon" alt=""><!--
                 --><span class="crumbs-text">您所在的位置：<router-link to="/approval">审批记录</router-link> > 详情</span></span>
-      <Button type="primary" icon="compose" @click="prevPage" class="feedback-btn">返回</Button>
+      <i-button type="primary" icon="compose" @click="prevPage" class="feedback-btn">返回</i-button>
     </div>
 
     <!--//如果是办事人员则为反馈按钮-->
@@ -84,11 +84,17 @@
   import util from '../../lib/util'
 
   export default {
+    beforeCreate () {
+      if (this.$route.params.pid === 'null' || this.$route.params.type === 'null') {
+        this.$Message.warning('该记录信息错误，无法查看详细信息')
+        window.history.go(-1)
+      }
+    },
     created () {
-      if (this.$route.params.type === 'person') {
+      if (this.$route.params.type === 'person' && this.$route.params.pid !== 'null') {
         this.setPersonal(true)
         this.fetchPersonDetials(this.$route.params.pid)
-      } else {
+      } else if (this.$route.params.type === 'enterprise' && this.$route.params.pid !== 'null') {
         this.setPersonal(false)
         this.fetchEnterpriseDetials(this.$route.params.pid)
       }
@@ -100,6 +106,7 @@
         sealImg: require('./seal.png'),
         isDisplay: false,
         feedbackOpen: false,
+        hasFeedback: false,
         from: '',
         rules: {
           feedbackContent: [
@@ -147,7 +154,7 @@
               console.log(result.obj)
               if (result.code === '0') {
                 this.$Message.info('反馈成功')
-                this.prevPage()
+                this.hasFeedback = true
               }
               else {
                 this.$Message.info('反馈失败')

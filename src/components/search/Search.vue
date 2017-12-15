@@ -67,7 +67,6 @@
     let htmlArray = []
     console.log(row)
     let tags = row.tagList
-
     if (tags.length > 3) {
       tags.slice(0, 3).map(tag => {
         let hTag = h('span', {
@@ -204,7 +203,6 @@
           if (this.isPersonal) {
             this.searchPerson(this.key)
           } else {
-
             this.searchEnterprise(this.key)
           }
         } else {

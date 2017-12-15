@@ -95,7 +95,14 @@ let enterpriseColumns = [
   {
     title: '处理日期',
     key: 'createTime',
-    align: 'center'
+    align: 'center',
+    render: (h, params) => {
+      let date = ''
+      if (params.row.createTime) {
+        date = new Date(params.row.createTime).Format('yyyy/MM/dd hh:mm:ss')
+      }
+      return h('span', {}, date)
+    }
   },
   {
     title: '操作',
@@ -104,7 +111,7 @@ let enterpriseColumns = [
     render: (h, params) => {
       return h('router-link', {
         props: {
-          to: `/approval/detail/${params.row.code}/enterprise`
+          to: `/approval/detail/${params.row.eid}/enterprise/${params.row.id}`
         }
       }, '详细信息')
     }
@@ -119,7 +126,7 @@ let personalColumns = [
   },
   {
     title: '身份证号',
-    key: 'certification',
+    key: 'identityCard',
     align: 'center'
   },
   {
@@ -130,18 +137,33 @@ let personalColumns = [
   },
   {
     title: '审批处理结果',
-    key: 'approval_status',
-    align: 'center'
+    key: 'dealType',
+    align: 'center',
+    render: (h, params) => {
+      let type = '行政许可严格办理'
+      if (params.row.dealType === '1') {
+        type = '行政许可加速审核'
+      }
+      return h('span', {props: {}, style: {'display': 'block', 'margin': '5px 0'}}, type)
+    }
   },
   {
     title: '处理人',
-    key: 'operator',
+    key: 'operatorName',
     align: 'center'
   },
   {
     title: '处理日期',
-    key: 'approval_date',
-    align: 'center'
+    key: 'createTime',
+    align: 'center',
+    render: (h, params) => {
+      let date = ''
+      if (params.row.createTime) {
+        date = new Date(params.row.createTime).Format('yyyy/MM/dd hh:mm:ss')
+      }
+      return h('span', {
+      }, date)
+    }
   },
   {
     title: '操作',
@@ -150,7 +172,7 @@ let personalColumns = [
     render: (h, params) => {
       return h('router-link', {
         props: {
-          to: `/approval/detail/${params.row.code}/person`
+          to: `/approval/detail/${params.row.pid}/person/${params.row.id}`
         }
       }, '查看详细')
     }
