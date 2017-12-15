@@ -2,19 +2,15 @@
   <div class="item-list-wrapper">
     <ul class="item-list clear" v-for="o in list" :style="listStyle">
       <li v-for="item in o " class="clear">
-        <span class="item-name">{{ item.name }}</span><span class="item-content">{{ item.content }}</span>
+        <span class="item-name">{{ item.name }}</span><span class="item-content">{{ item.content}}</span>
       </li>
     </ul>
   </div>
 </template>
 <script>
   export default {
-    props: ['list', 'listStyle'],
-    created () {
-
-    }
+    props: ['list', 'listStyle']
   }
-
 </script>
 <style rel="stylesheet/less" lang="less" scoped>
   .item-list {

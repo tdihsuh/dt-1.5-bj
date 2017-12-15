@@ -4,6 +4,7 @@ import axios from 'axios/index'
 const state = {
   enterpriseInfo: [],
   isPersonal: false,
+  isLoading: false,
   personInfo: [],
   enterpriseDetails: {},
   personDetails: {}
@@ -13,6 +14,9 @@ const state = {
 const getters = {
   enterpriseInfo: (state, getters) => {
     return state.enterpriseInfo
+  },
+  isLoading: (state, getters) => {
+    return state.isLoading
   },
   personInfo: (state, getters) => {
     return state.personInfo
@@ -86,14 +90,21 @@ const getters = {
     }
     if (subject) {
       let data = []
-      let list = subject
-      list.map(item => {
-        data.push({
-          name: item.key,
-          content: item.value
-        })
-      })
-      return [data]
+      for (let details of subject) {
+        let tmp = {
+          title: details.eventName
+        }
+        let content = []
+        for (let d of details.eventDetail){
+          content.push({
+            name: d.key, content: d.value
+          })
+        }
+        tmp.content = [content]
+        data.push(tmp)
+      }
+      console.log(data)
+      return data
     } else {
       return []
     }
@@ -167,9 +178,10 @@ const actions = {
     })
   },
   fetchEnterpriseDetials (store, eid) {
+    this.isLoading = true
     axios.get(`/service/api/credit/enterpriseDetail?eid=${eid}`).then(res => {
+      this.isLoading = false
       let result = util.responseProcessor(res)
-      console.log(result.obj)
       if (result.code === '0') {
         store.commit('setEnterpriseDetails', result.obj)
       }
@@ -180,9 +192,10 @@ const actions = {
     })
   },
   fetchPersonDetials (store, eid) {
+    this.isLoading = true
     axios.get(`/service/api/credit/personDetail?pid=${eid}`).then(res => {
       let result = util.responseProcessor(res)
-      console.log(result.obj)
+      this.isLoading = false
       if (result.code === '0') {
         store.commit('setPersonDetails', result.obj)
       }

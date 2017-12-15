@@ -13,7 +13,10 @@
         <div class="search-body">
           <input v-model="key" class="search-input" autofocus="true" :placeholder="tip" @focus="isFocus=true"
                  @blur="isFocus=false" @keyup.enter="search"><!--
-                    --><span class="search-btn" @click="search"><Icon type="ios-search-strong"></Icon>查询</span>
+                    --><span class="search-btn" @click="search"><Icon type="ios-search-strong" v-if="!isLoading()"></Icon><Icon
+          type="load-c" class="load" v-if="isLoading()"></Icon>
+                                <span v-if="!isLoading()">查询</span>
+        </span>
         </div>
       </div>
     </div>
@@ -31,7 +34,7 @@
   import SearchBoard from './SearchBoard.vue'
   import DetailsLink from './DetailsLink.vue'
   import Vue from 'vue'
-  import {mapActions} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
 
   Vue.component('DetailsLink', DetailsLink)
   Vue.component('SearchBoard', SearchBoard)
@@ -65,7 +68,6 @@
   let renderTagsUnit = (h, params) => {
     let row = params.row
     let htmlArray = []
-    console.log(row)
     let tags = row.tagList
     if (tags.length > 3) {
       tags.slice(0, 3).map(tag => {
@@ -165,8 +167,7 @@
       if (this.$route.query.type === 'person') {
         this.isPersonal = true
         this.columns = this.personalColumns
-      }
-      else {
+      } else {
         this.columns = this.enterpriseColumns
       }
     },
@@ -180,9 +181,9 @@
       ...mapActions([
         'searchEnterprise', 'searchPerson'
       ]),
+      ...mapGetters(['isLoading']),
       setType (isPersonal) {
         this.isPersonal = isPersonal
-
       },
       changeType (isPersonal) {
         this.isPersonal = isPersonal
@@ -190,8 +191,7 @@
           this.columns = this.personalColumns
           this.key = ''
           this.$router.push('/search?type=person')
-        }
-        else {
+        } else {
           this.columns = this.enterpriseColumns
           this.key = ''
           this.$router.push('/search')

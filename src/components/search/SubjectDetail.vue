@@ -42,8 +42,8 @@
       <div class="subject-name">
         <span class="entity-name">{{ isPersonal()?personDetails().info ? personDetails().info.name:'': enterpriseDetails().info ? enterpriseDetails().info.name:'' }}</span>
         <ul class="result" v-if="from === 'approval'">
-          <li><span class="title">处理结果：</span><span class="desc">行政许可严格办理</span></li>
-          <li><span class="title">处理说明：</span><span class="desc">为失信被执行人，所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办理所以拒绝办</span>
+          <li><span class="title">处理结果：</span><span class="desc">{{this.feedBack.dealType == '0'?'行政许可严格办理':'行政许可加速审核'}}</span></li>
+          <li><span class="title">处理说明：</span><span class="desc">{{this.feedBack.description == null?'(无特别说明)':this.feedBack.description}}</span>
           </li>
         </ul>
         <img :src="sealImg" class="seal" v-if="from === 'approval'">
@@ -69,7 +69,11 @@
     <div class="subject-info-more info-panel" id="more-info">
       <PanelTitle title="奖惩详细信息"></PanelTitle>
       <transition name="slide-fade">
-        <ItemList :list="subjectDesc()" v-if="isDisplay" class="can-close"></ItemList>
+        <div v-for="o in subjectDesc()" v-if="isDisplay" class="can-close">
+          <SecondaryTitle :title="o.title"></SecondaryTitle>
+          <ItemList :list="o.content"
+                    listStyle="margin: 7px 40px;border:1px solid #e0e0e0;border-radius:4px;padding:10px 30px"></ItemList>
+        </div>
       </transition>
       <div class="display-more" @click="expand()" id="expand-op">
                 <span class="display-more-text"><span v-if="!isDisplay">显示更多</span><!--
@@ -98,7 +102,24 @@
         this.setPersonal(false)
         this.fetchEnterpriseDetials(this.$route.params.pid)
       }
+      // /api/credit/operation/person/detail?id=1
+      let feedBackUrl = `/service/api/credit/operation/enterprise/detail?id=${this.$route.params.dealId}`
       this.from = this.$route.params.from
+      if (this.from === 'approval') {
+        if (this.$route.params.type === 'person') {
+          feedBackUrl = `/service/api/credit/operation/person/detail?id=${this.$route.params.dealId}`
+        }
+        axios.get(feedBackUrl).then(res => {
+          let result = util.responseProcessor(res)
+          if (result.code === '0') {
+            this.feedBack = result.obj
+          }
+        }).catch(error => {
+          if (error.response) {
+            util.responseProcessor(error.response)
+          }
+        })
+      }
     },
     data () {
       return {
@@ -115,6 +136,10 @@
         },
         formItem: {feedbackResult: '0', description: ''},
         moreImg: require('./more.png'),
+        feedBack: {
+          description: '',
+          dealType: ''
+        }
       }
     },
     methods: {
@@ -151,10 +176,9 @@
             }
             axios.post(url, null, config).then(res => {
               let result = util.responseProcessor(res)
-              console.log(result.obj)
               if (result.code === '0') {
                 this.$Message.info('反馈成功')
-                this.hasFeedback = true
+                this.hasFeedback = true // window.open(`/service/api/credit/operation/download?type=${this.isPersonal() ? 1 : 2}&id=${this.$route.params.pid}`)
               }
               else {
                 this.$Message.info('反馈失败')

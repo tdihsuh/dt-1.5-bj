@@ -26,7 +26,6 @@ util.title = function (title) {
 util.responseProcessor = function (res) {
   if (res) {
     let httpCode = res.status
-    console.log(`Server response Code:${httpCode}`)
     if (httpCode >= 200 && httpCode <= 299) {
       // console.log(res)
       if (res.data.code === '1001') {
