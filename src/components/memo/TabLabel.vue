@@ -1,7 +1,7 @@
 <template>
   <div class="tab-label">
     <span class="tab-text"><i class="iconfont" :class="icon"></i>&nbsp;{{ text }}</span>
-    <Badge :count="count"></Badge>
+    <!--<Badge :count="count"></Badge>-->
   </div>
 </template>
 <script>

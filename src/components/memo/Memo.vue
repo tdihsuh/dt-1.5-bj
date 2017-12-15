@@ -7,6 +7,9 @@
       <TabPane :label="labelUnpublish" name="unpublish">
         <MemoTable :columns="columnsUnpublish" :data='dataUnpublish' :is-publish="false"></MemoTable>
       </TabPane>
+      <TabPane :label="labelPending" name="pending">
+        <MemoTable :columns="columnsUnpublish" :data='dataUnpublish' :is-publish="false"></MemoTable>
+      </TabPane>
       <TabPane :label="labelAdd" name="add">
         <MemoForm :is-add="true"></MemoForm>
       </TabPane>
@@ -44,88 +47,25 @@
   import TabLabel from './TabLabel.vue'
   import MemoTable from './MemoTable.vue'
   import MemoForm from './MemoForm.vue'
-
+  import axios from 'axios'
+  import Meta from './Meta'
   Vue.component('TabLabel', TabLabel)
   Vue.component('MemoTable', MemoTable)
   Vue.component('MemoForm', MemoForm)
-  let data = [{
-    memo_name: '失信企业协同监管',
-    sponsor: '省发改委',
-    joint_count: 17,
-    operator: 'admin001',
-    publish_date: '2017/08/12 13:56:00',
-    id: 2
-  },
-    {
-      memo_name: '失信企业协同监管',
-      sponsor: '省发改委',
-      joint_count: 17,
-      operator: 'admin001',
-      publish_date: '2017/08/12 13:56:00',
-      id: 1
-    }]
-  let columnBase = [
-    {
-      title: '备忘录名称',
-      key: 'memo_name',
-      align: 'center'
-    },
-    {
-      title: '发起单位',
-      key: 'sponsor',
-      align: 'center'
-    },
-    {
-      title: '联合部委数量',
-      key: 'joint_count',
-      align: 'center'
-    },
-    {
-      title: '发布用户',
-      key: 'operator',
-      align: 'center'
-    },
-    {
-      title: '发布时间',
-      key: 'publish_date',
-      align: 'center'
-    }
-  ]
+  let data = Meta.data
 
   export default {
+
     data () {
       return {
         isShowDetails: false,
         isShowUnpublish: false,
         mid: '',
-        labelPublish: (h) => {
-          return h('TabLabel', {
-            props: {
-              count: 2,
-              text: '已发布备忘录',
-              icon: 'icon-yifabu'
-            }
-          })
-        },
-        labelUnpublish: (h) => {
-          return h('TabLabel', {
-            props: {
-              count: 0,
-              text: '暂存备忘录',
-              icon: 'icon-zancun'
-            }
-          })
-        },
-        labelAdd: (h) => {
-          return h('TabLabel', {
-            props: {
-              count: 0,
-              text: '新增备忘录',
-              icon: 'icon-xinzeng'
-            }
-          })
-        },
-        columnsPublish: columnBase.concat({
+        labelPublish: Meta.labelPublish,
+        labelUnpublish: Meta.labelUnpublish,
+        labelPending: Meta.labelPending,
+        labelAdd: Meta.labelAdd,
+        columnsPublish: Meta.columnBase.concat({
           title: '操作',
           key: 'id',
           align: 'center',
@@ -144,7 +84,7 @@
             }, '查看详细')
           }
         }),
-        columnsUnpublish: columnBase.concat({
+        columnsUnpublish: Meta.columnBase.concat({
           title: '操作',
           key: 'id',
           align: 'center',
@@ -184,7 +124,6 @@
         ]]
       }
     },
-    computed: {},
     created () {
       let status = this.$route.query.status ? this.$route.query.status : 'publish'
 
