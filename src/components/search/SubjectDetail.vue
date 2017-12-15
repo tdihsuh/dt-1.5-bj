@@ -157,7 +157,6 @@
               dealType: this.formItem.feedbackResult,
               description: this.formItem.description
             }
-
             if (this.isPersonal()) {
               url = '/service/api/credit/operation/person'
               data = Object.assign(data, {pid: this.$route.params.pid})

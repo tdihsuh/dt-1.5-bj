@@ -1,6 +1,7 @@
 <template>
   <div class="memo-form-div">
-    <i-form :model="memo" :label-width="160" label-position="left">
+    <SecondaryTitle title="备忘录基本信息：" style="padding: 10px 0" ></SecondaryTitle>
+    <i-form :model="memo" :label-width="160" label-position="left" class="memo-form">
       <FormItem label="联合惩戒备忘录：">
         <i-input v-model="memo.name" placeholder="请输入备忘录名称" class="input-item"></i-input>
       </FormItem>
@@ -18,35 +19,38 @@
       <FormItem label="标签：">
         <i-input v-model="memo.tag" placeholder="请输入标签" class="input-item"></i-input>
       </FormItem>
-    </i-form>
-    <div class="saved-measures-list">
-      <label>奖励/惩戒措施：</label>
-      <Row :gutter="16">
-        <Col span="6" v-for="(measure,index) in memo.savedMeasures" :key="index">
-        <div class="saved-measure">
-          {{ departmentList[measure.department+''] }}
-        </div>
-        </Col>
-      </Row>
-    </div>
-    <i-form :model="measure" :label-width="160" label-position="left">
-      <div class="measure">
-        <FormItem label="措施：">
-          <i-input v-model="measure.measureName" placeholder="请输入奖励／惩戒措施"></i-input>
-        </FormItem>
-        <FormItem label="法律及政策依据：">
-          <i-input v-model="measure.measureBy" placeholder="请输入法律及政策依据"></i-input>
-        </FormItem>
-        <FormItem label="实施部门：">
-          <i-select v-model="measure.department" filterable placeholder="请选择或输入部门关键字进行搜索">
-            <Option v-for="(item,key) in departmentList" :value="item" :key="key"> {{ item }}</Option>
-          </i-select>
-        </FormItem>
-        <div class="add-measure">
-          <Button type="ghost" class="add-measure-btn" size="small" icon="plus-round">添加</Button>
-        </div>
+      <div style="text-align:center;padding-top: 20px">
+        <i-button type="primary" @click="saveBaseInfo()" v-if="!hasSaveBaseInfo">保存基本信息</i-button>
       </div>
-
+    </i-form>
+    <div class="saved-measures-list" v-if="hasSaveBaseInfo">
+      <SecondaryTitle title="奖励/惩戒措施：" style="padding: 10px 0" ></SecondaryTitle>
+      <Collapse accordion style="margin-bottom: 15px">
+        <Panel v-for="(measure,index) in memo.savedMeasures" :key="departmentList[measure.department]" :name="measure.department+''" v-if="measure.measures.length>0" >
+         <div class="title"><span class="department-name">{{ departmentList[measure.department+''] }}</span> <span class="counter">{{measure.measures.length}}</span></div>
+           <ul class="measure-ul" slot="content">
+            <i-table :columns="columns" :data="measure.measures"></i-table>
+        </ul>
+        </Panel>
+      </Collapse>
+      <i-form :model="measure" :label-width="160" label-position="left" class="memo-form">
+        <div class="measure">
+          <FormItem label="措施：">
+            <i-input v-model="measure.measureName" placeholder="请输入奖励／惩戒措施"></i-input>
+          </FormItem>
+          <FormItem label="法律及政策依据：">
+            <i-input v-model="measure.measureBy" placeholder="请输入法律及政策依据"></i-input>
+          </FormItem>
+          <FormItem label="实施部门：">
+            <i-select v-model="measure.department" filterable placeholder="请选择或输入部门关键字进行搜索">
+              <Option v-for="(item,key) in departmentList" :value="item" :key="key"> {{ item }}</Option>
+            </i-select>
+          </FormItem>
+          <div class="add-measure">
+            <Button type="ghost" class="add-measure-btn" size="small" icon="plus-round">添加</Button>
+          </div>
+        </div>
+      </i-form>
       <div class="add-form-footer" v-if="isAdd">
         <Button type="error">暂存备忘录</Button>
         <Button type="primary">提交审核</Button>
@@ -56,7 +60,8 @@
         <Button type="primary">提交审核</Button>
         <Button type="ghost" @click="closeHandler">返回</Button>
       </div>
-    </i-form>
+    </div>
+
   </div>
 </template>
 <script>
@@ -65,51 +70,43 @@
     data () {
       return {
         departmentList: require('../common/departments'),
+        hasSaveBaseInfo:false,
+        columns:[
+          {
+            title: '措施',
+            key: 'measureName',
+            align: 'center'
+          },
+          {
+            title: '法律及政策依据',
+            key: 'measureBy',
+            align: 'center'
+          },
+          {
+            title: '操作',
+            key: 'identityCard',
+            align: 'center'
+          }
+        ],
         memo: {
           type: 0,
           departments: [],
           savedMeasures: [
             {
-              measureName: '测试措施',
-              measureBy: '必须严格依照法律规定的权限和程序进行，不得与法律相违背。行政机关实施行政管理，应当依照法律、法规、规章的规定进行。这里所依据的法律，既包括实体法，也包括程序法',
+              measures:[
+                {measureName: '测试措施',
+                  measureBy: '必须严格依照法律规定的权限和程序进行，不得与法律相违背。行政机关实施行政管理，应当依照法律、法规、规章的规定进行。这里所依据的法律，既包括实体法，也包括程序法'}
+                  ],
               department: 1,
-              tips: false
             },
             {
-              measureName: '测试措施',
-              measureBy: '法律依据',
               department: 2,
-              tips: false
-            },
-            {
-              measureName: '测试措施',
-              measureBy: '必须严格依照法律规定的权限和程序进行，不得与法律相违背。行政机关实施行政管理，应当依照法律、法规、规章的规定进行。这里所依据的法律，既包括实体法，也包括程序法',
-              department: 3,
-              tips: false
-            },
-            {
-              measureName: '测试措施',
-              measureBy: '法律依据',
-              department: 4,
-              tips: false
-            },
-            {
-              measureName: '测试措施',
-              measureBy: '法律依据',
-              department: 6,
-              tips: false
-            },
-            {
-              measureName: '测试措施',
-              measureBy: '法律依据',
-              department: 27,
-              tips: false
-            },
-            {
-              measureName: '测试措施',
-              measureBy: '法律依据',
-              department: 20,
-
+              measures:[
+                {measureName: '测试措施', measureBy: '法律依据'},
+                {measureName: '测试措施', measureBy: '法律依据'},
+                {measureName: '测试措施', measureBy: '法律依据'},
+                {measureName: '测试措施', measureBy: '法律依据'}
+                ]
             }
           ]
         },
@@ -118,10 +115,13 @@
     },
     methods: {
       addMeasure (e) {
-        this.memo.measures.push({})
+        // this.memo.measures.push({})
       },
       removeMeasure (i) {
-        this.memo.measures.splice(i, 1)
+        // this.memo.measures.splice(i, 1)
+      },
+      saveBaseInfo(){
+        this.hasSaveBaseInfo = true
       }
     }
   }
@@ -131,6 +131,9 @@
   .memo-form-div {
     margin: 0 auto;
     width: 900px;
+    .memo-form{
+        //padding: 15px 0 0 12px;
+    }
     .input-item {
       width: 540px;
     }
@@ -152,25 +155,13 @@
 
     }
     .saved-measures-list {
-      margin: 20px 0;
-      > label {
-        color: #666666;
-        margin: 10px 0;
-        display: block;
-      }
-      .saved-measure {
-        padding: 5px 5px;
-        border: 1px solid #1889e3;
-        justify-content: center;
-        display: flex; /*Flex布局*/
-        align-items: center; /*指定垂直居中*/
-        margin-bottom: 16px;
-        font-size: 12px;
-        border-radius: 4px 4px;
-        color: #1889e3;
-        height: 30px;
-        cursor: pointer;
-        box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+    padding: 15px 0;
+      .title{
+        display: inline-block;
+        width: 800px;
+        >.counter{
+          float: right;
+        }
       }
     }
     .measure {
