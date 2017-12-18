@@ -103,7 +103,7 @@ const getters = {
         tmp.content = [content]
         data.push(tmp)
       }
-      console.log(data)
+      //console.log(data)
       return data
     } else {
       return []

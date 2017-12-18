@@ -27,7 +27,6 @@ util.responseProcessor = function (res) {
   if (res) {
     let httpCode = res.status
     if (httpCode >= 200 && httpCode <= 299) {
-      // console.log(res)
       if (res.data.code === '1001') {
         let url = location.href
         if (url.startsWith('/login')) {

@@ -178,6 +178,7 @@
               if (result.code === '0') {
                 this.$Message.info('反馈成功')
                 this.hasFeedback = true // window.open(`/service/api/credit/operation/download?type=${this.isPersonal() ? 1 : 2}&id=${this.$route.params.pid}`)
+                window.open(`/service/api/credit/operation/download?type=${this.isPersonal()?0:1}&id=${result.obj}`,'_blank')
               }
               else {
                 this.$Message.info('反馈失败')
