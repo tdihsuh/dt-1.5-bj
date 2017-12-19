@@ -1,5 +1,4 @@
 import Components from './components/index'
-import Test from './components/memo/Test'
 const routers = [
 
   {
