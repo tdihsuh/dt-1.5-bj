@@ -8,7 +8,7 @@
         <MemoTable :columns="columnsUnpublish" :data='dataUnpublish' :is-publish="false"></MemoTable>
       </TabPane>
       <TabPane :label="labelPending" name="pending">
-        <MemoTable :columns="columnsUnpublish" :data='dataUnpublish' :is-publish="false"></MemoTable>
+        <MemoTable :columns="columnsPending" :data='dataPending' :is-publish="false"></MemoTable>
       </TabPane>
       <TabPane :label="labelAdd" name="add">
         <MemoForm :is-add="true"></MemoForm>
@@ -36,7 +36,15 @@
       <div slot="header" class="details-header">
         失信协同监管
       </div>
-      <MemoForm :is-add="false" :close-handler="handleModal"></MemoForm>
+      <MemoForm :is-add="false" :id="memoId" :close-handler="handleModal"></MemoForm>
+      <div slot="footer">
+      </div>
+    </Modal>
+    <Modal v-model="isShowPending" width="1000px" :styles="{top: '50px'}">
+      <div slot="header" class="details-header">
+        失信协同监管
+      </div>
+      <MemoForm :is-add="false" :id="memoId" :close-handler="handleModal"></MemoForm>
       <div slot="footer">
       </div>
     </Modal>
@@ -44,23 +52,26 @@
 </template>
 <script>
   import Vue from 'vue'
+  import axios from  'axios'
+  import util from '../../lib/util'
   import TabLabel from './TabLabel.vue'
   import MemoTable from './MemoTable.vue'
   import MemoForm from './MemoForm.vue'
-  import axios from 'axios'
   import Meta from './Meta'
+
   Vue.component('TabLabel', TabLabel)
   Vue.component('MemoTable', MemoTable)
   Vue.component('MemoForm', MemoForm)
+
   let data = Meta.data
-
   export default {
-
     data () {
       return {
         isShowDetails: false,
         isShowUnpublish: false,
-        mid: '',
+        isShowPending:false,
+        memoId: undefined,
+        pageSize:10,
         labelPublish: Meta.labelPublish,
         labelUnpublish: Meta.labelUnpublish,
         labelPending: Meta.labelPending,
@@ -105,8 +116,30 @@
             }, '查看详细')
           }
         }),
-        dataPublish: data,
-        dataUnpublish: data,
+        columnsPending: Meta.columnBase.concat({
+          title: '操作',
+          key: 'id',
+          align: 'center',
+          render: (h, params) => {
+            return h('a', {
+              attrs: {
+                class: 'link-details',
+                id: params.row.id
+              },
+              props: {
+                'mid': params.row.id
+              },
+              on: {
+                click: () => {
+                  this.isShowPending = true
+                }
+              }
+            }, '查看详细')
+          }
+        }),
+        dataPublish: [],
+        dataPending: [],
+        dataUnpublish:[],
         list: [[
           {name: '联合惩戒备忘录：', content: '关于重大违法税收案件联合备忘录'},
           {name: '联合奖惩性质：', content: '联合惩戒'},
@@ -124,9 +157,17 @@
         ]]
       }
     },
-    created () {
-      let status = this.$route.query.status ? this.$route.query.status : 'publish'
+    beforeCreate(){
 
+    },
+    created () {
+      let status = this.$route.query.status
+      if(status === 'publish' || status === 'pending' || status === 'unpublish' || status === 'add'){
+        this.getList(this.$route.query.status)
+      }
+      else{
+        this.$router.push(`/memo?status=publish`)
+      }
     },
     computed: {
       status: function () {
@@ -134,7 +175,27 @@
       }
     },
     methods: {
+      getPendingList(){
+        // /api/memo/pending/list
+        axios.get(`/service/api/memo/modify/list?limitSize=${this.pageSize}`).then(res => {
+          let result = util.responseProcessor(res)
+          if (result.code === '0') {
+            this.dataPending = result.obj
+          }
+        }).catch(error => {
+          if (error.response) {
+            util.responseProcessor(error.response)
+          }
+        })
+      },
+      getList(v){
+        if(v === 'pending'){
+          this.getPendingList()
+        }
+      },
       changeTab (v) {
+        this.memoId = undefined
+        this.getList(v)
         this.$router.push(`/memo?status=${v}`)
       },
       openDetails (e) {

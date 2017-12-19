@@ -1,7 +1,7 @@
 /**
  * Created by lijinde on 17-12-15.
  */
-
+let departmentsList = require('../common/departments')
 let data = [{
   memo_name: '失信企业协同监管',
   sponsor: '省发改委',
@@ -19,17 +19,25 @@ let data = [{
 let columnBase = [
   {
     title: '备忘录名称',
-    key: 'memo_name',
+    key: 'name',
     align: 'center'
   },
   {
     title: '发起单位',
-    key: 'sponsor',
-    align: 'center'
+    key: 'relationDepartment',
+    render: (h, params) => {
+      let departments = params.row.relationDepartment
+      let tmp =[]
+      for(let d of departments.split(',')){
+        tmp.push(departmentsList[d])
+      }
+      return h('span', {
+      }, tmp.join())
+    }
   },
   {
     title: '联合部委数量',
-    key: 'joint_count',
+    key: 'relationDepartment',
     align: 'center'
   },
   {
