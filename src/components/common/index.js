@@ -5,9 +5,9 @@ import SecondaryTitle from './SecondaryTitle.vue'
 import ItemList from './ItemList.vue'
 
 export default {
-    MHeader,
-    MFooter,
-    PanelTitle,
-    SecondaryTitle,
-    ItemList
+  MHeader,
+  MFooter,
+  PanelTitle,
+  SecondaryTitle,
+  ItemList
 }

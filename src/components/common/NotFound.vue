@@ -1,45 +1,49 @@
 <template>
   <div class="content">
-    <img :src = "img404">
-    <p>没有找到 <b>{{fullPath}}</b>对应的页面，请检查输入的路径或联系系统管理员进行处理。 <router-link to="/">返回首页</router-link></p>
+    <img :src="img404">
+    <p>没有找到 <b>{{fullPath}}</b>对应的页面，请检查输入的路径或联系系统管理员进行处理。
+      <router-link to="/">返回首页</router-link>
+    </p>
   </div>
 </template>
 <script>
   import imgNotFound from '../../images/not-found.png'
+
   export default {
-      props:['nav'],
-      beforeCreate(){
-          this.$emit("hideNav", false);
-      },
-    data(){
+    props: ['nav'],
+    beforeCreate () {
+      this.$emit('hideNav', false)
+    },
+    data () {
       return {
-        fullPath:this.$route.fullPath,
-        img404:imgNotFound
+        fullPath: this.$route.fullPath,
+        img404: imgNotFound
       }
     }
   }
 
 </script>
 <style lang="less" scoped>
-.not-found-title{
-  font-size:32px;
-  color: #ff3300;
-}
+  .not-found-title {
+    font-size: 32px;
+    color: #ff3300;
+  }
+
   .content {
     padding: 0 20px 20px 20px;
     display: flex;
     min-height: 800px;
-    justify-content:center;
+    justify-content: center;
     flex-direction: column;
     text-align: center;
-    >img{
+    > img {
       width: 300px;
       margin: 30px auto;
     }
 
-    >p{
+    > p {
       font-size: 1.2rem;
-      >b{
+      > b {
         color: #2db7f5;
       }
     }
