@@ -132,11 +132,11 @@
             queryString += `${key}=${data[key]}&`
           }
         }
-        let url = `/service/api/credit/operation/enterprise/list?` + queryString + `pageNum=${this.current}&limitSize=${this.pageSize}`
+        let url = `/service/api/credit/operation/enterprise/list?` + queryString + `pageNum=${this.current}&limitSize=${this.pageSize}&_t=${new Date().valueOf()}`
         if (this.$route.query.type === 'person') {
           this.isPersonal = true
           this.columns = personalColumns
-          url = `/service/api/credit/operation/person/list?` + queryString + `pageNum=${this.current}&limitSize=${this.pageSize}`
+          url = `/service/api/credit/operation/person/list?` + queryString + `pageNum=${this.current}&limitSize=${this.pageSize}&_t=${new Date().valueOf()}`
         }
         else {
           this.columns = enterpriseColumns

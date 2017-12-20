@@ -20,7 +20,7 @@
         <i-input v-model="memoBaseInfo.tag" placeholder="请输入标签(不少于2字)" class="input-item"></i-input>
       </FormItem>
       <div style="text-align:center;padding-top: 20px">
-        <i-button type="primary" @click="saveBaseInfo()" :disabled="!formValid" v-if="!hasId">保存基本信息</i-button>
+        <i-button type="primary" @click="saveBaseInfo(-1)" :disabled="!formValid" v-if="!hasId">保存基本信息</i-button>
       </div>
     </i-form>
     <div class="saved-measures-list" v-if="hasId">
@@ -60,12 +60,12 @@
         </div>
       </i-form>
       <div class="add-form-footer" v-if="isAdd">
-        <Button type="error" @click="saveBaseInfo(-1,'/memo?status=pending')">暂存备忘录</Button>
-        <Button type="primary" @click="saveBaseInfo(0,'/memo?status=pending')">提交审核</Button>
+        <Button type="error" @click="saveBaseInfo(-1)">暂存备忘录</Button>
+        <Button type="primary" @click="saveBaseInfo(0)">提交审核</Button>
       </div>
       <div class="add-form-footer" v-else>
-        <Button type="error">暂存备忘录</Button>
-        <Button type="primary">提交审核</Button>
+        <Button type="error" @click="saveBaseInfo(-1)">暂存备忘录</Button>
+        <Button type="primary" @click="saveBaseInfo(0)">提交审核</Button>
         <Button type="ghost" @click="closeHandler">返回</Button>
       </div>
     </div>
@@ -75,12 +75,13 @@
   import axios from  'axios'
   import util from '../../lib/util'
   export default {
-    props: ['isAdd', 'closeHandler','id'],
+    props: ['isAdd', 'closeHandler','mid','times'],
     data () {
       return {
         departmentList:require('../common/departments'),
         departmentOptions: this.processDepartmentList(),
         memoId:undefined,
+        memoStatus:-1,
         rules:{
         },
         memoBaseInfo:{
@@ -94,30 +95,38 @@
       }
     },
     created(){
-      if(this.$route.query.id){
+      if(this.$route.query.id && this.isAdd){
         this.memoId = this.$route.query.id
         this.getMemoDetails()
       }
       else{
-        if(this.id) {
-          this.memoId = id
-        }
-        else{
           this.memoId = undefined
+      }
+    },
+    watch:{
+      times:function(val, oldVal){
+        this.memoId = undefined
+        this.measure = {}
+        this.memoBaseInfo = {
+          type: "t_0", tag:null, name:null, departments: [],
         }
+        this.memo = {
+          savedMeasures: [
+          ]
+        }
+      },
+      mid:function(val,old){
+        this.memoId = val
+        console.log(val)
+        this.getMemoDetails()
       }
     },
     computed: {
       hasId(){
-        if(this.id){
+        if(this.memoId){
           return true
         }
         else{
-          if(this.$route.query.id){
-            this.memoId = this.$route.query.id
-            return true
-          }
-          else{
             this.measure = {}
             this.memoBaseInfo = {
               type: "t_0", tag:null, name:null, departments: [],
@@ -127,12 +136,11 @@
               ]
             }
             return false
-          }
         }
       },
       formValid:function(){
         if( this.memoBaseInfo.name && this.memoBaseInfo.name.length >= 2
-          && this.memoBaseInfo.tag && this.memoBaseInfo.tag.length >= 2
+          && this.memoBaseInfo.tag && this.memoBaseInfo.tag.length >= 2 && this.memoBaseInfo.tag.length <=6
           && this.memoBaseInfo.departments.length>0 ){
           return true
         }
@@ -168,16 +176,27 @@
         return tmp
       },
       getMemoDetails(){
-        axios.get(`/service/api/memo/detail?id=${this.memoId}`).then(res => {
+        axios.get(`/service/api/memo/detail?id=${this.memoId}&_t=${new Date().valueOf()}`).then(res => {
           let result = util.responseProcessor(res)
+          this.memoBaseInfo.departments = []
           if (result.code === '0') {
-            for(let d of result.obj.relationDepartment.split(',')){
-              this.memoBaseInfo.departments.push('d_'+d)
+            this.memoStatus = result.obj.status
+            if(this.memoStatus > -1){
+              this.$router.push('/memo?status=add')
+             this.$Message.error('该备忘录已经被锁定，无法编辑')
+             this.memoId = undefined
             }
-            this.memoBaseInfo.type = 't_'+result.obj.type
-            this.memoBaseInfo.name = result.obj.name
-            this.memoBaseInfo.tag = result.obj.tags
-            this.memo.savedMeasures = result.obj.departmentItems
+            else{
+              for(let d of result.obj.relationDepartment.split(',')){
+                this.memoBaseInfo.departments.push('d_'+d)
+              }
+              this.memoBaseInfo.type = 't_'+result.obj.type
+              this.memoBaseInfo.name = result.obj.name
+              this.memoBaseInfo.tag = result.obj.tags
+              this.memo.savedMeasures = result.obj.departmentItems
+            }
+
+
           }
         }).catch(error => {
           if (error.response) {
@@ -186,16 +205,12 @@
         })
       },
       deleteMeasure(id){
-        console.log(id)
-        let param = new URLSearchParams()
-        param.append('id', id)
         let config = {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-          },
-          params: param
+          }
         }
-        axios.post('/service/api/memo/department/delete',null,config).then(res => {
+        axios.post(`/service/api/memo/department/delete?id=${id}`,null,config).then(res => {
           let result = util.responseProcessor(res)
           if (result.code === '0') {
             this.$Message.success('删除成功')
@@ -210,18 +225,14 @@
         })
       },
       addMeasure (e) {
-        let param = new URLSearchParams()
-        param.append('memoId', this.memoId)
-        param.append('departmentCode', this.measure.department.replace('d_',''))
-        param.append('measure', this.measure.measureName)
-        param.append('reason', this.measure.measureBy)
         let config = {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-          },
-          params: param
+          }
         }
-        axios.post('/service/api/memo/department/add',null,config).then(res => {
+        axios.post(`/service/api/memo/department/add`+
+          `?memoId=${this.memoId}&departmentCode=${this.measure.department.replace('d_','')}`+
+          `&measure=${encodeURIComponent(this.measure.measureName)}&reason=${encodeURIComponent(this.measure.measureBy)}`,null,config).then(res => {
           let result = util.responseProcessor(res)
           if (result.code === '0') {
             this.measure = {}
@@ -229,42 +240,36 @@
           }
         }).catch(error => {
           if (error.response) {
-
             util.responseProcessor(error.response)
           }
         })
       },
-      removeMeasure (i) {
-        // this.memo.measures.splice(i, 1)
-      },
-      saveBaseInfo(status,to){
-        let param = new URLSearchParams()
+      saveBaseInfo(status){
         let tmp = []
-        let s = status ? status : -1
-        for(let d of [...new Set(this.memoBaseInfo.departments)] ){
+        for(let d of this.memoBaseInfo.departments.unique() ){
           tmp.push(d.replace('d_',''))
         }
-        param.append('name', this.memoBaseInfo.name)
-        param.append('type', this.memoBaseInfo.type.replace('t_',''))
-        param.append('relationDepartment', tmp.join())
-        param.append('tags', this.memoBaseInfo.tag)
-        param.append('status', s)
+        let queryString = `?name=${encodeURIComponent(this.memoBaseInfo.name)}&type=${this.memoBaseInfo.type.replace('t_','')}`+
+          `&relationDepartment=${tmp.join()}&tags=${encodeURIComponent(this.memoBaseInfo.tag)}&status=${status}`
         // 修改备忘录
         if(this.memoId){
-          param.append('id', this.memoId)
+          queryString +=`&id=${this.memoId}`
         }
+
         let config = {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
           },
-          params: param
         }
-        axios.post('/service/api/memo/temporary', null, config).then(res => {
+        axios.post('/service/api/memo/temporary'+queryString, null, config).then(res => {
           let result = util.responseProcessor(res)
           if (result.code === '0') {
-            this.$Message.info('保存成功')
-            this.memoId = result.obj
-            if(to){
+            if(status === -1){
+              this.memoId = result.obj
+              this.$Message.info('暂存成功')
+            }
+            else{
+              this.memoId = undefined
               this.measure = {}
               this.memoBaseInfo = {
                 type: "t_0", tag:null, name:null, departments: [],
@@ -272,11 +277,14 @@
               this.memo = {
                 savedMeasures: [
                 ]
-              },
-              this.$router.push(to)
+              }
+              this.$Message.info('保存成功')
+            }
+            if(this.isAdd){
+              this.$route.push('/memo?status=add')
             }
             else{
-              this.$router.push('/memo?status=add&id='+result.obj)
+              this.closeHandler()
             }
 
           }
@@ -307,12 +315,12 @@
       width: 540px;
     }
     * {
-      font-size: 14px;
+      font-size: 12px;
     }
     .ivu-input, ivu-radio-group, .ivu-radio-wrapper, .ivu-checkbox-wrapper, .ivu-select-single .ivu-select-selection .ivu-select-placeholder,
     .ivu-select-single .ivu-select-selection .ivu-select-selected-value,
     .ivu-form .ivu-form-item-label {
-      font-size: 14px;
+      font-size: 12px;
     }
     .ivu-form-item {
       margin: 8px 0;
@@ -398,8 +406,9 @@
       text-align: center;
       .ivu-btn {
         border-radius: 4px;
-        width: 120px;
-        height: 36px;
+        font-size: 12px;
+        width: 100px;
+        height: 32px;
         margin: 5px 15px;
       }
     }

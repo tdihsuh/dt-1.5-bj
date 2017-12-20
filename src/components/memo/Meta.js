@@ -20,7 +20,7 @@ let columnBase = [
   {
     title: '备忘录名称',
     key: 'name',
-    align: 'center'
+    /*align: 'center'*/
   },
   {
     title: '发起单位',
@@ -36,18 +36,31 @@ let columnBase = [
     }
   },
   {
+    title: '标签',
+    key: 'tags',
+    align: 'center',
+    render: (h, params) => {
+      let attrs = {
+          style:'color:rgb(235, 68, 73)'
+        }
+        if(params.row.type === '1'){
+          attrs = {
+            style:'color:#1889e3'
+          }
+        }
+      return h('span', {
+        attrs:attrs
+      }, params.row.tags)
+    }
+  },
+  {
     title: '联合部委数量',
-    key: 'relationDepartment',
+    key: 'departmentCount',
     align: 'center'
   },
   {
     title: '发布用户',
-    key: 'operator',
-    align: 'center'
-  },
-  {
-    title: '发布时间',
-    key: 'publish_date',
+    key: 'operatorName',
     align: 'center'
   }
 ]
