@@ -149,8 +149,10 @@
       ...mapGetters([
         'enterpriseDetails', 'personDetails', 'enterpriseBase', 'subjectMemo', 'subjectDesc', 'isPersonal', 'personBase'
       ]),
+
       submitFeedback () {
         this.$refs.feedbackForm.validate((valid) => {
+
           if (valid) {
             let url = '/service/api/credit/operation/enterprise'
             let data = {
@@ -158,26 +160,20 @@
               description: this.formItem.description
             }
             if (this.isPersonal()) {
-              url = '/service/api/credit/operation/person'
-              data = Object.assign(data, {pid: this.$route.params.pid})
+              url = `/service/api/credit/operation/person?pid=${this.$route.params.pid}&dealType=${data.dealType}&description=${encodeURIComponent(data.description)}`
             } else {
-              data = Object.assign(data, {eid: this.$route.params.pid})
-            }
-            let param = new URLSearchParams()
-            for (let key in data) {
-              param.append(key, data[key])
+              url += `?eid=${this.$route.params.pid}&dealType=${data.dealType}&description=${encodeURIComponent(data.description)}`
             }
             let config = {
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-              },
-              params: param
+              }
             }
-            axios.post(url, null, config).then(res => {
+            axios.post(url, config).then(res => {
               let result = util.responseProcessor(res)
               if (result.code === '0') {
                 this.$Message.info('反馈成功')
-                this.hasFeedback = true // window.open(`/service/api/credit/operation/download?type=${this.isPersonal() ? 1 : 2}&id=${this.$route.params.pid}`)
+                this.hasFeedback = true
                 window.open(`/service/api/credit/operation/download?type=${this.isPersonal()?0:1}&id=${result.obj}`,'_blank')
               }
               else {

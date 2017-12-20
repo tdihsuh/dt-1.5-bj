@@ -12,7 +12,7 @@ const getters = {}
 const actions = {
   /// api/memo/pending/list
   getPendingMemo (store) {
-    axios.get('/service/api/memo/pending/list').then(res => {
+    axios.get(`/service/api/memo/pending/list?_t=${new Date().valueOf()}`).then(res => {
       let result = util.responseProcessor(res)
       if (result.code === '0') {
 

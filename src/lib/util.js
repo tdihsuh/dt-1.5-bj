@@ -24,6 +24,7 @@ util.title = function (title) {
   window.document.title = title
 }
 util.responseProcessor = function (res) {
+
   if (res) {
     let httpCode = res.status
     if (httpCode >= 200 && httpCode <= 299) {
@@ -39,9 +40,16 @@ util.responseProcessor = function (res) {
       } else if (res.data.code === '1') {
         this.openModal('请求失败：' + res.data.msg)
       } else {
-        return res.data
+        try{
+          return JSON.parse(res.request.responseText)
+        }
+        catch(e){
+          return {code: '1', error: '返回数据格式不正确'}
+        }
+
       }
     } else {
+
       this.openModal('后台接口失败，返回状态码：' + httpCode)
       return {code: '1', msg: res.data.error}
     }

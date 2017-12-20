@@ -154,7 +154,7 @@ const getters = {
 const actions = {
 
   searchEnterprise (store, key) {
-    axios.get(`/service/api/credit/enterpriseSearch?key=${key}`).then(res => {
+    axios.get(`/service/api/credit/enterpriseSearch?key=${key}&_t=${new Date().valueOf()}`).then(res => {
       let result = util.responseProcessor(res)
       if (result.code === '0') {
         store.commit('setEnterpriseInfo', result.obj)
@@ -166,7 +166,7 @@ const actions = {
     })
   },
   searchPerson ({commit}, key) {
-    axios.get(`/service/api/credit/personSearch?key=${key}`).then(res => {
+    axios.get(`/service/api/credit/personSearch?key=${key}&_t=${new Date().valueOf()}`).then(res => {
       let result = util.responseProcessor(res)
       if (result.code === '0') {
         commit('setPersonInfo', result.obj)
@@ -179,7 +179,7 @@ const actions = {
   },
   fetchEnterpriseDetials (store, eid) {
     this.isLoading = true
-    axios.get(`/service/api/credit/enterpriseDetail?eid=${eid}`).then(res => {
+    axios.get(`/service/api/credit/enterpriseDetail?eid=${eid}&_t=${new Date().valueOf()}`).then(res => {
       this.isLoading = false
       let result = util.responseProcessor(res)
       if (result.code === '0') {
@@ -193,7 +193,7 @@ const actions = {
   },
   fetchPersonDetials (store, eid) {
     this.isLoading = true
-    axios.get(`/service/api/credit/personDetail?pid=${eid}`).then(res => {
+    axios.get(`/service/api/credit/personDetail?pid=${eid}&_t=${new Date().valueOf()}`).then(res => {
       let result = util.responseProcessor(res)
       this.isLoading = false
       if (result.code === '0') {

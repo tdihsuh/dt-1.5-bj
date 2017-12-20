@@ -1,5 +1,5 @@
 <template>
-  <div class="memo-content">
+  <div class="memo-content" @renderAllList="getAllList">
     <Tabs class="memo-tabs" :value="status" @on-click="changeTab">
       <TabPane :label="labelPublish" name="publish">
         <MemoTable :columns="columnsPublish" :data='dataPublish' :is-publish="true"></MemoTable>
@@ -11,40 +11,29 @@
         <MemoTable :columns="columnsPending" :data='dataPending' :is-publish="false"></MemoTable>
       </TabPane>
       <TabPane :label="labelAdd" name="add">
-        <MemoForm :is-add="true"></MemoForm>
+        <MemoForm :is-add="true" :times="times"></MemoForm>
       </TabPane>
     </Tabs>
     <Modal v-model="isShowDetails" width="1000px">
-      <div slot="header" class="details-header">失信协同监管</div>
-      <div class="details-content">
-        <ItemList :list="list"></ItemList>
-        <div class="item-tag clear"><span class="item-name">标签：</span><span class="item-content"><span class="tag">重大违法税收</span></span>
-        </div>
-        <div class="item-details clear">
-          <ItemList :list="list1"></ItemList>
-        </div>
-        <div class="item-details clear">
-          <ItemList :list="list2"></ItemList>
-        </div>
-
-      </div>
+      <div slot="header" class="details-header">备忘录详情</div>
+      <MemoDetails :mid="publishMemo"></MemoDetails>
       <div slot="footer" class="details-footer">
         <Button type="ghost" size="large" class="return-btn" @click="isShowDetails=false">返回</Button>
       </div>
     </Modal>
     <Modal v-model="isShowUnpublish" width="1000px" :styles="{top: '50px'}">
       <div slot="header" class="details-header">
-        失信协同监管
+        审核备忘录
       </div>
-      <MemoForm :is-add="false" :id="memoId" :close-handler="handleModal"></MemoForm>
+      <MemoDetails :mid="unpublishMemo"></MemoDetails>
       <div slot="footer">
       </div>
     </Modal>
     <Modal v-model="isShowPending" width="1000px" :styles="{top: '50px'}">
       <div slot="header" class="details-header">
-        失信协同监管
+        备忘录修改
       </div>
-      <MemoForm :is-add="false" :id="memoId" :close-handler="handleModal"></MemoForm>
+      <MemoForm :is-add="false" :mid="pendingMemo" :close-handler="handleModal"></MemoForm>
       <div slot="footer">
       </div>
     </Modal>
@@ -52,50 +41,80 @@
 </template>
 <script>
   import Vue from 'vue'
-  import axios from  'axios'
+  import axios from 'axios'
   import util from '../../lib/util'
   import TabLabel from './TabLabel.vue'
   import MemoTable from './MemoTable.vue'
   import MemoForm from './MemoForm.vue'
+  import MemoDetails from './MemoDetails.vue'
   import Meta from './Meta'
 
   Vue.component('TabLabel', TabLabel)
   Vue.component('MemoTable', MemoTable)
   Vue.component('MemoForm', MemoForm)
-
-  let data = Meta.data
+  Vue.component('MemoDetails', MemoDetails)
   export default {
     data () {
       return {
         isShowDetails: false,
         isShowUnpublish: false,
-        isShowPending:false,
-        memoId: undefined,
-        pageSize:10,
+        isShowPending: false,
+        pendingMemo: undefined,
+        unpublishMemo: undefined,
+        publishMemo: undefined,
+        times: 0,
+        memoId: '',
+        pageSize: 100,
         labelPublish: Meta.labelPublish,
         labelUnpublish: Meta.labelUnpublish,
         labelPending: Meta.labelPending,
         labelAdd: Meta.labelAdd,
-        columnsPublish: Meta.columnBase.concat({
-          title: '操作',
-          key: 'id',
+        columnsPublish: Meta.columnBase.concat([{
+          title: '发布时间',
+          key: 'updateTime',
           align: 'center',
           render: (h, params) => {
-            return h('a', {
-              attrs: {
-                class: 'link-details',
-                id: params.row.id
-              },
-              props: {
-                'mid': params.row.id
-              },
-              on: {
-                click: this.openDetails
-              },
-            }, '查看详细')
+            let date = ''
+            if (params.row.createTime) {
+              date = new Date(params.row.createTime).Format('yyyy/MM/dd hh:mm:ss')
+            }
+            return h('span', {}, date)
           }
-        }),
-        columnsUnpublish: Meta.columnBase.concat({
+        },
+          {
+            title: '操作',
+            key: 'id',
+            align: 'center',
+            render: (h, params) => {
+              return h('a', {
+                attrs: {
+                  class: 'link-details',
+                  id: params.row.id
+                },
+                props: {
+                  'mid': params.row.id
+                },
+                on: {
+                  click: () => {
+                    this.isShowDetails = true
+                    this.publishMemo = params.row.id
+                  }
+                },
+              }, '查看详细')
+            }
+          }]),
+        columnsUnpublish: Meta.columnBase.concat([{
+          title: '提交时间',
+          key: 'updateTime',
+          align: 'center',
+          render: (h, params) => {
+            let date = ''
+            if (params.row.createTime) {
+              date = new Date(params.row.createTime).Format('yyyy/MM/dd hh:mm:ss')
+            }
+            return h('span', {}, date)
+          }
+        }, {
           title: '操作',
           key: 'id',
           align: 'center',
@@ -111,12 +130,24 @@
               on: {
                 click: () => {
                   this.isShowUnpublish = true
+                  this.unpublishMemo = params.row.id
                 }
               }
-            }, '查看详细')
+            }, '进入审核')
           }
-        }),
-        columnsPending: Meta.columnBase.concat({
+        }]),
+        columnsPending: Meta.columnBase.concat([{
+          title: '更新时间',
+          key: 'updateTime',
+          align: 'center',
+          render: (h, params) => {
+            let date = ''
+            if (params.row.createTime) {
+              date = new Date(params.row.createTime).Format('yyyy/MM/dd hh:mm:ss')
+            }
+            return h('span', {}, date)
+          }
+        }, {
           title: '操作',
           key: 'id',
           align: 'center',
@@ -132,42 +163,33 @@
               on: {
                 click: () => {
                   this.isShowPending = true
+                  this.pendingMemo = params.row.id
                 }
               }
-            }, '查看详细')
+            }, '继续修改')
           }
-        }),
+        }]),
         dataPublish: [],
         dataPending: [],
-        dataUnpublish:[],
-        list: [[
-          {name: '联合惩戒备忘录：', content: '关于重大违法税收案件联合备忘录'},
-          {name: '联合奖惩性质：', content: '联合惩戒'},
-          {name: '认定部门：', content: '省发改委'}
-        ]],
-        list1: [[
-          {name: '措施：', content: '对欠缴查补税款的当事人，在出境前未按照规定结清应纳税款、滞纳金或者提供纳税担保的，税务司机可以通知出入境管理机关阻止其出境。'},
-          {name: '法律及政策依据：', content: '对于xxx，认为其xxx'},
-          {name: '实施部门：', content: '省发改委'}
-        ]],
-        list2: [[
-          {name: '措施：', content: '对欠缴查补税款的当事人，在出境前未按照规定结清应纳税款、滞纳金或者提供纳税担保的，税务司机可以通知出入境管理机关阻止其出境。'},
-          {name: '法律及政策依据：', content: '对于xxx，认为其xxx'},
-          {name: '实施部门：', content: '省发改委'}
-        ]]
+        dataUnpublish: []
       }
     },
-    beforeCreate(){
+    beforeCreate () {
 
     },
     created () {
       let status = this.$route.query.status
-      if(status === 'publish' || status === 'pending' || status === 'unpublish' || status === 'add'){
-        this.getList(this.$route.query.status)
+      if (status === 'publish' || status === 'pending' || status === 'unpublish' || status === 'add') {
+
       }
-      else{
+      else {
         this.$router.push(`/memo?status=publish`)
       }
+      let statusList = ['publish', 'unpublish', 'pending']
+      for (let s of statusList) {
+        this.getList(s)
+      }
+
     },
     computed: {
       status: function () {
@@ -175,9 +197,10 @@
       }
     },
     methods: {
-      getPendingList(){
+
+      getPendingList () {
         // /api/memo/pending/list
-        axios.get(`/service/api/memo/modify/list?limitSize=${this.pageSize}`).then(res => {
+        axios.get(`/service/api/memo/modify/list?limitSize=${this.pageSize}&_t=${new Date().valueOf()}`).then(res => {
           let result = util.responseProcessor(res)
           if (result.code === '0') {
             this.dataPending = result.obj
@@ -188,23 +211,58 @@
           }
         })
       },
-      getList(v){
-        if(v === 'pending'){
+      getUnpblishList () {
+        axios.get(`/service/api/memo/pending/list?limitSize=${this.pageSize}&_t=${new Date().valueOf()}`).then(res => {
+          let result = util.responseProcessor(res)
+          if (result.code === '0') {
+            this.dataUnpublish = result.obj
+          }
+        }).catch(error => {
+          if (error.response) {
+            util.responseProcessor(error.response)
+          }
+        })
+      },
+      getPublishList () {
+        axios.get(`/service/api/memo/publish/list?limitSize=${this.pageSize}&_t=${new Date().valueOf()}`).then(res => {
+          let result = util.responseProcessor(res)
+          if (result.code === '0') {
+            this.dataPublish = result.obj
+          }
+        }).catch(error => {
+          if (error.response) {
+            util.responseProcessor(error.response)
+          }
+        })
+      },
+      getAllList () {
+        let statusList = ['publish', 'unpublish', 'pending']
+        for (let s of statusList) {
+          this.getList(s)
+        }
+      },
+      getList (v) {
+        if (v === 'pending') {
           this.getPendingList()
+        }
+        else if (v === 'publish') {
+          this.getPublishList()
+        }
+        else if (v === 'unpublish') {
+          this.getUnpblishList()
         }
       },
       changeTab (v) {
         this.memoId = undefined
         this.getList(v)
+        this.times += 1
         this.$router.push(`/memo?status=${v}`)
       },
-      openDetails (e) {
-        let mid = e.target.attributes.getNamedItem('id').value
-        this.isShowDetails = true
-
-      },
       handleModal () {
+        this.isShowDetails = false
         this.isShowUnpublish = false
+        this.isShowPending = false
+        this.getList(this.status)
       }
     }
   }
@@ -218,61 +276,22 @@
     height: 50-28px;
     line-height: 50-28px;
   }
-
-  .details-content {
-    min-height: 200px;
-    font-size: 14px;
-    .item-details {
-      margin: 10px 40px;
-      border: 1px solid #e0e0e0;
-      border-radius: 4px;
-    }
-    .item-tag {
-      padding: 0 40px 20px 40px;
-      .item-name, .item-content {
-        display: inline-block;
-        height: 30px;
-        line-height: 30px;
-        text-align: left;
-        float: left;
-      }
-      > .item-name {
-        width: 20%;
-        color: #9b9b9b;
-
-      }
-      > .item-content {
-        color: #353842;
-        width: 80%;
-        > .tag {
-          display: inline-block;
-          border: 1px solid #1889e3;
-          border-radius: 3px;
-          width: 114px;
-          height: 28px;
-          line-height: 28px;
-          color: #1889e3;
-          text-align: center;
-        }
-      }
-    }
-  }
-
   .ivu-modal-footer {
     border-top: 0;
     .details-footer {
       width: 100%;
-      margin: 8px 0;
+      margin: 0 0 8px 0;
       text-align: center;
       .return-btn {
-        width: 120px;
-        height: 36px;
+        width: 100px;
+        font-size: 12px;
+        height: 28px;
       }
     }
   }
 
   .memo-content {
-    padding: 12px 0;
+    padding: 5px 0;
     .ivu-tabs-nav-scroll-disabled {
       display: none;
     }
@@ -282,8 +301,8 @@
       background-color: white;
       .ivu-tabs-tab {
         height: 60px;
-        line-height: 60-16px;
-        font-size: 16px;
+        line-height: 60-14px;
+        font-size: 14px;
         .ivu-badge {
           position: relative;
           top: -2px;
@@ -292,7 +311,7 @@
 
       }
       .ivu-tabs-content {
-        font-size: 14px;
+        font-size: 12px;
         .ivu-tabs-tabpane {
           min-height: 650px;
           padding: 25px 50px;
