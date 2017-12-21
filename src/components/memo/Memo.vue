@@ -27,8 +27,8 @@
       </div>
       <MemoDetails :mid="unpublishMemo"></MemoDetails>
       <div slot="footer" class="details-footer">
-        <Button type="success" class="return-btn"   @click="isShowUnpublish=false">审核通过</Button>
-        <Button type="error" class="return-btn" @click="isShowUnpublish=false">驳回修改</Button>
+        <Button type="success" class="return-btn"   @click="publish()">审核通过</Button>
+        <Button type="error" class="return-btn" @click="backModify()">驳回修改</Button>
         <Button type="ghost"  class="return-btn" @click="isShowUnpublish=false">返回</Button>
       </div>
     </Modal>
@@ -254,6 +254,47 @@
         else if (v === 'unpublish') {
           this.getUnpblishList()
         }
+      },
+      backModify(){
+        //POST /api/memo/back
+        let config = {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          }
+        }
+        axios.post(`/service/api/memo/back?id=${this.unpublishMemo}`,null,config).then(res => {
+          let result = util.responseProcessor(res)
+          if (result.code === '0') {
+            this.$Message.success('退回成功')
+            this.isShowUnpublish = false
+            this.getUnpblishList()
+          }
+        }).catch(error => {
+          if (error.response) {
+            util.responseProcessor(error.response)
+            this.$Message.error('系统错误，请重试')
+          }
+        })
+      },
+      publish(){
+        let config = {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          }
+        }
+        axios.post(`/service/api/memo/publish?id=${this.unpublishMemo}`,null,config).then(res => {
+          let result = util.responseProcessor(res)
+          if (result.code === '0') {
+            this.$Message.success('审核通过')
+            this.isShowUnpublish = false
+            this.getUnpblishList()
+          }
+        }).catch(error => {
+          if (error.response) {
+            util.responseProcessor(error.response)
+            this.$Message.error('系统错误，请重试')
+          }
+        })
       },
       changeTab (v) {
         this.memoId = undefined

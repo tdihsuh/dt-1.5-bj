@@ -154,7 +154,7 @@ const getters = {
 const actions = {
 
   searchEnterprise (store, key) {
-    axios.get(`/service/api/credit/enterpriseSearch?key=${key}&_t=${new Date().valueOf()}`).then(res => {
+    axios.get(`/service/api/credit/enterpriseSearch?key=${encodeURIComponent(key)}&_t=${new Date().valueOf()}`).then(res => {
       let result = util.responseProcessor(res)
       if (result.code === '0') {
         store.commit('setEnterpriseInfo', result.obj)
@@ -166,7 +166,7 @@ const actions = {
     })
   },
   searchPerson ({commit}, key) {
-    axios.get(`/service/api/credit/personSearch?key=${key}&_t=${new Date().valueOf()}`).then(res => {
+    axios.get(`/service/api/credit/personSearch?key=${encodeURIComponent(key)}&_t=${new Date().valueOf()}`).then(res => {
       let result = util.responseProcessor(res)
       if (result.code === '0') {
         commit('setPersonInfo', result.obj)

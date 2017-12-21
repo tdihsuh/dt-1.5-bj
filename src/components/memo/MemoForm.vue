@@ -46,10 +46,10 @@
       <i-form :model="measure"   :label-width="160" label-position="left" class="memo-form">
         <div class="measure">
           <FormItem label="措施：">
-            <i-input v-model="measure.measureName" placeholder="请输入奖励／惩戒措施"></i-input>
+            <i-input :rows="2" type="textarea" v-model="measure.measureName" placeholder="请输入奖励／惩戒措施"></i-input>
           </FormItem>
           <FormItem label="法律及政策依据：">
-            <i-input v-model="measure.measureBy" placeholder="请输入法律及政策依据"></i-input>
+            <i-input :rows="2" type="textarea" v-model="measure.measureBy" placeholder="请输入法律及政策依据"></i-input>
           </FormItem>
           <FormItem label="实施部门：">
             <i-select v-model="measure.department" filterable placeholder="请选择或输入部门关键字进行搜索">
