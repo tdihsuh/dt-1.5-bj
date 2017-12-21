@@ -7,8 +7,9 @@
       </FormItem>
       <FormItem label="联合奖惩性质：" prop="type">
         <RadioGroup v-model="memoBaseInfo.type">
-          <Radio label="t_0"><span style="color:rgb(235, 68, 73);margin: 0 20px 0 0">联合激励</span></Radio>
           <Radio label="t_1"><span style="color:rgb(24, 137, 227);margin: 0 20px 0 0">联合惩戒</span></Radio>
+          <Radio label="t_0"><span style="color:rgb(235, 68, 73);margin: 0 20px 0 0">联合激励</span></Radio>
+
         </RadioGroup>
       </FormItem>
       <FormItem label="认定部门：" prop="departments">
@@ -17,7 +18,7 @@
         </i-select>
       </FormItem>
       <FormItem label="标签：" prop="tag">
-        <i-input v-model="memoBaseInfo.tag" placeholder="请输入标签(不少于2字)" class="input-item"></i-input>
+        <i-input v-model="memoBaseInfo.tag" placeholder="请输入标签(2~5字)" class="input-item"></i-input>
       </FormItem>
       <div style="text-align:center;padding-top: 20px">
         <i-button type="primary" @click="saveBaseInfo(-1)" :disabled="!formValid" v-if="!hasId">保存基本信息</i-button>
@@ -31,7 +32,8 @@
            <ul class="measure-ul" slot="content">
             <li v-for=" (m,i) in measure.departmentMergeItemList">
               <Row class="measure-li-row">
-                <i-col span="8"><a class="short-fake-link" :title="m.measure">{{m.measure}}</a></i-col>
+                <i-col span="1" style="text-align: center">{{i+1}}</i-col>
+                <i-col span="7" class="measure-name"><a class="short-fake-link" :title="m.measure">{{m.measure}}</a></i-col>
                 <i-col span="14" class="measure-by"><a class="short-fake-link" :title="m.reason">{{m.reason}}</a></i-col>
                 <i-col span="2" style="text-align: center">
                   <i-button  class="delete-measure-btn" @click="deleteMeasure(m.id)" type="error" size="small">删除</i-button>
@@ -85,7 +87,7 @@
         rules:{
         },
         memoBaseInfo:{
-          type: "t_0", tag:null, name:null, departments: [],
+          type: "t_1", tag:null, name:null, departments: [],
         },
         memo: {
           savedMeasures: [
@@ -108,7 +110,7 @@
         this.memoId = undefined
         this.measure = {}
         this.memoBaseInfo = {
-          type: "t_0", tag:null, name:null, departments: [],
+          type: "t_1", tag:null, name:null, departments: [],
         }
         this.memo = {
           savedMeasures: [
@@ -129,7 +131,7 @@
         else{
             this.measure = {}
             this.memoBaseInfo = {
-              type: "t_0", tag:null, name:null, departments: [],
+              type: "t_1", tag:null, name:null, departments: [],
             }
             this.memo = {
               savedMeasures: [
@@ -272,7 +274,7 @@
               this.memoId = undefined
               this.measure = {}
               this.memoBaseInfo = {
-                type: "t_0", tag:null, name:null, departments: [],
+                type: "t_1", tag:null, name:null, departments: [],
               }
               this.memo = {
                 savedMeasures: [
@@ -350,6 +352,9 @@
         border: 1px solid #d0d0d0;
         &:hover{
           background:rgba(45,140,240,0.2);
+        }
+        .measure-name{
+          border-left: 1px solid #d0d0d0;
         }
         .measure-by{
           border-left:1px solid #d0d0d0;

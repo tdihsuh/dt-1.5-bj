@@ -18,7 +18,7 @@
       <div slot="header" class="details-header">备忘录详情</div>
       <MemoDetails :mid="publishMemo"></MemoDetails>
       <div slot="footer" class="details-footer">
-        <Button type="ghost" size="large" class="return-btn" @click="isShowDetails=false">返回</Button>
+        <Button type="ghost" class="return-btn"  @click="isShowDetails=false">返回</Button>
       </div>
     </Modal>
     <Modal v-model="isShowUnpublish" width="1000px" :styles="{top: '50px'}">
@@ -26,7 +26,10 @@
         审核备忘录
       </div>
       <MemoDetails :mid="unpublishMemo"></MemoDetails>
-      <div slot="footer">
+      <div slot="footer" class="details-footer">
+        <Button type="success" class="return-btn"   @click="isShowUnpublish=false">审核通过</Button>
+        <Button type="error" class="return-btn" @click="isShowUnpublish=false">驳回修改</Button>
+        <Button type="ghost"  class="return-btn" @click="isShowUnpublish=false">返回</Button>
       </div>
     </Modal>
     <Modal v-model="isShowPending" width="1000px" :styles="{top: '50px'}">
@@ -284,8 +287,6 @@
       text-align: center;
       .return-btn {
         width: 100px;
-        font-size: 12px;
-        height: 28px;
       }
     }
   }

@@ -9,7 +9,8 @@
         <ul class="measure-ul" slot="content">
           <li v-for=" (m,i) in measure.departmentMergeItemList">
             <Row class="measure-li-row">
-              <i-col span="8"><a class="short-fake-link" :title="m.measure">{{m.measure}}</a></i-col>
+              <i-col span="1" style="text-align: center">{{i+1}}</i-col>
+              <i-col span="7" class="measure-name"><a class="short-fake-link" :title="m.measure">{{m.measure}}</a></i-col>
               <i-col span="16" class="measure-by"><a class="short-fake-link" :title="m.reason">{{m.reason}}</a></i-col>
             </Row>
           </li>
@@ -130,9 +131,12 @@
       &:hover {
         background: rgba(45, 140, 240, 0.2);
       }
+      .measure-name{
+        border-left: 1px solid #d0d0d0;
+      }
       .measure-by {
         border-left: 1px solid #d0d0d0;
-        border-right: 1px solid #d0d0d0;
+
       }
       > div {
         overflow: hidden;
