@@ -207,6 +207,10 @@ const actions = {
   },
   setPersonal (store, isPersonal) {
     store.commit('setPersonal', isPersonal)
+  },
+  clearInfo(store){
+    store.commit('setPersonInfo', [])
+    store.commit('setEnterpriseInfo', [])
   }
 }
 

@@ -9,7 +9,7 @@
         -->
     <ul class="nav" :class="{ noNav: !nav }">
       <li>
-        <router-link active-class="nav-active" to="/dashboard" class="nav-item"><img :src="stat"/>奖惩检测</router-link>
+        <router-link active-class="nav-active" to="/dashboard" class="nav-item"><img :src="stat"/>奖惩监测</router-link>
       </li><!--
            --><li>
         <router-link active-class="nav-active" to="/search" class="nav-item"><img :src="search"/>奖惩查询</router-link>
