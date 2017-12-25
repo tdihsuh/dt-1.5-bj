@@ -84,7 +84,8 @@
     colorAxis: {
       min: 0,
       max: 1000,
-      minColor: '#E1FFFF',
+      // minColor: '#E1FFFF',
+      minColor: '#FFF',
       maxColor: '#2f6fd0',
       labels: {
         style: {
@@ -193,9 +194,12 @@
   }
 
   .stat-board {
-    margin-top: 14px;
+    margin-top: 6px;
     .ivu-card-head {
       padding: 0 20px;
+    }
+    .ivu-card-body{
+      padding-top: 5px;
     }
     .stat-title {
       font-size: 18px;
@@ -217,7 +221,7 @@
       border: 1px solid #eee;
     }
     .stat-content {
-      margin: 10px 30px;
+      margin: 0 30px;
       .maps {
         display: inline-block;
         height: 350px;

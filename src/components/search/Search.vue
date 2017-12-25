@@ -48,7 +48,7 @@
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    lineHeight: '24px',
+    lineHeight: '23px',
     fontSize: '10px',
     textAlign: 'center',
     padding: '0 9px'
