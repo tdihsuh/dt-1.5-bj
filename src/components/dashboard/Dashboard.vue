@@ -83,7 +83,7 @@
     },
     colorAxis: {
       min: 0,
-      max: 1500,
+      max: 1000,
       minColor: '#E1FFFF',
       maxColor: '#2f6fd0',
       labels: {
