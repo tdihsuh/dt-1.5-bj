@@ -7,7 +7,7 @@
   export default {
     props: ['to'],
     created () {
-      // console.log(this.to);
+      
     }
   }
 </script>

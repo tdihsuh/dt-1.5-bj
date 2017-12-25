@@ -23,7 +23,7 @@
     color: #353842;
     line-height: 24px;
     text-align: left;
-    padding: 25px 0 0 12px;
+    padding: 15px 0 0 12px;
     > img {
       width: 14px;
       height: 20px;
@@ -36,7 +36,7 @@
       letter-spacing: 0;
       text-align: left;
       display: inline-block;
-      margin-left: 14px;
+      margin-left: 10px;
     }
   }
 </style>

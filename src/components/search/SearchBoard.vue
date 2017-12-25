@@ -79,11 +79,14 @@
 
   .has-result-board {
     margin-top: 40px;
-    font-size: 14px;
+    font-size: 12px;
     color: #353742;
     letter-spacing: 0;
     .ivu-table-row {
-      height: 73px;
+      //height: 73px;
+      td{
+          font-size: 12px;
+      }
     }
     .result-tag {
       display: inline-block;

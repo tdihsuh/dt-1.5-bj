@@ -17,65 +17,68 @@
 
 </template>
 <script>
-  export default {
-    props: ['content', 'columns', 'isPersonal', 'pageSize', 'current', 'total', 'callback'],
-    data () {
-      return {
-        searchIcon: require('../search/search_icon.png'),
-        emptyIcon: require('../search/emptystate_icon.png'),
-
+export default {
+  props: [
+    "content",
+    "columns",
+    "isPersonal",
+    "pageSize",
+    "current",
+    "total",
+    "callback"
+  ],
+  data() {
+    return {
+      searchIcon: require("../search/search_icon.png"),
+      emptyIcon: require("../search/emptystate_icon.png")
+    };
+  },
+  created() {},
+  computed: {
+    isInit() {
+      if (this.columns.length === 0) {
+        return true;
+      } else {
+        return false;
       }
     },
-    created () {
-
-    },
-    computed: {
-      isInit () {
-        if (this.columns.length === 0) {
-          return true
-        }
-        else {
-          return false
-        }
-      },
-      hasContent () {
-        if (this.content.obj && this.content.obj.length !== 0 && this.columns.length !== 0) {
-          return true
-        }
-        else {
-          return false
-        }
-      }
-    },
-    methods: {
-      changePage (i) {
-        if (this.isPersonal) {
-          this.$router.push(`/approval?type=person&page=${i - 1}`)
-          this.callback()
-        }
-        else {
-          this.$router.push(`/approval?page=${i - 1}`)
-          this.callback()
-        }
+    hasContent() {
+      if (
+        this.content.obj &&
+        this.content.obj.length !== 0 &&
+        this.columns.length !== 0
+      ) {
+        return true;
+      } else {
+        return false;
       }
     }
-
+  },
+  methods: {
+    changePage(i) {
+      if (this.isPersonal) {
+        this.$router.push(`/approval?type=person&page=${i - 1}`);
+        this.callback();
+      } else {
+        this.$router.push(`/approval?page=${i - 1}`);
+        this.callback();
+      }
+    }
   }
-
+};
 </script>
 <style rel="stylesheet/less" lang="less">
-  .init-board {
+.init-board {
+}
 
+.has-result-board {
+  position: relative;
+  .pagination {
+    margin: 20px auto 0 auto;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
-
-  .has-result-board {
-    position: relative;
-    .pagination {
-      margin: 20px auto 0 auto;
-      text-align: center;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-  }
+}
 </style>
