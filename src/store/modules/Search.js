@@ -95,7 +95,7 @@ const getters = {
           title: details.eventName
         }
         let content = []
-        for (let d of details.eventDetail){
+        for (let d of details.eventDetail) {
           content.push({
             name: d.key, content: d.value
           })
@@ -103,7 +103,7 @@ const getters = {
         tmp.content = [content]
         data.push(tmp)
       }
-      //console.log(data)
+      // console.log(data)
       return data
     } else {
       return []
@@ -120,13 +120,13 @@ const getters = {
       for (let memo of subject) {
         let tmp = {
           title: memo.name,
-          accountTime: {name: '惩戒认定时间：', content: util.parseDate(memo.time)},
-          accountDepartment: {name: '认定部门：', content: memo.relationDepartment}
+          accountTime: { name: '惩戒认定时间：', content: util.parseDate(memo.time) },
+          accountDepartment: { name: '认定部门：', content: memo.relationDepartment }
         }
         let measureList = []
         for (let m of memo.uniMemoDepartmentList) {
           measureList.push([
-            {name: '实施部门：', content: m.memoName},
+            { name: '实施部门：', content: m.memoName },
             {
               name: '措施：',
               content: m.measure
@@ -165,7 +165,7 @@ const actions = {
       }
     })
   },
-  searchPerson ({commit}, key) {
+  searchPerson ({ commit }, key) {
     axios.get(`/service/api/credit/personSearch?key=${encodeURIComponent(key)}&_t=${new Date().valueOf()}`).then(res => {
       let result = util.responseProcessor(res)
       if (result.code === '0') {
@@ -208,7 +208,7 @@ const actions = {
   setPersonal (store, isPersonal) {
     store.commit('setPersonal', isPersonal)
   },
-  clearInfo(store){
+  clearInfo (store) {
     store.commit('setPersonInfo', [])
     store.commit('setEnterpriseInfo', [])
   }
@@ -216,20 +216,20 @@ const actions = {
 
 // mutations
 const mutations = {
-  setPersonInfo (state, info) {
+  setPersonInfo(state, info) {
     state.personInfo = []
     state.personInfo = info
   },
-  setEnterpriseInfo (state, info) {
+  setEnterpriseInfo(state, info) {
     state.enterpriseInfo = info
   },
-  setEnterpriseDetails (state, details) {
+  setEnterpriseDetails(state, details) {
     state.enterpriseDetails = details
   },
-  setPersonDetails (state, details) {
+  setPersonDetails(state, details) {
     state.personDetails = details
   },
-  setPersonal (state, isPersonal) {
+  setPersonal(state, isPersonal) {
     state.isPersonal = isPersonal
   }
 }

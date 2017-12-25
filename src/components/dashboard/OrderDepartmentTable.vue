@@ -3,7 +3,7 @@
     <table class="order-department-table">
       <thead>
       <tr>
-        <th v-for="(col, index) in departmentRankColumns()">
+        <th v-for="(col) in departmentRankColumns()" :key="col.title">
           {{ col.title }}
         </th>
       </tr>
@@ -13,8 +13,8 @@
       <CarouselItem v-for="(rank,index) in getDeparmentRank()" :key="index">
         <table class="order-department-table " :class="{first:index===0}">
           <tbody>
-          <tr v-for="(o, i) in rank" :key="o.department" class="list-complete-item">
-            <td v-for="v in o">
+          <tr v-for="(o) in rank" :key="o.department" class="list-complete-item">
+            <td v-for="(v,i) in o" :key="i" >
               {{ v }}
             </td>
           </tr>

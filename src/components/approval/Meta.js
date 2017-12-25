@@ -1,8 +1,6 @@
 /**
  * Created by lijinde on 17-12-13.
  */
-
-/* Vue.component('SearchBoard',SearchBoard) */
 let styleBase = {
   display: 'inline-block',
   borderRadius: '3px',
@@ -12,7 +10,7 @@ let styleBase = {
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
-  lineHeight: '24px',
+  lineHeight: '23px',
   fontSize: '10px',
   textAlign: 'center',
   padding: '0 9px'

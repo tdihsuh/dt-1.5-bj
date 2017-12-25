@@ -30,30 +30,30 @@ const state = {
     title: '部委',
     key: 'departmentName'
   },
-    {
-      title: '已联合部委数',
-      key: 'joinCount'
-    },
-    {
-      title: '联合激励数量',
-      key: 'uniBonusCount'
-    },
-    {
-      title: '联合惩戒数量',
-      key: 'uniPubnishCount'
-    },
-    {
-      title: '查询次数',
-      key: 'selectCount'
-    },
-    {
-      title: '部委活跃度',
-      key: 'activeCount'
-    },
-    {
-      title: '排名',
-      key: 'rank'
-    }
+  {
+    title: '已联合部委数',
+    key: 'joinCount'
+  },
+  {
+    title: '联合激励数量',
+    key: 'uniBonusCount'
+  },
+  {
+    title: '联合惩戒数量',
+    key: 'uniPubnishCount'
+  },
+  {
+    title: '查询次数',
+    key: 'selectCount'
+  },
+  {
+    title: '部委活跃度',
+    key: 'activeCount'
+  },
+  {
+    title: '排名',
+    key: 'rank'
+  }
   ]
 
 }
