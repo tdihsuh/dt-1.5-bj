@@ -1,7 +1,7 @@
 <template>
   <div class="item-list-wrapper">
-    <ul class="item-list clear" v-for="o in list" :style="listStyle">
-      <li v-for="item in o " class="clear">
+    <ul class="item-list clear" v-for="(o,index) in list" :style="listStyle" :key="index">
+      <li v-for="item in o " class="clear" :key="item.name">
         <span class="item-name">{{ item.name }}</span><span class="item-content">{{ item.content}}</span>
       </li>
     </ul>
@@ -22,17 +22,16 @@
       .item-name, .item-content {
         display: inline-block;
         line-height: 30px;
-        text-aligFormn: left;
-        float: left;
+        text-align: left;
       }
       > .item-name {
-        width: 20%;
+        width: 16%;
         color: #9b9b9b;
 
       }
       > .item-content {
         color: #353842;
-        width: 80%;
+        width: 84%;
       }
     }
   }
