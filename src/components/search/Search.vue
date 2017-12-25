@@ -177,9 +177,12 @@
         return this.isPersonal ? '请输入姓名或者证件号码进行搜索' : '请输入企业全称或者社会统一信用代码进行搜索'
       }
     },
+    mounted(){
+      this.clearInfo()
+    },
     methods: {
       ...mapActions([
-        'searchEnterprise', 'searchPerson'
+        'searchEnterprise', 'searchPerson','clearInfo'
       ]),
       ...mapGetters(['isLoading']),
       setType (isPersonal) {

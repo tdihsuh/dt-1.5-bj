@@ -26,10 +26,10 @@
               <i-col span="8">
                 <FormItem label="受理日期" prop="date">
 
-                  <DatePicker type="date" placeholder="选择开始时间" format="yyyy年MM月dd日" v-model="searchData.startDate"
+                  <DatePicker type="date" placeholder="选择开始时间" format="yyyy年MM月dd日" v-model="searchData.startTime"
                               style="width: 45%;display: inline-block"></DatePicker>
                   <span style="width: 5%;display: inline-block">--</span>
-                  <DatePicker type="date" placeholder="选择结束时间" format="yyyy年MM月dd日" v-model="searchData.endDate"
+                  <DatePicker type="date" placeholder="选择结束时间" format="yyyy年MM月dd日" v-model="searchData.endTime"
                               style="width: 45%;display: inline-block"></DatePicker>
                 </FormItem>
               </i-col>
@@ -71,8 +71,8 @@
   export default {
     data () {
       const checkDate = (rule, value, callback) => {
-        let startDate = this.searchData.startDate
-        let endDate = this.searchData.endDate
+        let startDate = this.searchData.startTime
+        let endDate = this.searchData.endTime
         if (startDate > endDate) {
           callback(new Error('开始时间不能大于结束时间'))
         } else {
@@ -89,8 +89,8 @@
         isFocus: false,
         isLoading: false,
         searchData: {
-          startDate: (new Date(new Date().getTime() - 60 * 60 * 24 * 1000 * 5)),
-          endDate: new Date()
+          startTime: (new Date(new Date().getTime() - 60 * 60 * 24 * 1000 * 5)),
+          endTime: new Date()
         },
         iconImg: require('../../images/title_icon.png'),
         content: {},
@@ -124,8 +124,8 @@
           this.current = 0
         }
         let data = Object.assign({}, this.searchData)
-        data.startDate = new Date(data.startDate).getTime()
-        data.endDate = new Date(data.endDate).getTime()
+        data.startTime = new Date(data.startTime).getTime()
+        data.endTime = new Date(data.endTime).getTime()
         let queryString = ''
         for (let key in data) {
           if (data[key]) {
